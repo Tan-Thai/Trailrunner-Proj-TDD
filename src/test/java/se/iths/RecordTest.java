@@ -13,7 +13,7 @@ public class RecordTest {
 
     @BeforeEach
     void setUp() {
-        record = new Record(1, 2.3, 1350, LocalDate.of(2025, 1, 2));
+        record = new Record("1", 2.3, 1350, LocalDate.of(2025, 1, 2));
     }
 
     @Test
@@ -23,7 +23,7 @@ public class RecordTest {
 
     @Test
     void getIDTest() {
-        assertEquals(1, record.getId());
+        assertEquals("1", record.getId());
     }
 
     @Test
