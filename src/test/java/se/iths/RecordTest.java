@@ -3,6 +3,8 @@ package se.iths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -11,31 +13,32 @@ public class RecordTest {
 
     @BeforeEach
     void setUp() {
-        record = new Record(1, 2.3, 1350, 20);
+        record = new Record(1, 2.3, 1350, LocalDate.of(2025, 1, 2));
     }
 
     @Test
-    void RecordTest() {
+    void RecordConstructorTest() {
         assertNotNull(record);
     }
 
     @Test
     void getIDTest() {
-        assertEquals(record.getID, 1);
+        assertEquals(1, record.getId());
     }
 
     @Test
     void getDistanceTest() {
-        assertEquals(record.getDistance, 2.3);
+        assertEquals(2.3, record.getDistance());
     }
 
     @Test
     void getTimeTest() {
-        assertEquals(record.getTime, 1350);
+        assertEquals(1350, record.getTime());
     }
 
     @Test
     void getDateTest() {
-        assertEquals(record.getDate, 20);
+        assertNotNull(record.getDate());
+        assertEquals(LocalDate.of(2025, 1,2), record.getDate());
     }
 }
