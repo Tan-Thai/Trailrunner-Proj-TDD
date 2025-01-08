@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public class Record {
 
-    private final int id;
+    private final String id;
     private final double distance;
-    private final int time;
+    private final float time;
     private final LocalDate date;
 
-    public Record(int id, double distance, int time, LocalDate date) {
+    public Record(String id, double distance, float time, LocalDate date) {
         this.id = id;
         this.distance = distance;
         this.time = time;
@@ -20,11 +20,11 @@ public class Record {
         return distance;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public int getTime() {
+    public float getTime() {
         return time;
     }
 

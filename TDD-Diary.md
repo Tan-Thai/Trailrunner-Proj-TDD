@@ -16,8 +16,13 @@ The entire project is set up as a repository on GitHub for version control and e
 - [x] Write up initial mockup of diary.
 - [x] Start feature-branch.
 - [x] Create **Record** class and it's tests.
-- [ ] Implement tests for **FileStorage**.
-- [ ] Adjust **FileStorage** until functional according to tests.
+- [ ] Implement tests for **FileStorage**. (now named **RecordHandler**)
+- [ ] Adjust **FileStorage** until functional according to tests. (now named **RecordHandler**)
+- [ ] Create a **RecordHandler** that contains a Map to use ID as keys to avoid duplications.
+
+### Fleeting Quick-Notes
+Record might not be the best word for the files, not sure what to call a "saved trip/run/walk". As much as I want to
+name it "session", it might does not sound entirely correct either.
 
 ### Initial plan
 Create a **RecordTest** file to create tests which includes all variables included in Records (variables based on
@@ -33,4 +38,13 @@ Example of issues were:
 - The initial structure.
 - Asserts having the expected/actual in swapped positions.
 - Somehow forgetting the () when calling to methods. (I'm honestly baffled that it just slipped my mind)
+- I missed that id was a string initially. (I blame it on new year)
 
+### FileStorage
+Will rename this file to **RecordHandler** to simplify the naming-scheme. Also, easier to identify what it's connected to
+in my opinion.
+
+### RecordHandler
+
+Might be overdoing it with throws and checks during the test, but I'm giving it a go to do a thorough test-setup
+to see how far I can push my own knowledge of working TDD. (which I'm not used to)
