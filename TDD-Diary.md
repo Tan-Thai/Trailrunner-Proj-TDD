@@ -14,6 +14,7 @@ Maven and Jacoco is used within the project as of writing. If VG assignments are
 Preface: I did work with **FileStorage** right away and then reformated it to suit my needs. I'll add it again
 if I do work on the VG part of the assignment.
 
+---
 ## Day 1 - 08/01-25
 
 - [x] Set up repository and skeleton to start project.
@@ -24,19 +25,19 @@ if I do work on the VG part of the assignment.
 - [x] Adjust **FileStorage** until functional according to tests. (now named **RecordHandler**)
 - [x] Create a **RecordHandler** that contains a Map to use ID as keys to avoid duplications.
 - [ ] Create a **Calculator** for all formulas and math needed for the project.
-- [ ] Create a **Main** that will allow the user to input and use the program. 
-- [ ] 
+- [ ] Create a **Main** that will allow the user to input and use the program.
  
-### Fleeting Quick-Notes
-Record might not be the best word for the files, not sure what to call a "saved trip/run/walk". As much as I want to
-name it "session", it might does not sound entirely correct either.
 
-
-### Initial plan
+### Agenda
 Create a **RecordTest** file to create tests which includes all variables included in Records (variables based on
 parameters from **FileStorage**).
 
 After baseline tests are made, create **Record** class and shape it to fit tests.
+
+---
+### Fleeting Notes
+Record might not be the best word for the files, not sure what to call a "saved trip/run/walk". As much as I want to
+name it "session", it might does not sound entirely correct either.
 
 ### RecordTests
 Noticed that I did write a few scuffed initial drafts for the tests due to not having coded for about 2 weeks.
@@ -60,3 +61,34 @@ to see how far I can push my own knowledge of working TDD. (which I'm not used t
 Lots of new things came up such as writing tests for exception-handling and throws. Stumbled upon a few issues that I
 had to resort to Stack Overflow. Based on the projects tests now, it seems to be fully functional and work as intended.
 I'm still not feeling 100% confident regarding this so it will have to be something I work with more down the line.
+
+---
+## Day 2 - 09/01-25
+
+- [x] Rename **Record** to something more relatable and self-explanatory. (Now **Session**) 
+- [ ] Create a **CalculatorTest** for all formulas and math needed for the project.
+- [ ] Create a **Calculator** to code in said formulas.
+- [ ] Create a **Main** that will allow the user to input and use the program.
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments. 
+
+### Agenda
+Continue from previous days leftovers and work from there. Goal is to ideally get the G assignments done by end of day.
+If possible also add the advanced features into it before working on VG assignments.
+
+---
+### Fleeting Notes
+As discussed with Max during yesterday's lesson, **Record** was not a fitting name for what we are trying
+to save. Two potential names were "**Session**" and "**Activity**". Noted within agenda to keep track as of why
+the change was made.
+
+### Calculator
+TODO: Set up all calculations needed for a session. 
+Calc consists of:
+- Average speed
+- Kilometres per hour
+- "FitnessScore" (score based on session) \
+  FitnessScore **needs** to show a positive integer and only whole numbers. Score starts at 0 if it's the **first**
+  session.
+- Total distance traveled across all sessions.
+- Average distance traveled across all sessions.
