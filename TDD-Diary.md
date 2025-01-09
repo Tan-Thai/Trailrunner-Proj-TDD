@@ -86,7 +86,7 @@ the change was made.
 TODO: Set up all calculations needed for a session. 
 Calc consists of:
 - Average speed
-- Kilometres per hour
+- Kilometres per hour/min
 - "FitnessScore" (score based on session) \
   FitnessScore **needs** to show a positive integer and only whole numbers. Score starts at 0 if it's the **first**
   session.
