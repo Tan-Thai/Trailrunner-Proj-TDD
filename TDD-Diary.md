@@ -92,3 +92,13 @@ Calc consists of:
   session.
 - Total distance traveled across all sessions.
 - Average distance traveled across all sessions.
+
+#### Reflections
+Creating tests for these as opposed to coding them up first is way trickier due to the need of "foresight"
+for how the formulas will be used. All without coding it up. I'm fully aware that we only care about the output to assert,
+but I'm the type that wants to understand how the process goes before making a tests. It helps me visualise it better.
+
+The first few tests worked fine but FitnessScore was a bit more troublesome to make up. Both due to it
+having 2 conditions over it being the first ever session or not, and the fact that it needs to make use of
+"days since the previous session" for the formula. This means that you can't just send in a single session but now needs
+either 2 latest sessions to calculate the days between, or send in the whole handler and extract the 2 latest sessions.
