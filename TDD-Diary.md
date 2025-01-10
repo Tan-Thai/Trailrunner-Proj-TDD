@@ -13,6 +13,7 @@ Maven and Jacoco is used within the project as of writing. If VG assignments are
 
 Preface: I did work with **FileStorage** right away and then reformated it to suit my needs. I'll add it again
 if I do work on the VG part of the assignment.
+---
 
 ---
 ## Day 1 - 08/01-25
@@ -63,12 +64,15 @@ had to resort to Stack Overflow. Based on the projects tests now, it seems to be
 I'm still not feeling 100% confident regarding this so it will have to be something I work with more down the line.
 
 ---
+
+---
 ## Day 2 - 09/01-25 to 10/01-25
 
 - [x] Rename **Record** to something more relatable and self-explanatory. (Now **Session**) 
-- [ ] Create a **CalculatorTest** for all formulas and math needed for the project.
-- [ ] Create a **Calculator** to code in said formulas.
+- [x] Create a **CalculatorTest** for all formulas and math needed for the project.
+- [x] Create a **Calculator** to code in said formulas.
 - [ ] Create a **Main** that will allow the user to input and use the program.
+- [ ] Create a **User** that will handle user data.
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments. 
 
@@ -76,7 +80,7 @@ I'm still not feeling 100% confident regarding this so it will have to be someth
 Continue from previous days leftovers and work from there. Goal is to ideally get the G assignments done by end of day.
 If possible also add the advanced features into it before working on VG assignments.
 
-Combined 2 dates into "day 2" because of my narcolepsy stopping me from working on the project for the majority
+Combined 2 dates into "day 2" because of my narcolepsy hindering me from working on the project for the majority
 of 09/01.
 
 ---
@@ -86,7 +90,8 @@ to save. Two potential names were "**Session**" and "**Activity**". Noted within
 the change was made.
 
 ### Calculator
-TODO: Set up all calculations needed for a session. 
+(✅)TODO: Set up all calculations needed for a session.
+
 Calc consists of:
 - Average speed
 - Kilometres per hour/min
@@ -105,3 +110,15 @@ The first few tests worked fine but FitnessScore was a bit more troublesome to m
 having 2 conditions over it being the first ever session or not, and the fact that it needs to make use of
 "days since the previous session" for the formula. This means that you can't just send in a single session but now needs
 either 2 latest sessions to calculate the days between, or send in the whole handler and extract the 2 latest sessions.
+
+*Extended break between previous text and following (about 18h)*
+
+The calculation between the "days since previous session" was the most troublesome to write tests for and code up.
+The rest were on an acceptable level and got sorted quite fast. I do think I need more practice to *not* think about each
+individual code and just work with the logic of input/output. I consider calculator to be complete for now though, there
+are places I can improve or make better. But I would like to get a proper MVP before refactoring something that already 
+works.
+
+### Main
+
+### User

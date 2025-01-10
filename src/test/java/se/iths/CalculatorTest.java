@@ -50,19 +50,38 @@ public class CalculatorTest {
 
     @Test
     void calcFitnessScoreTest(){
-        /* Created 2 separate variables for session for clarity, one for when the user initially starts to make sure CS
-        * is starting at 0 and the calculation is fully correct in this one instance.
-        * Second tests is to see that the calculations for the following sessions work as intended. */
 
-        // Note to self: Need to send in user + hashmap to figure out the closest session date to calc 't' in the formula.
-        Session session = sessionHandler.readRecord("Bloop");
-        double firstSession = calculator.calcFitnessScore(session);
+        // first session tests that the initial session has a CS+T of 0.
+        // second session tests that the 2 scores added together is the same sum as the total fitness score that is stored
+        // in SessionHandler.
+        // Third session adds a new Session and re-tries all previous tests.
 
-        Session sessionDay3 = sessionHandler.readRecord("Day3");
-        double secondSessionDay3 = calculator.calcFitnessScore(sessionDay3);
+        Session firstSession = sessionHandler.readRecord("Bloop");
+        int firstFitnessScore = firstSession.getFitnessScore();
+        assertEquals(13, firstFitnessScore, "Fitness score for the first session is incorrect.");
 
-        //TODO adding asserts after code for average speed and km/h are implemented.
-        assertEquals(12.6, firstSession, 0.1, "Fitness score is incorrect.");
+        Session secondSession = sessionHandler.readRecord("Day3");
+        int secondFitnessScore = secondSession.getFitnessScore();
+        int secondTotalScore = sessionHandler.getTotalFitnessScore();
+        int totalFitnessScore = firstFitnessScore + secondFitnessScore;
+        assertEquals(6, secondFitnessScore, "Fitness score for the second session is incorrect.");
+        assertEquals(19, secondTotalScore, "Total score for the second session is incorrect.");
+        assertEquals(secondTotalScore, totalFitnessScore, "Score sum for second session is incorrect");
+
+        sessionHandler.createRecord(
+                "Day7",
+                8,
+                3410,
+                LocalDate.of(2025, 1, 9));
+
+        Session thirdSession = sessionHandler.readRecord("Day7");
+        int thirdFitnessScore = thirdSession.getFitnessScore();
+        int thirdTotalScore = sessionHandler.getTotalFitnessScore();
+        totalFitnessScore = totalFitnessScore + thirdFitnessScore;
+        assertEquals(6, thirdFitnessScore, "Fitness score for the third session is incorrect.");
+        assertEquals(25, thirdTotalScore, "Total score for the third session is incorrect.");
+        assertEquals(totalFitnessScore, thirdTotalScore, "Score sum for third session is incorrect");
+
     }
 
     @Test
@@ -70,7 +89,6 @@ public class CalculatorTest {
         double totalDistanceTraveled = calculator.calcTotalDistanceTraveled(sessionHandler);
 
         assertEquals(17.2, totalDistanceTraveled, 0.1, "Total distance traveled is incorrect.");
-
     }
 
     @Test
