@@ -1,7 +1,9 @@
-package se.iths;
+package se.iths.utility;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se.iths.Session;
+import se.iths.SessionHandler;
 
 import java.time.LocalDate;
 
@@ -55,6 +57,7 @@ public class CalculatorTest {
         // second session tests that the 2 scores added together is the same sum as the total fitness score that is stored
         // in SessionHandler.
         // Third session adds a new Session and re-tries all previous tests.
+        // TODO check if its smoother to put the total fitness score test as its own thing in SessionHandlerTest
 
         Session firstSession = sessionHandler.readRecord("Bloop");
         int firstFitnessScore = firstSession.getFitnessScore();

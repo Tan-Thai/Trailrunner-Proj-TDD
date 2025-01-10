@@ -89,6 +89,11 @@ As discussed with Max during yesterday's lesson, **Record** was not a fitting na
 to save. Two potential names were "**Session**" and "**Activity**". Noted within agenda to keep track as of why
 the change was made.
 
+Debating if "TotalFitnessScore" should be a value stored with SessionHandler or User. If kept with the handler then it's
+stored with all the sessions it has within the collection, logical. But since it's a fitness app and revolves around
+the user, then storing the score with the user also works. Especially if we want to enable user to "remove" sessions but
+keep their score (or if they re-install the app from a new phone for example).
+
 ### Calculator
 (✅)TODO: Set up all calculations needed for a session.
 
@@ -122,3 +127,6 @@ works.
 ### Main
 
 ### User
+
+User will be kept barebones for now and only contain whatever the assignment asks for + name.
+Test are there to just ensure that setting and getting the names works as intended.
