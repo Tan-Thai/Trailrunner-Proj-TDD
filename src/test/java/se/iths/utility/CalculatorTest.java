@@ -1,7 +1,9 @@
-package se.iths;
+package se.iths.utility;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se.iths.Session;
+import se.iths.SessionHandler;
 
 import java.time.LocalDate;
 

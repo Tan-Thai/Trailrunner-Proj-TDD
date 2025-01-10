@@ -1,7 +1,9 @@
-package se.iths;
+package se.iths.utility;
+
+import se.iths.Session;
+import se.iths.SessionHandler;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 public class Calculator {
 

@@ -11,7 +11,7 @@ public class UserTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("Tan", 177, 56, 29);
+        user = new User("Tan", 29, 177, 56);
     }
 
     @Test
@@ -28,19 +28,6 @@ public class UserTest {
     }
 
     @Test
-    void getHeight() {
-        double userHeight = user.getHeight();
-        assertEquals(177, userHeight, "Height does not match");
-    }
-
-    @Test
-    void setHeight() {
-        user.setHeight(177.8);
-        double userHeight = user.getHeight();
-        assertEquals(177.8, userHeight, "New height does not match");
-    }
-
-    @Test
     void getAge() {
         int userAge = user.getAge();
         assertEquals(29, userAge, "Age does not match");
@@ -51,6 +38,19 @@ public class UserTest {
         user.setAge(28);
         int userAge = user.getAge();
         assertEquals(28, userAge, "New age does not match");
+    }
+
+    @Test
+    void getHeight() {
+        double userHeight = user.getHeight();
+        assertEquals(177, userHeight, "Height does not match");
+    }
+
+    @Test
+    void setHeight() {
+        user.setHeight(177.8);
+        double userHeight = user.getHeight();
+        assertEquals(177.8, userHeight, "New height does not match");
     }
 
     @Test
