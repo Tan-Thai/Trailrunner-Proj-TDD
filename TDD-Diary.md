@@ -72,10 +72,10 @@ I'm still not feeling 100% confident regarding this so it will have to be someth
 - [x] Create a **CalculatorTest** for all formulas and math needed for the project.
 - [x] Create a **Calculator** to code in said formulas.
 - [ ] Create a **Main** that will allow the user to input and use the program.
-- [ ] Create a **User** that will handle user data.
+- [x] Create a **User** that will handle user data.
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
-- [ ] Create tests for a singleton **Scanner**. Accidentally made prior to tests.
+- [x] Create tests for a singleton **Scanner**. Accidentally made prior to tests.
 
 ### Agenda
 Continue from previous days leftovers and work from there. Goal is to ideally get the G assignments done by end of day.
@@ -126,6 +126,14 @@ are places I can improve or make better. But I would like to get a proper MVP be
 works.
 
 ### Main
+
+I've had somewhat of a hard time with creating tests for main. One reason being that I'm not sure if I should create
+a second file called MenuHandler to essentially create/handle all types of menu system that will be needed for the 
+different actions the user shall be able to make. The second reason is that it requires a lot of "human" input through
+scanner. My initial thought would be to use "System.setIn", similar to ScannerSingletonTest, but I've been contemplating
+mockito. The idea is to essentially "mock" the inputs and test from there. If it does turn out working well then I'll 
+most likely proceed to adjust the old tests to fit it. Will probably do a refactoring pass for all code eventually.
+
 
 ### User
 

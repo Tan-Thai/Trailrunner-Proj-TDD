@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public class Calculator {
 
 
+    // These two should technically take the actual values as parameters, but I tried to keep it streamlined.
     public double calcAverageSpeed(Session session) {
         // Formula: Avg speed = distance(km) / (Time(sec) / 3600)
         return session.getDistance() / (session.getTime() / 3600);
