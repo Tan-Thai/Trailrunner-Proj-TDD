@@ -15,7 +15,7 @@ class SessionHandlerTest {
     void setUp() {
         sessionHandler = new SessionHandler();
 
-        sessionHandler.createRecord(
+        sessionHandler.createSession(
                 "Bloop",
                 12.3,
                 30934,
@@ -23,14 +23,14 @@ class SessionHandlerTest {
     }
 
     @Test
-    void createRecordTest() {
+    void createSessionTest() {
         Session pulledTestSession = sessionHandler.readRecord("Bloop");
 
         assertNotNull(pulledTestSession,"The pulled record is null");
         assertEquals("Bloop", pulledTestSession.getId(), "The pulled record id is incorrect");
 
         // I'll be honest and say that this is something new for me so im slapping together things from StackOverflow.
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> sessionHandler.createRecord(
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> sessionHandler.createSession(
                 "Bloop",
                 12.3,
                 30934,
@@ -58,13 +58,13 @@ class SessionHandlerTest {
 
     @Test
     void getRecordIDsTest() {
-        sessionHandler.createRecord(
+        sessionHandler.createSession(
                 "Bloop2",
                 3,
                 2030,
                 LocalDate.of(1990, 1, 4));
 
-        sessionHandler.createRecord(
+        sessionHandler.createSession(
                 "EXTRA",
                 33,
                 5032,

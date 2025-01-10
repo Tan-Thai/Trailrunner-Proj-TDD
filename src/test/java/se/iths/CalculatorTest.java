@@ -17,13 +17,13 @@ public class CalculatorTest {
         calculator = new Calculator();
         sessionHandler = new SessionHandler();
 
-        sessionHandler.createRecord(
+        sessionHandler.createSession(
                 "Bloop",
                 11.2,
                 4300,
                 LocalDate.of(2025, 1, 1));
 
-        sessionHandler.createRecord(
+        sessionHandler.createSession(
                 "Day3",
                 6,
                 2430,
@@ -68,7 +68,7 @@ public class CalculatorTest {
         assertEquals(19, secondTotalScore, "Total score for the second session is incorrect.");
         assertEquals(secondTotalScore, totalFitnessScore, "Score sum for second session is incorrect");
 
-        sessionHandler.createRecord(
+        sessionHandler.createSession(
                 "Day7",
                 8,
                 3410,
