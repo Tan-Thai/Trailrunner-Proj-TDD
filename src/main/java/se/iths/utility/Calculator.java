@@ -1,7 +1,7 @@
 package se.iths.utility;
 
-import se.iths.Session;
-import se.iths.SessionHandler;
+import se.iths.core.Session;
+import se.iths.core.SessionHandler;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package se.iths;
+package se.iths.core;
 
 import se.iths.utility.Calculator;
 

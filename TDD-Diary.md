@@ -74,7 +74,8 @@ I'm still not feeling 100% confident regarding this so it will have to be someth
 - [ ] Create a **Main** that will allow the user to input and use the program.
 - [ ] Create a **User** that will handle user data.
 - [ ] Advanced G assignments. (Kept as a single point for now)
-- [ ] Start on VG assignments. 
+- [ ] Start on VG assignments.
+- [ ] Create tests for a singleton **Scanner**. Accidentally made prior to tests.
 
 ### Agenda
 Continue from previous days leftovers and work from there. Goal is to ideally get the G assignments done by end of day.
