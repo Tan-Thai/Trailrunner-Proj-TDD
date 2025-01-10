@@ -1,5 +1,6 @@
 package se.iths.utility;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -9,6 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScannerSingletonTest {
+
+    // actually getting some use of "after each"! Making sure to close the scanner properly after each test.
+    // not sure if that's the intended way, but it should be the proper way to go about it logically.
+    @AfterEach
+    public void tearDown() {
+        ScannerSingleton.getInstance().closeScanner();
+    }
 
     @Test
     // to ensure that it's actually a functioning singleton.
