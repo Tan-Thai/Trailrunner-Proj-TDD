@@ -8,37 +8,37 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RecordTest {
-    private Record record;
+public class SessionTest {
+    private Session session;
 
     @BeforeEach
     void setUp() {
-        record = new Record("1", 2.3, 1350, LocalDate.of(2025, 1, 2));
+        session = new Session("1", 2.3, 1350, LocalDate.of(2025, 1, 2));
     }
 
     @Test
     void RecordConstructorTest() {
-        assertNotNull(record);
+        assertNotNull(session);
     }
 
     @Test
     void getIDTest() {
-        assertEquals("1", record.getId());
+        assertEquals("1", session.getId());
     }
 
     @Test
     void getDistanceTest() {
-        assertEquals(2.3, record.getDistance());
+        assertEquals(2.3, session.getDistance());
     }
 
     @Test
     void getTimeTest() {
-        assertEquals(1350, record.getTime());
+        assertEquals(1350, session.getTime());
     }
 
     @Test
     void getDateTest() {
-        assertNotNull(record.getDate());
-        assertEquals(LocalDate.of(2025, 1,2), record.getDate());
+        assertNotNull(session.getDate());
+        assertEquals(LocalDate.of(2025, 1,2), session.getDate());
     }
 }
