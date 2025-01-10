@@ -15,4 +15,14 @@ public class Calculator {
     public double calcFitnessScore(Session session) {
         return 0;
     }
+
+    public double calcTotalDistanceTraveled(SessionHandler sessionHandler) {
+
+        return 0;
+    }
+
+    public double calcAverageDistanceTraveled(SessionHandler sessionHandler) {
+
+        return 0;
+    }
 }

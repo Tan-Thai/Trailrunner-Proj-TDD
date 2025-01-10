@@ -63,7 +63,7 @@ had to resort to Stack Overflow. Based on the projects tests now, it seems to be
 I'm still not feeling 100% confident regarding this so it will have to be something I work with more down the line.
 
 ---
-## Day 2 - 09/01-25
+## Day 2 - 09/01-25 to 10/01-25
 
 - [x] Rename **Record** to something more relatable and self-explanatory. (Now **Session**) 
 - [ ] Create a **CalculatorTest** for all formulas and math needed for the project.
@@ -75,6 +75,9 @@ I'm still not feeling 100% confident regarding this so it will have to be someth
 ### Agenda
 Continue from previous days leftovers and work from there. Goal is to ideally get the G assignments done by end of day.
 If possible also add the advanced features into it before working on VG assignments.
+
+Combined 2 dates into "day 2" because of my narcolepsy stopping me from working on the project for the majority
+of 09/01.
 
 ---
 ### Fleeting Notes

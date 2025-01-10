@@ -53,6 +53,8 @@ public class CalculatorTest {
         /* Created 2 separate variables for session for clarity, one for when the user initially starts to make sure CS
         * is starting at 0 and the calculation is fully correct in this one instance.
         * Second tests is to see that the calculations for the following sessions work as intended. */
+
+        // Note to self: Need to send in user + hashmap to figure out the closest session date to calc 't' in the formula.
         Session session = sessionHandler.readRecord("Bloop");
         double firstSession = calculator.calcFitnessScore(session);
 
@@ -60,16 +62,22 @@ public class CalculatorTest {
         double secondSessionDay3 = calculator.calcFitnessScore(sessionDay3);
 
         //TODO adding asserts after code for average speed and km/h are implemented.
+        assertEquals(12.6, firstSession, 0.1, "Fitness score is incorrect.");
     }
 
     @Test
     void calcTotalDistanceTraveledTest(){
+        double totalDistanceTraveled = calculator.calcTotalDistanceTraveled(sessionHandler);
+
+        assertEquals(17.2, totalDistanceTraveled, 0.1, "Total distance traveled is incorrect.");
 
     }
 
     @Test
     void calcAverageDistanceTraveledTest(){
+        double averageDistanceTraveled = calculator.calcAverageDistanceTraveled(sessionHandler);
 
+        assertEquals(8.6, averageDistanceTraveled, 0.1, "Average distance traveled is incorrect.");
     }
 
 }
