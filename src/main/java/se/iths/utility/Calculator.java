@@ -46,8 +46,8 @@ public class Calculator {
             totalDistanceTraveled += calcAverageSpeed(session);
         }*/
 
-        for (String id : sessionHandler.getRecordIDs()) {
-            Session session = sessionHandler.readRecord(id);
+        for (String id : sessionHandler.getSessionIDs()) {
+            Session session = sessionHandler.readSession(id);
             totalDistanceTraveled += session.getDistance();
         }
 
@@ -68,8 +68,8 @@ public class Calculator {
 
         LocalDate sessionDate = session.getDate();
         int minDays = Integer.MAX_VALUE;
-        for (String id : sessionHandler.getRecordIDs()) {
-            Session previousSession = sessionHandler.readRecord(id);
+        for (String id : sessionHandler.getSessionIDs()) {
+            Session previousSession = sessionHandler.readSession(id);
             LocalDate previousDate = previousSession.getDate();
 
             // Goes into if-statement if prev-date is *before* the new session date.
@@ -86,6 +86,6 @@ public class Calculator {
     }
 
     private int getSessionCount(SessionHandler sessionHandler) {
-        return sessionHandler.getRecordIDs().size();
+        return sessionHandler.getSessionIDs().size();
     }
 }

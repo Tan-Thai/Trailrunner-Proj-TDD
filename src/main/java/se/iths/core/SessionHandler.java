@@ -36,7 +36,7 @@ public class SessionHandler {
     }
 
     // I would keep IOException if we worked with a database. But since we don't im converting it to "Illegal-arg"
-    public Session readRecord(String id){
+    public Session readSession(String id){
         Session session = sessionCollection.get(id);
         if (session == null) {
             throw new IllegalArgumentException("No recorded session with this ID exists.");
@@ -45,11 +45,11 @@ public class SessionHandler {
         return session;
     }
 
-    public List<String> getRecordIDs() {
+    public List<String> getSessionIDs() {
         return new ArrayList<>(sessionCollection.keySet());
     }
     
-    public void deleteRecord(String id) {
+    public void deleteSession(String id) {
         if (!sessionCollection.containsKey(id)) {
             throw new IllegalArgumentException("No recorded session with this ID exists.");
         }

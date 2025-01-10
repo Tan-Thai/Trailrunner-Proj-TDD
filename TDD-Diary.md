@@ -131,9 +131,11 @@ I've had somewhat of a hard time with creating tests for main. One reason being 
 a second file called MenuHandler to essentially create/handle all types of menu system that will be needed for the 
 different actions the user shall be able to make. The second reason is that it requires a lot of "human" input through
 scanner. My initial thought would be to use "System.setIn", similar to ScannerSingletonTest, but I've been contemplating
-mockito. The idea is to essentially "mock" the inputs and test from there. If it does turn out working well then I'll 
+**Mockito**. The idea is to essentially "mock" the inputs and test from there. If it does turn out working well then I'll 
 most likely proceed to adjust the old tests to fit it. Will probably do a refactoring pass for all code eventually.
 
+I'm proceeding with creating a MenuHandler file. It feels logical to push menu systems and switch cases to a separate file.
+I'll also try to add **Mockito**
 
 ### User
 
