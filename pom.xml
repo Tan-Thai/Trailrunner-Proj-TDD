@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>se.iths</groupId>
-    <artifactId>tdd-projekt</artifactId>
+    <artifactId>tdd-project-TrailRunner</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -28,11 +28,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.14.2</version>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.15.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -70,14 +70,14 @@
                 </executions>
             </plugin>
 
-            <plugin>
+            <!--<plugin> tried to make singleton and scanner work with this.
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M8</version>
                 <configuration>
                     <argLine>-Djdk.attach.allowAttachSelf=true -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

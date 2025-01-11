@@ -36,6 +36,7 @@ public class ScannerWrapperTest {
     public void tearDown() {
         System.setOut(originalPrintStream);
         System.setErr(originalErrStream);
+        scannerWrapper.closeScanner();
     }
 
     @Test
@@ -50,7 +51,7 @@ public class ScannerWrapperTest {
 
     @Test
     public void textInputText_InvalidInput() {
-        String input = "This is a test for invalid inputs. For example, writing this in a name field.\nTan\n";
+        String input = "This is a test for invalid inputs. For example, writing this in a name field.\n\nTan\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         scannerWrapper = new ScannerWrapper();
 
@@ -61,6 +62,9 @@ public class ScannerWrapperTest {
         String pulledOutput = outputStream.toString().replace("\r\n", "\n"); // Normalize newlines
         assertTrue(pulledOutput.contains(
                 "The name you entered is too long. Please enter a name with a maximum of 15 characters\n"),
+                "Error message does not print.");
+
+        assertTrue(pulledOutput.contains("Please enter a name: "),
                 "Error message does not print.");
 
         assertTrue(pulledOutput.contains("Please enter a name:"),
@@ -81,12 +85,14 @@ public class ScannerWrapperTest {
 
     @Test
     public void numberInputTest_InvalidInput() {
-        String input = "Random text whoop \n007\n";
+        String input = "Random text whoop \n\n-2\n007\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         scannerWrapper = new ScannerWrapper();
 
         int result = scannerWrapper.numberInput();
         assertTrue(outputStream.toString().contains("Invalid input, please enter a number: "), "Error message does not print.");
+        assertTrue(outputStream.toString().contains("Invalid input, please enter a number: "), "Error message does not print.");
+        assertTrue(outputStream.toString().contains("Please enter a positive number: "),"Error message does not print.");
         assertEquals(7, result, "Correct input after failed attempt does not match expected output.");
 
     }
@@ -121,8 +127,4 @@ public class ScannerWrapperTest {
     }
 
     // TODO Write tests for the leftover methods. Closing scanner, PromptEnterKey.
-    @Test
-    void closingScannerTest() {
-
-    }
 }

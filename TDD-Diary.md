@@ -50,11 +50,11 @@ Example of issues were:
 - Somehow forgetting the () when calling to methods. (I'm honestly baffled that it just slipped my mind)
 - I missed that id was a string initially. (I blame it on new year)
 
+<img style="float: right; margin: 5px;" src="https://media1.tenor.com/m/oWSUU3x-wL0AAAAd/cat-cat-meme.gif" width=180></img>
 ### FileStorage
 Will rename this file to **RecordHandler** to simplify the naming-scheme. Also, easier to identify what it's connected to
 in my opinion.
 
-<img style="float: right; margin: 5px; position: relative; top: 30px" src="https://media1.tenor.com/m/oWSUU3x-wL0AAAAd/cat-cat-meme.gif" width=180></img>
 ### RecordHandler
 
 Might be overdoing it with throws and checks during the test, but I'm giving it a go to do a thorough test-setup
@@ -144,9 +144,9 @@ I'm proceeding with creating a **MenuHandler** file. It feels logical to push me
 I'll also try to add **Mockito**. Mockup of Mockito tests are done, I'm afraid to say that I think a Singleton has come
 to bite my ass once again. I need to figure out how to replace the singleton with my mock without causing issues.
 I'll most likely find some solutions from StackOverflow and patchwork it somehow.
+<img style="float: right; margin: 5px; " src="https://media1.tenor.com/m/X9pghVUlMvEAAAAd/sad-cat.gif" width="190" alt="A very sad and depressed cat."></img>
 
 _rant_: I **hate** singletons, christ. ok I'm taking a break from the entire project due to frustrations.
-<img style="float: right; margin: 5px; margin-bottom:" src="https://media1.tenor.com/m/X9pghVUlMvEAAAAd/sad-cat.gif" width="190" alt="A very sad and depressed cat."></img>
 
 #### Reflection
 
@@ -164,7 +164,7 @@ This and all leftover code/plans will be pushed to day 3.
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
 - [ ] Create a **Main** that will allow the user to input and use the program.
-- [ ] Reformat/Re-do **Scanner** in its entirety. (Removing Singleton)
+- [x] Reformat/Re-do **Scanner** in its entirety. (Removing Singleton)
 - [ ] Complete the writing of tests for **MenuHandler**.
 - [ ] Develop **MenuHandler** based on tests.
 
@@ -208,19 +208,23 @@ to find the issue for so long and the issue was that ".contains" method couldn't
 The entire process was quite a trial and error on top of searching for answers.
 
 I did forget to commit between creating code and writing tests. It is mostly due to me jumping back and forth developing
+<img style="float: right; margin: 5px" src="https://media1.tenor.com/m/rNCdBEqBKjoAAAAd/sad-cat.gif" width="200px"></img>
 1 singular method after each test. Especially due to how finicky scanners are.
 
 I did solve the issue with the assertTrue to a printing of an error message not passing. It had to do with me not creating
 a stream for **err** prints specifically. Which I did not expect to be 2 whole separate channels/streams. It has now 
 been fixed by also generating a stream for it specifically. I have an ish understanding but not 100%. Will have to play
 around with this further to grasp it completely.
-<img style="float: right; margin: 5px" src="https://media1.tenor.com/m/rNCdBEqBKjoAAAAd/sad-cat.gif" width="200px"></img>
 
 Tried being somewhat smart with being DRY, only to have that backfire. Had to add `scannerWrapper = new ScannerWrapper();`
 in each method instead of once in `@BeforeEach`. Not totally sure why that is but will experiment with it.
 
 Adding messages after each test, or at least trying to since it helps to see where the tests fail and the cause.
 
+It also just hit me that I totally forgot the reason why I even wanted to do Mocks out of these.
+This might be the 1 bad reason to goblin code at night. I also noticed that Jacoco is not picking up my tests done
+for `ScannerWrapper`
+
 Final words regarding scanner; it's not fully covered yet but the important tools for inputs are sorted. I once again
-want to say that I **do not** like scanner now after this roller-coaster.
+want to say that I **do not** like scanner now after this roller-coaster. 
 
