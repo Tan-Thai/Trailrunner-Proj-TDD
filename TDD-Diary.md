@@ -54,6 +54,7 @@ Example of issues were:
 Will rename this file to **RecordHandler** to simplify the naming-scheme. Also, easier to identify what it's connected to
 in my opinion.
 
+<img style="float: right; margin: 5px; position: relative; top: 30px" src="https://media1.tenor.com/m/oWSUU3x-wL0AAAAd/cat-cat-meme.gif" width=180></img>
 ### RecordHandler
 
 Might be overdoing it with throws and checks during the test, but I'm giving it a go to do a thorough test-setup
@@ -63,7 +64,6 @@ Lots of new things came up such as writing tests for exception-handling and thro
 had to resort to Stack Overflow. Based on the projects tests now, it seems to be fully functional and work as intended.
 I'm still not feeling 100% confident regarding this so it will have to be something I work with more down the line.
 
-<img src="https://media1.tenor.com/m/oWSUU3x-wL0AAAAd/cat-cat-meme.gif" width=200>
 ---
 
 ---
@@ -146,6 +146,7 @@ to bite my ass once again. I need to figure out how to replace the singleton wit
 I'll most likely find some solutions from StackOverflow and patchwork it somehow.
 
 _rant_: I **hate** singletons, christ. ok I'm taking a break from the entire project due to frustrations.
+<img style="float: right; margin: 5px; margin-bottom:" src="https://media1.tenor.com/m/X9pghVUlMvEAAAAd/sad-cat.gif" width="190" alt="A very sad and depressed cat."></img>
 
 #### Reflection
 
@@ -153,8 +154,6 @@ After a longer than expected nap, I've decided to redo the entire scanner and al
 commits as possibles to show the changes, but I'm fully expecting myself to just forget to do it in the midsts of refactoring.
 
 This and all leftover code/plans will be pushed to day 3.
-
-<img src="https://media1.tenor.com/m/X9pghVUlMvEAAAAd/sad-cat.gif" width="200" alt="A very sad and depressed cat.">
 
 ---
 
@@ -200,6 +199,8 @@ of "bias" as they normally would.
 
 I'll be splitting tests into invalid/valid or yes/no to create a more clear labeling of what it tests.
 
+Methods will be similar to my previous projects, setup with validations and forced loops to ensure correct returns.
+
 #### Reflections
 
 the fact that I had to capture a whole string and convert it because it contained a single "\n" is crazy. I sat and tried
@@ -213,3 +214,13 @@ I did solve the issue with the assertTrue to a printing of an error message not 
 a stream for **err** prints specifically. Which I did not expect to be 2 whole separate channels/streams. It has now 
 been fixed by also generating a stream for it specifically. I have an ish understanding but not 100%. Will have to play
 around with this further to grasp it completely.
+<img style="float: right; margin: 5px" src="https://media1.tenor.com/m/rNCdBEqBKjoAAAAd/sad-cat.gif" width="200px"></img>
+
+Tried being somewhat smart with being DRY, only to have that backfire. Had to add `scannerWrapper = new ScannerWrapper();`
+in each method instead of once in `@BeforeEach`. Not totally sure why that is but will experiment with it.
+
+Adding messages after each test, or at least trying to since it helps to see where the tests fail and the cause.
+
+Final words regarding scanner; it's not fully covered yet but the important tools for inputs are sorted. I once again
+want to say that I **do not** like scanner now after this roller-coaster.
+

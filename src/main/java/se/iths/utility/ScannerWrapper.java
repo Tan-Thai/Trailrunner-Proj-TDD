@@ -38,7 +38,6 @@ public class ScannerWrapper {
     // region Private Methods
     private String checkIfValidString(int maxLength) {
         String userInput;
-
         do {
             userInput = scanner.nextLine();
 
@@ -60,5 +59,52 @@ public class ScannerWrapper {
         } while (true);
     }
 
+    private int checkIfNumber() {
+        int userInput;
+        while (true) {
+            String input = scanner.nextLine();
+
+            if (input.isEmpty()) {
+                System.err.print("Invalid input, please enter a number: ");
+                continue;
+            }
+
+            try {
+                userInput = Integer.parseInt(input);
+                if (userInput >= 0) {
+                    return userInput;
+                } else {
+                    System.err.print("Please enter a positive number: ");
+                }
+            } catch (NumberFormatException e) {
+                System.err.print("Invalid input, please enter a number: ");
+            }
+        }
+    }
+
+    private boolean checkYesOrNo() {
+
+        do {
+            String inputString = scanner.nextLine().trim();
+            if (inputString.length() == 1) {
+                char choice = inputString.charAt(0);
+                choice = Character.toUpperCase(choice);
+
+                switch (choice) {
+                    case 'Y':
+                        return true;
+                    case 'N':
+                        return false;
+                }
+            }
+            System.err.print("Invalid input, please enter either Y or N: ");
+        } while (true);
+    }
+
+    private void clearScanner(Scanner sc) {
+        if (sc != null && sc.hasNextLine()) {
+            sc.nextLine();
+        }
+    }
     // endregion
 }
