@@ -63,6 +63,7 @@ Lots of new things came up such as writing tests for exception-handling and thro
 had to resort to Stack Overflow. Based on the projects tests now, it seems to be fully functional and work as intended.
 I'm still not feeling 100% confident regarding this so it will have to be something I work with more down the line.
 
+<img src="https://media1.tenor.com/m/oWSUU3x-wL0AAAAd/cat-cat-meme.gif" width=200>
 ---
 
 ---
@@ -151,7 +152,9 @@ _rant_: I **hate** singletons, christ. ok I'm taking a break from the entire pro
 After a longer than expected nap, I've decided to redo the entire scanner and all it's tests. I'll try to make as many
 commits as possibles to show the changes, but I'm fully expecting myself to just forget to do it in the midsts of refactoring.
 
-This and all leftover code will be pushed to day 3.
+This and all leftover code/plans will be pushed to day 3.
+
+<img src="https://media1.tenor.com/m/X9pghVUlMvEAAAAd/sad-cat.gif" width="200" alt="A very sad and depressed cat.">
 
 ---
 
@@ -185,7 +188,28 @@ to the singleton issue down the line. Whichever comes first to be honest. (I'm q
 ---
 ###  Fleeting Notes
 
+The amount of extra research and frustration I get with scanner is baffling. I get why it is the way it is but my god
+does it feel _extra_ to handle. Both in how sensitive it is and how different the tests are made for it.
+
 ### ScannerWrapper
 
 I'll be renaming **ScannerSingleton** to **ScannerWrapper** due to the removal of singleton, but also clarity. Since 
-this class will encompass all the scanner related functions.
+this class will encompass all the scanner related functions. This is a bit of an odd situation since I do work with
+the mental image of how I've created the previous Scanner files in past projects. So the test might now be totally free
+of "bias" as they normally would. 
+
+I'll be splitting tests into invalid/valid or yes/no to create a more clear labeling of what it tests.
+
+#### Reflections
+
+the fact that I had to capture a whole string and convert it because it contained a single "\n" is crazy. I sat and tried
+to find the issue for so long and the issue was that ".contains" method couldn't differentiate and read a \n the same way.
+The entire process was quite a trial and error on top of searching for answers.
+
+I did forget to commit between creating code and writing tests. It is mostly due to me jumping back and forth developing
+1 singular method after each test. Especially due to how finicky scanners are.
+
+I did solve the issue with the assertTrue to a printing of an error message not passing. It had to do with me not creating
+a stream for **err** prints specifically. Which I did not expect to be 2 whole separate channels/streams. It has now 
+been fixed by also generating a stream for it specifically. I have an ish understanding but not 100%. Will have to play
+around with this further to grasp it completely.
