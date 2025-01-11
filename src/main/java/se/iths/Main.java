@@ -1,7 +1,12 @@
 package se.iths;
 
-public class Main {
-    public static void main(String[] args) {
+import java.util.Scanner;
+import se.iths.utility.ScannerWrapper;
 
+public class Main {
+    public static Scanner scanner;
+
+    public static void main(String[] args) {
     }
+
 }

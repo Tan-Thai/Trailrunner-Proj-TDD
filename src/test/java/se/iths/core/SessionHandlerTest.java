@@ -1,4 +1,4 @@
-package se.iths;
+package se.iths.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class SessionHandlerTest {
 
     @Test
     void createSessionTest() {
-        Session pulledTestSession = sessionHandler.readRecord("Bloop");
+        Session pulledTestSession = sessionHandler.readSession("Bloop");
 
         assertNotNull(pulledTestSession,"The pulled record is null");
         assertEquals("Bloop", pulledTestSession.getId(), "The pulled record id is incorrect");
@@ -40,8 +40,8 @@ class SessionHandlerTest {
     }
 
     @Test
-    void readRecordTest() {
-        Session pulledTestSession = sessionHandler.readRecord("Bloop");
+    void readSessionTest() {
+        Session pulledTestSession = sessionHandler.readSession("Bloop");
 
         assertNotNull(pulledTestSession, "The pulled record is null");
         assertEquals("Bloop", pulledTestSession.getId(), "The pulled record id is incorrect");
@@ -51,13 +51,13 @@ class SessionHandlerTest {
 
         //TODO Case-sensitivity is a thing, fix so it matches despite capital/small letters.
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            sessionHandler.readRecord("blop");
+            sessionHandler.readSession("blop");
         });
         assertEquals("No recorded session with this ID exists.", exception.getMessage());
     }
 
     @Test
-    void getRecordIDsTest() {
+    void getSessionIDsTest() {
         sessionHandler.createSession(
                 "Bloop2",
                 3,
@@ -70,7 +70,7 @@ class SessionHandlerTest {
                 5032,
                 LocalDate.of(1990, 1, 4));
 
-        List<String> recordIDs = sessionHandler.getRecordIDs();
+        List<String> recordIDs = sessionHandler.getSessionIDs();
         // "EXTRA" was spicy and took the 1 spot.
         assertNotNull(recordIDs, "The recordIDs is null");
         assertEquals(3, recordIDs.size(), "The recordIDs size is incorrect");
@@ -81,20 +81,20 @@ class SessionHandlerTest {
     }
 
     @Test
-    void deleteRecordTest() {
+    void deleteSessionTest() {
         // once again lots of StackOverflow shenanigans
         // This confirms that we don't hit an Exception and pass through properly.
-        assertDoesNotThrow(()-> sessionHandler.deleteRecord("Bloop"));
+        assertDoesNotThrow(()-> sessionHandler.deleteSession("Bloop"));
 
         // Attempting to read the "removed" record.
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            sessionHandler.readRecord("Bloop");
+            sessionHandler.readSession("Bloop");
         });
         assertEquals("No recorded session with this ID exists.", exception.getMessage());
 
         // Trying to delete something that does not exist
         Exception deleteException = assertThrows(IllegalArgumentException.class, () -> {
-            sessionHandler.deleteRecord("ThisIdDoesNotExist");
+            sessionHandler.deleteSession("ThisIdDoesNotExist");
         });
         assertEquals("No recorded session with this ID exists.", deleteException.getMessage());
 

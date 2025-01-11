@@ -1,13 +1,14 @@
 package se.iths.utility;
 
-import se.iths.Session;
-import se.iths.SessionHandler;
+import se.iths.core.Session;
+import se.iths.core.SessionHandler;
 
 import java.time.LocalDate;
 
 public class Calculator {
 
 
+    // These two should technically take the actual values as parameters, but I tried to keep it streamlined.
     public double calcAverageSpeed(Session session) {
         // Formula: Avg speed = distance(km) / (Time(sec) / 3600)
         return session.getDistance() / (session.getTime() / 3600);
@@ -45,8 +46,8 @@ public class Calculator {
             totalDistanceTraveled += calcAverageSpeed(session);
         }*/
 
-        for (String id : sessionHandler.getRecordIDs()) {
-            Session session = sessionHandler.readRecord(id);
+        for (String id : sessionHandler.getSessionIDs()) {
+            Session session = sessionHandler.readSession(id);
             totalDistanceTraveled += session.getDistance();
         }
 
@@ -67,8 +68,8 @@ public class Calculator {
 
         LocalDate sessionDate = session.getDate();
         int minDays = Integer.MAX_VALUE;
-        for (String id : sessionHandler.getRecordIDs()) {
-            Session previousSession = sessionHandler.readRecord(id);
+        for (String id : sessionHandler.getSessionIDs()) {
+            Session previousSession = sessionHandler.readSession(id);
             LocalDate previousDate = previousSession.getDate();
 
             // Goes into if-statement if prev-date is *before* the new session date.
@@ -85,6 +86,6 @@ public class Calculator {
     }
 
     private int getSessionCount(SessionHandler sessionHandler) {
-        return sessionHandler.getRecordIDs().size();
+        return sessionHandler.getSessionIDs().size();
     }
 }

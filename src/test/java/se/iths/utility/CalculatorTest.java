@@ -2,8 +2,8 @@ package se.iths.utility;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se.iths.Session;
-import se.iths.SessionHandler;
+import se.iths.core.Session;
+import se.iths.core.SessionHandler;
 
 import java.time.LocalDate;
 
@@ -35,7 +35,7 @@ public class CalculatorTest {
 
     @Test
     void calcAverageSpeedTest(){
-        Session session = sessionHandler.readRecord("Bloop");
+        Session session = sessionHandler.readSession("Bloop");
         double averageSpeed = calculator.calcAverageSpeed(session);
 
         //assertNotNull(averageSpeed); removed for now due to usage of Double
@@ -44,7 +44,7 @@ public class CalculatorTest {
 
     @Test
     void calcKilometersPerMinuteTest(){
-        Session session = sessionHandler.readRecord("Bloop");
+        Session session = sessionHandler.readSession("Bloop");
         double kmPerMin = calculator.calcKilometresPerMinute(session);
 
         assertEquals(6.4, kmPerMin, 0.1, "KM per minute is incorrect.");
@@ -59,11 +59,11 @@ public class CalculatorTest {
         // Third session adds a new Session and re-tries all previous tests.
         // TODO check if its smoother to put the total fitness score test as its own thing in SessionHandlerTest
 
-        Session firstSession = sessionHandler.readRecord("Bloop");
+        Session firstSession = sessionHandler.readSession("Bloop");
         int firstFitnessScore = firstSession.getFitnessScore();
         assertEquals(13, firstFitnessScore, "Fitness score for the first session is incorrect.");
 
-        Session secondSession = sessionHandler.readRecord("Day3");
+        Session secondSession = sessionHandler.readSession("Day3");
         int secondFitnessScore = secondSession.getFitnessScore();
         int secondTotalScore = sessionHandler.getTotalFitnessScore();
         int totalFitnessScore = firstFitnessScore + secondFitnessScore;
@@ -77,7 +77,7 @@ public class CalculatorTest {
                 3410,
                 LocalDate.of(2025, 1, 9));
 
-        Session thirdSession = sessionHandler.readRecord("Day7");
+        Session thirdSession = sessionHandler.readSession("Day7");
         int thirdFitnessScore = thirdSession.getFitnessScore();
         int thirdTotalScore = sessionHandler.getTotalFitnessScore();
         totalFitnessScore = totalFitnessScore + thirdFitnessScore;

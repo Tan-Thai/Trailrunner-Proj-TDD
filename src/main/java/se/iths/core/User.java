@@ -1,4 +1,4 @@
-package se.iths;
+package se.iths.core;
 
 public class User {
     private String name;

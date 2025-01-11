@@ -50,6 +50,7 @@ Example of issues were:
 - Somehow forgetting the () when calling to methods. (I'm honestly baffled that it just slipped my mind)
 - I missed that id was a string initially. (I blame it on new year)
 
+<img style="float: right; margin: 5px;" src="https://media1.tenor.com/m/oWSUU3x-wL0AAAAd/cat-cat-meme.gif" width=180></img>
 ### FileStorage
 Will rename this file to **RecordHandler** to simplify the naming-scheme. Also, easier to identify what it's connected to
 in my opinion.
@@ -72,9 +73,10 @@ I'm still not feeling 100% confident regarding this so it will have to be someth
 - [x] Create a **CalculatorTest** for all formulas and math needed for the project.
 - [x] Create a **Calculator** to code in said formulas.
 - [ ] Create a **Main** that will allow the user to input and use the program.
-- [ ] Create a **User** that will handle user data.
+- [x] Create a **User** that will handle user data.
 - [ ] Advanced G assignments. (Kept as a single point for now)
-- [ ] Start on VG assignments. 
+- [ ] Start on VG assignments.
+- [x] Create tests for a singleton **Scanner**. Accidentally made prior to tests.
 
 ### Agenda
 Continue from previous days leftovers and work from there. Goal is to ideally get the G assignments done by end of day.
@@ -124,9 +126,105 @@ individual code and just work with the logic of input/output. I consider calcula
 are places I can improve or make better. But I would like to get a proper MVP before refactoring something that already 
 works.
 
-### Main
-
 ### User
 
 User will be kept barebones for now and only contain whatever the assignment asks for + name.
 Test are there to just ensure that setting and getting the names works as intended.
+
+### Main
+
+I've had somewhat of a hard time with creating tests for main. One reason being that I'm not sure if I should create
+a second file called **MenuHandler** to essentially create/handle all types of menu system that will be needed for the 
+different actions the user shall be able to make. The second reason is that it requires a lot of "human" input through
+scanner. My initial thought would be to use "System.setIn", similar to ScannerSingletonTest, but I've been contemplating
+**Mockito**. The idea is to essentially "mock" the inputs and test from there. If it does turn out working well then I'll 
+most likely proceed to adjust the old tests to fit it. Will probably do a refactoring pass for all code eventually.
+
+I'm proceeding with creating a **MenuHandler** file. It feels logical to push menu systems and switch cases to a separate file.
+I'll also try to add **Mockito**. Mockup of Mockito tests are done, I'm afraid to say that I think a Singleton has come
+to bite my ass once again. I need to figure out how to replace the singleton with my mock without causing issues.
+I'll most likely find some solutions from StackOverflow and patchwork it somehow.
+<img style="float: right; margin: 5px; " src="https://media1.tenor.com/m/X9pghVUlMvEAAAAd/sad-cat.gif" width="190" alt="A very sad and depressed cat."></img>
+
+_rant_: I **hate** singletons, christ. ok I'm taking a break from the entire project due to frustrations.
+
+#### Reflection
+
+After a longer than expected nap, I've decided to redo the entire scanner and all it's tests. I'll try to make as many
+commits as possibles to show the changes, but I'm fully expecting myself to just forget to do it in the midsts of refactoring.
+
+This and all leftover code/plans will be pushed to day 3.
+
+---
+
+---
+
+## Day 3 - 11/01-25
+
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [ ] Create a **Main** that will allow the user to input and use the program.
+- [x] Reformat/Re-do **Scanner** in its entirety. (Removing Singleton)
+- [ ] Complete the writing of tests for **MenuHandler**.
+- [ ] Develop **MenuHandler** based on tests.
+
+### Agenda
+
+Today's biggest goal is to get **MenuHandlerTest** fully functional with tests based on **Mockito**. To do that
+I need to refactor **ScannerSingleton** and its tests since I believe that it's the biggest cause based on the error
+messages. 
+
+Snippet: "Mockito is currently self-attaching to enable the inline-mock-maker.
+This will no longer work in future releases of the JDK..."
+
+I've tried to solve it, but it turned out to be quite convoluted and required a JVM argument and IDE specific settings.
+For me that's a no-go because of the sole principle that it would require setup from new users/workstations. My ideal
+solution is that it should be self-sufficient and portable, able to be tested right away on download from GitHub.
+
+A commit will be made before the large scale changes to create a backup in case I totally break it, or I find a solution
+to the singleton issue down the line. Whichever comes first to be honest. (I'm quite frustrated with this to be honest)
+
+---
+###  Fleeting Notes
+
+The amount of extra research and frustration I get with scanner is baffling. I get why it is the way it is but my god
+does it feel _extra_ to handle. Both in how sensitive it is and how different the tests are made for it.
+
+### ScannerWrapper
+
+I'll be renaming **ScannerSingleton** to **ScannerWrapper** due to the removal of singleton, but also clarity. Since 
+this class will encompass all the scanner related functions. This is a bit of an odd situation since I do work with
+the mental image of how I've created the previous Scanner files in past projects. So the test might now be totally free
+of "bias" as they normally would. 
+
+I'll be splitting tests into invalid/valid or yes/no to create a more clear labeling of what it tests.
+
+Methods will be similar to my previous projects, setup with validations and forced loops to ensure correct returns.
+
+#### Reflections
+
+the fact that I had to capture a whole string and convert it because it contained a single "\n" is crazy. I sat and tried
+to find the issue for so long and the issue was that ".contains" method couldn't differentiate and read a \n the same way.
+The entire process was quite a trial and error on top of searching for answers.
+
+I did forget to commit between creating code and writing tests. It is mostly due to me jumping back and forth developing
+<img style="float: right; margin: 5px" src="https://media1.tenor.com/m/rNCdBEqBKjoAAAAd/sad-cat.gif" width="200px"></img>
+1 singular method after each test. Especially due to how finicky scanners are.
+
+I did solve the issue with the assertTrue to a printing of an error message not passing. It had to do with me not creating
+a stream for **err** prints specifically. Which I did not expect to be 2 whole separate channels/streams. It has now 
+been fixed by also generating a stream for it specifically. I have an ish understanding but not 100%. Will have to play
+around with this further to grasp it completely.
+
+Tried being somewhat smart with being DRY, only to have that backfire. Had to add `scannerWrapper = new ScannerWrapper();`
+in each method instead of once in `@BeforeEach`. Not totally sure why that is but will experiment with it.
+
+Adding messages after each test, or at least trying to since it helps to see where the tests fail and the cause.
+
+It also just hit me that I totally forgot the reason why I even wanted to do Mocks out of these.
+This might be the 1 bad reason to goblin code at night. I also noticed that Jacoco is not picking up my tests done
+for `ScannerWrapper`
+
+Final words regarding scanner; it's not fully covered yet but the important tools for inputs are sorted. I once again
+want to say that I **do not** like scanner now after this roller-coaster. 
+
