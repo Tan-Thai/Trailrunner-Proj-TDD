@@ -125,19 +125,67 @@ individual code and just work with the logic of input/output. I consider calcula
 are places I can improve or make better. But I would like to get a proper MVP before refactoring something that already 
 works.
 
+### User
+
+User will be kept barebones for now and only contain whatever the assignment asks for + name.
+Test are there to just ensure that setting and getting the names works as intended.
+
 ### Main
 
 I've had somewhat of a hard time with creating tests for main. One reason being that I'm not sure if I should create
-a second file called MenuHandler to essentially create/handle all types of menu system that will be needed for the 
+a second file called **MenuHandler** to essentially create/handle all types of menu system that will be needed for the 
 different actions the user shall be able to make. The second reason is that it requires a lot of "human" input through
 scanner. My initial thought would be to use "System.setIn", similar to ScannerSingletonTest, but I've been contemplating
 **Mockito**. The idea is to essentially "mock" the inputs and test from there. If it does turn out working well then I'll 
 most likely proceed to adjust the old tests to fit it. Will probably do a refactoring pass for all code eventually.
 
-I'm proceeding with creating a MenuHandler file. It feels logical to push menu systems and switch cases to a separate file.
-I'll also try to add **Mockito**
+I'm proceeding with creating a **MenuHandler** file. It feels logical to push menu systems and switch cases to a separate file.
+I'll also try to add **Mockito**. Mockup of Mockito tests are done, I'm afraid to say that I think a Singleton has come
+to bite my ass once again. I need to figure out how to replace the singleton with my mock without causing issues.
+I'll most likely find some solutions from StackOverflow and patchwork it somehow.
 
-### User
+_rant_: I **hate** singletons, christ. ok I'm taking a break from the entire project due to frustrations.
 
-User will be kept barebones for now and only contain whatever the assignment asks for + name.
-Test are there to just ensure that setting and getting the names works as intended.
+#### Reflection
+
+After a longer than expected nap, I've decided to redo the entire scanner and all it's tests. I'll try to make as many
+commits as possibles to show the changes, but I'm fully expecting myself to just forget to do it in the midsts of refactoring.
+
+This and all leftover code will be pushed to day 3.
+
+---
+
+---
+
+## Day 3 - 11/01-25
+
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [ ] Create a **Main** that will allow the user to input and use the program.
+- [ ] Reformat/Re-do **Scanner** in its entirety. (Removing Singleton)
+- [ ] Complete the writing of tests for **MenuHandler**.
+- [ ] Develop **MenuHandler** based on tests.
+
+### Agenda
+
+Today's biggest goal is to get **MenuHandlerTest** fully functional with tests based on **Mockito**. To do that
+I need to refactor **ScannerSingleton** and its tests since I believe that it's the biggest cause based on the error
+messages. 
+
+Snippet: "Mockito is currently self-attaching to enable the inline-mock-maker.
+This will no longer work in future releases of the JDK..."
+
+I've tried to solve it, but it turned out to be quite convoluted and required a JVM argument and IDE specific settings.
+For me that's a no-go because of the sole principle that it would require setup from new users/workstations. My ideal
+solution is that it should be self-sufficient and portable, able to be tested right away on download from GitHub.
+
+A commit will be made before the large scale changes to create a backup in case I totally break it, or I find a solution
+to the singleton issue down the line. Whichever comes first to be honest. (I'm quite frustrated with this to be honest)
+
+---
+###  Fleeting Notes
+
+### ScannerWrapper
+
+I'll be renaming **ScannerSingleton** to **ScannerWrapper** due to the removal of singleton, but also clarity. Since 
+this class will encompass all the scanner related functions.

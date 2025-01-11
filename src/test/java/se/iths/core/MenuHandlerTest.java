@@ -2,25 +2,37 @@ package se.iths.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import se.iths.utility.ScannerSingleton;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 import static org.mockito.Mockito.*;
 
 public class MenuHandlerTest {
     private SessionHandler sessionHandlerMock;
     private MenuHandler menuHandler;
-    private ScannerSingleton scannerMock;
+    private ScannerSingleton scannerSingletonMock;
+    private Scanner scannerMock;
 
     @BeforeEach
     public void setUp() {
         // Mock ups
         sessionHandlerMock = mock(SessionHandler.class);
-        scannerMock = mock(ScannerSingleton.class);
+        scannerSingletonMock = mock(ScannerSingleton.class);
+        scannerMock = mock(Scanner.class);
 
         // Have to replace my singleton scanner with the mock whenever called somehow
         // TODO figure out if singleton will disturb the mocking.
+        // from my understanding, we are creating a MockedStatic of ScannerSingleton. When the getInstance is called
+        // we instead return the mocked instance?
+        ScannerSingleton instance = ScannerSingleton.getInstance();
+        Mockito.mockStatic(ScannerSingleton.class)
+                .when(ScannerSingleton::getInstance)
+                .thenReturn(scannerSingletonMock);
+
+        when(scannerSingletonMock.getScanner()).thenReturn(scannerMock);
 
         menuHandler = new MenuHandler(sessionHandlerMock);
     }
@@ -28,7 +40,7 @@ public class MenuHandlerTest {
     @Test
     void addSession() {
         // mocking inputs for a session.
-        when(scannerMock.getScanner().nextLine())
+        when(scannerSingletonMock.getScanner().nextLine())
                 .thenReturn("TestID")
                 .thenReturn("12.3")
                 .thenReturn("4530")
@@ -46,7 +58,7 @@ public class MenuHandlerTest {
     @Test
     void deleteSession() {
         // same principle as above method. "mocks" input from user wanting to delete "TestID"
-        when(scannerMock.getScanner().nextLine())
+        when(scannerSingletonMock.getScanner().nextLine())
                 .thenReturn("TestID");
 
         menuHandler.deleteSession();
@@ -57,7 +69,7 @@ public class MenuHandlerTest {
     @Test
     void searchSession() {
         // once gain the same but the difference
-        when(scannerMock.getScanner().nextLine())
+        when(scannerSingletonMock.getScanner().nextLine())
                 .thenReturn("TestID");
 
         when(sessionHandlerMock.readSession("TestID"))
@@ -74,7 +86,7 @@ public class MenuHandlerTest {
 
     @Test
     void exitProgramTest() {
-        when(scannerMock.getScanner().nextLine())
+        when(scannerSingletonMock.getScanner().nextLine())
                 .thenReturn("0");
 
         menuHandler.displayMenu();
