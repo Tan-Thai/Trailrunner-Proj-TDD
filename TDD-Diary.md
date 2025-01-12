@@ -244,3 +244,13 @@ regarding it.
 I ended up essentially making identical tests and methods as `sessionHandler`. Creating a new commit to start from a clean
 slate with empty tests.
 
+Trying to break down the tests into smaller bits, in this case _only_ checking for whatever prints are happening.
+Reasoning behind that is due to us already having tests for the manipulation of sessions within `SessionHandlerTest`.
+I'll add more tests/code to `SessionHandlerTest` now when I have more functions I want to implement.
+
+Sorting sessions method done, `getSortedSessions`. I stumbled upon a few good explanations across google and will do a 
+quick deep dive to *attempt* at making this sorting flexible based on what the user picked. Not going to implement it
+fully to the actual project, but I want to see if it's possible with `.sorted()` call. Initial idea is to make an
+Enum class that contains all types of comparators like comparing `(s1, s2) -> Double.compare(s1.getDistance(), s2.getDistance());`
+for example. The general structure is the same, but you are just comparing different values!
+

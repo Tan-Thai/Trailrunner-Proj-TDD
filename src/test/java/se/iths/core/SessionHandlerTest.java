@@ -110,6 +110,21 @@ class SessionHandlerTest {
 
     }
 
+    // keeping it as a single one for now. But if we want to implement by date, alphabetical, ascending, descending etc.
+    // Then this test will have to be refactored to take a parameter to tell it which way to sort.
+    @Test
+    void getSortedSessionsTest() {
+        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("Most Recent", 33, 5032, LocalDate.of(2025, 1, 5));
+
+        List<String> sortedList = sessionHandler.getSortedSessions();
+
+        assertTrue(sortedList.get(0).equals("Most Recent"), "Expected the most recent session to be first.");
+        assertTrue(sortedList.get(1).equals("Bloop2"), "Expected the second most recent session.");
+        assertTrue(sortedList.get(2).equals("Bloop"), "Expected the oldest session.");
+
+    }
+
     @Test
     void deleteSessionTest() {
         // once again lots of StackOverflow shenanigans

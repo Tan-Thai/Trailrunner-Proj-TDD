@@ -63,4 +63,16 @@ public class SessionHandler {
         // ??? intellisense might be good for something.
         return sessionCollection.keySet().stream().filter(id -> id.toString().contains(query)).collect(Collectors.toList());
     }
+
+    public List<String> getSortedSessions() {
+
+        List<String> sortedList = sessionCollection
+                .values()
+                .stream()
+                .sorted((s1, s2) -> s2.getDate().compareTo(s1.getDate()))
+                .map(Session::getId)
+                .collect(Collectors.toList());
+
+        return sortedList;
+    }
 }
