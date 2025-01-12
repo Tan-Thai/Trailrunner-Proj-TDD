@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -58,7 +60,7 @@ public class MenuHandlerTest {
 
     @Test
     void printUserMenuTest() {
-        menuHandler.printMainSettingsMenu();
+        menuHandler.printUserSettingsMenu();
 
         String actual = outputStream.toString().replace("\r\n", "\n");
         String expected = "1. Change Name\n" +
@@ -71,7 +73,48 @@ public class MenuHandlerTest {
     }
 
     @Test
-    void printQueryResultTest() {}
+    void printQueryResultTest() {
+        // creating a session handler with 3 sessions
+        SessionHandler sessionHandler = new SessionHandler();
+        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(1990, 1, 1));
 
+        List<String> queryResult = sessionHandler.searchSessionByID("Bloop");
 
+        menuHandler.printQueryResult(queryResult);
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        String expected = "1. Bloop\n" +
+                          "2. Bloop2\n";
+
+        assertEquals(expected, actual, "Expected print does not match the actual output.");
+    }
+
+    @Test
+    void printAllSessionsTest() {
+        SessionHandler sessionHandler = new SessionHandler();
+        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(1990, 1, 1));
+
+        List<String> fullSessionList = sessionHandler.getSessionIDs();
+
+        menuHandler.printAllSessions(fullSessionList);
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        String expected = "1. Bloop\n" +
+                          "2. Bloop2\n" +
+                          "3. EXTRA\n";
+
+        assertEquals(expected, actual, "Expected print does not match the actual output.");
+    }
+
+    @Test
+    void printUserPromptTest() {
+        menuHandler.printUserChoicePrompt();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        String expected = "\nPlease enter your choice: ";
+
+        assertEquals(expected, actual, "Expected print does not match the actual output.");
+    }
 }
