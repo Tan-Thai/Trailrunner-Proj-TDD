@@ -90,6 +90,7 @@ public class MenuHandlerTest {
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
 
+    // The print from all sessions will be unordered.
     @Test
     void printAllSessionsTest() {
         SessionHandler sessionHandler = new SessionHandler();
@@ -102,8 +103,8 @@ public class MenuHandlerTest {
         menuHandler.printAllSessions(fullSessionList);
         String actual = outputStream.toString().replace("\r\n", "\n");
         String expected = "1. Bloop\n" +
-                          "2. Bloop2\n" +
-                          "3. EXTRA\n";
+                          "2. EXTRA\n" +
+                          "3. Bloop2\n";
 
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
@@ -117,4 +118,5 @@ public class MenuHandlerTest {
 
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
+
 }

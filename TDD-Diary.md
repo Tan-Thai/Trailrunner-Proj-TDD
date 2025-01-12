@@ -260,3 +260,5 @@ I was not too sure if it would work, but it seems to work suuuper smoothly. This
 user choose a sorting method with a switch-case and then pass it on to `getSortedSessions`. I won't focus on it now
 though due to it not being relevant to the project. Tests to assure it works are there as well just as a FYI.
 
+I'm diving back into singletons, I can't believe that I'm doing that... 
+

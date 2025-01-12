@@ -1,12 +1,17 @@
 package se.iths;
 
-import java.util.Scanner;
+import se.iths.core.MenuHandler;
 import se.iths.utility.ScannerWrapper;
 
 public class Main {
-    public static Scanner scanner;
 
     public static void main(String[] args) {
+        MenuHandler menuHandler = new MenuHandler();
+        ScannerWrapper scanner = new ScannerWrapper();
+
+        menuHandler.printMainMenu();
+
+        scanner.closeScanner();
     }
 
 }
