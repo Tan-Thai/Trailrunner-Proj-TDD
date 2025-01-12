@@ -79,8 +79,8 @@ public class ScannerWrapperTest {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         scannerWrapper = new ScannerWrapper();
 
-        int result = scannerWrapper.numberInput();
-        assertEquals(7, result, "Correct input does not match expected int.");
+        double result = scannerWrapper.numberInput();
+        assertEquals(7, result,0.1, "Correct input does not match expected int.");
     }
 
     @Test
@@ -89,11 +89,11 @@ public class ScannerWrapperTest {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         scannerWrapper = new ScannerWrapper();
 
-        int result = scannerWrapper.numberInput();
+        double result = scannerWrapper.numberInput();
         assertTrue(outputStream.toString().contains("Invalid input, please enter a number: "), "Error message does not print.");
         assertTrue(outputStream.toString().contains("Invalid input, please enter a number: "), "Error message does not print.");
         assertTrue(outputStream.toString().contains("Please enter a positive number: "),"Error message does not print.");
-        assertEquals(7, result, "Correct input after failed attempt does not match expected output.");
+        assertEquals(7, result, 0.1, "Correct input after failed attempt does not match expected output.");
 
     }
 

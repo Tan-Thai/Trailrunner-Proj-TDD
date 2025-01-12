@@ -228,3 +228,19 @@ for `ScannerWrapper`
 Final words regarding scanner; it's not fully covered yet but the important tools for inputs are sorted. I once again
 want to say that I **do not** like scanner now after this roller-coaster. 
 
+## MenuHandler
+
+I'll be looking into mocking up the other classes to make the tests independent from `Session` and `SessionHandler`.
+Though I will _start_ with writing test in a way I know works to get the project to move forward.
+
+The idea is that the menu handler will be printing instructions and menus, and ask for the input.
+One example being `searchSessionById`, this method should be called when the user selects "search for session" within
+a menu and then be prompted to input text to search for. From here it will branch into 2 cases. Either a list of matching
+sessions are printed and the user can then proceed to pick one to show details of, or no matches are found, and you will be notified
+regarding it.
+
+### Reflection
+
+I ended up essentially making identical tests and methods as `sessionHandler`. Creating a new commit to start from a clean
+slate with empty tests.
+

@@ -81,6 +81,36 @@ class SessionHandlerTest {
     }
 
     @Test
+    void searchSessionByIdTest() {
+
+        sessionHandler.createSession(
+                "Bloop2",
+                3,
+                2030,
+                LocalDate.of(1990, 1, 4));
+
+        sessionHandler.createSession(
+                "EXTRA",
+                33,
+                5032,
+                LocalDate.of(1990, 1, 4));
+
+        List<String> foundSessions = sessionHandler.searchSessionByID("Bloop");
+
+        assertFalse(foundSessions.isEmpty(), "Expected to find at least one session.");
+        assertEquals(foundSessions.size(), 2, "Expected two sessions.");
+
+        // Emptying sessions-handler to test 0 results
+        sessionHandler.deleteSession("Bloop");
+        sessionHandler.deleteSession("Bloop2");
+        sessionHandler.deleteSession("EXTRA");
+        foundSessions = sessionHandler.getSessionIDs();
+
+        assertTrue(foundSessions.isEmpty(), "Expected to not find any session.");
+
+    }
+
+    @Test
     void deleteSessionTest() {
         // once again lots of StackOverflow shenanigans
         // This confirms that we don't hit an Exception and pass through properly.

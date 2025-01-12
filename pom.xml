@@ -70,14 +70,15 @@
                 </executions>
             </plugin>
 
-            <!--<plugin> tried to make singleton and scanner work with this.
+            <!-- Maven Surefire Plugin -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M8</version>
+                <version>3.0.0</version>
                 <configuration>
                     <argLine>-Djdk.attach.allowAttachSelf=true -XX:+EnableDynamicAgentLoading</argLine>
                 </configuration>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 

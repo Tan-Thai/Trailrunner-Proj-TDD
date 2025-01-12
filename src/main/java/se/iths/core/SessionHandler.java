@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SessionHandler {
     private Calculator calculator = new Calculator();
@@ -55,5 +56,11 @@ public class SessionHandler {
         }
 
         sessionCollection.remove(id);
+    }
+
+    public List<String> searchSessionByID(String query) {
+
+        // ??? intellisense might be good for something.
+        return sessionCollection.keySet().stream().filter(id -> id.toString().contains(query)).collect(Collectors.toList());
     }
 }
