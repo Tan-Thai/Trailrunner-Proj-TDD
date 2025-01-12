@@ -62,13 +62,13 @@ public class ScannerWrapperTest {
         String pulledOutput = outputStream.toString().replace("\r\n", "\n"); // Normalize newlines
         assertTrue(pulledOutput.contains(
                 "The name you entered is too long. Please enter a name with a maximum of 15 characters\n"),
-                "Error message does not print.");
+                "Expected error due to word limit.");
 
         assertTrue(pulledOutput.contains("Please enter a name: "),
-                "Error message does not print.");
+                "Expected prompt after word limit error.");
 
         assertTrue(pulledOutput.contains("Please enter a name:"),
-                "Error message does not print.");
+                "Expected re-prompt after empty string.");
 
         assertEquals("Tan", result, "Correct input after failed attempt does not match expected string");
     }
