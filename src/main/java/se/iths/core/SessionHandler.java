@@ -64,12 +64,12 @@ public class SessionHandler {
         return sessionCollection.keySet().stream().filter(id -> id.toString().contains(query)).collect(Collectors.toList());
     }
 
-    public List<String> getSortedSessions() {
+    public List<String> getSortedSessions(SortType sortType) {
 
         List<String> sortedList = sessionCollection
                 .values()
                 .stream()
-                .sorted((s1, s2) -> s2.getDate().compareTo(s1.getDate()))
+                .sorted(sortType.getComparator())
                 .map(Session::getId)
                 .collect(Collectors.toList());
 
