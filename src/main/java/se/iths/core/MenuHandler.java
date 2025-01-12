@@ -1,11 +1,23 @@
 package se.iths.core;
 
+import se.iths.utility.ScannerWrapper;
+
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.List;
 
 public class MenuHandler {
+    private ScannerWrapper scannerWrapper;
+    private User user;
 
-    public MenuHandler() {
+
+    public MenuHandler(ScannerWrapper scannerWrapper,User user) {
+        this.scannerWrapper = scannerWrapper;
+        this.user = user;
+    }
+
+    public void runMenu() {
+
     }
 
     public void printMainMenu() {

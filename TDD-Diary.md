@@ -159,14 +159,14 @@ This and all leftover code/plans will be pushed to day 3.
 
 ---
 
-## Day 3 - 11/01-25
+## Day 3 - 11/01-25 - 11/01-25
 
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
 - [ ] Create a **Main** that will allow the user to input and use the program.
 - [x] Reformat/Re-do **Scanner** in its entirety. (Removing Singleton)
-- [ ] Complete the writing of tests for **MenuHandler**.
-- [ ] Develop **MenuHandler** based on tests.
+- [x] Complete the writing of tests for **MenuHandler**.
+- [x] Develop **MenuHandler** based on tests.
 
 ### Agenda
 
@@ -261,4 +261,19 @@ user choose a sorting method with a switch-case and then pass it on to `getSorte
 though due to it not being relevant to the project. Tests to assure it works are there as well just as a FYI.
 
 I'm diving back into singletons, I can't believe that I'm doing that... 
+Update: jokes on me, it's still horrid.🙃 I'll temporarily pass the scanner for now, refactoring it later should not
+be too difficult this time around due to the smaller project scale.
+
+## Integration of classes
+
+Whilst testing for singletons and scanner shenanigans I also started refactoring `User`. The user now includes a collection
+of sessions (`SessionHandler`). This is both because of simplicity of parameters, and it being quite logical to have
+the collection tied to a user. I've now started working on `MenuHandler` again for the 10000th time. I'll be honest and say
+that I'm somewhat lost over how to write the tests. 
+
+### Reflection
+I do think my excessive googling has backfired due to the sheer amount
+of different opinions, styles, versions both testing and mockito have. I went through so many versions of mockito to try
+figure out the issue to no avail. I'm not getting any compilation errors anymore which I'm glad for, but at the cost of
+a super messy project. This can be seen by my mixture of variable naming, code structure. 
 

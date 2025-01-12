@@ -3,26 +3,40 @@ package se.iths.core;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import se.iths.utility.ScannerWrapper;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class MenuHandlerTest {
     private MenuHandler menuHandler;
     private PrintStream originalPrintStream;
     private PrintStream originalErrStream;
     private ByteArrayOutputStream outputStream;
+    private User user;
 
     @BeforeEach
     public void setUp() {
         originalPrintStream = System.out;
         originalErrStream = System.err;
         outputStream = new ByteArrayOutputStream();
-        menuHandler = new MenuHandler();
+        user = new User(
+                    "Tan",
+                    29,
+                    177,
+                    50,
+                    new SessionHandler());
+
+        /* mocking a scanner worked here but the error of inline is still present.
+        "Mockito is currently self-attaching to enable the inline-mock-maker.
+        This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+        Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for bootloader classes because bootstrap classpath has been appended"
+        */
+        menuHandler = new MenuHandler(mock(ScannerWrapper.class), user);
 
         System.setOut(new PrintStream(outputStream));
         System.setErr(new PrintStream(outputStream));
@@ -75,7 +89,9 @@ public class MenuHandlerTest {
     @Test
     void printQueryResultTest() {
         // creating a session handler with 3 sessions
-        SessionHandler sessionHandler = new SessionHandler();
+
+        SessionHandler sessionHandler = user.getSessionCollection();
+
         sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
         sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
         sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(1990, 1, 1));
