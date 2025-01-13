@@ -117,9 +117,10 @@ public class MenuHandlerTest {
 
     @Test
     void printSessionMenuTest() {
-        String expected = "1. View all sessions\n" +
-                          "2. Search by name\n" +
-                          "0. Exit\n";
+        String expected = ("1. Add session\n" +
+                           "2. Search by name\n" +
+                           "3. View all sessions\n" +
+                           "0. Exit\n");
 
         menuHandler.printSessionMenu();
 
@@ -146,34 +147,26 @@ public class MenuHandlerTest {
         // Adding 3 sessions to the user's collection
         SessionHandler sessionHandler = user.getSessionCollection();
         sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
-        sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
-        sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(1990, 1, 1));
-
         List<String> queryResult = sessionHandler.searchSessionByID("Bloop");
+
+        menuHandler.printQueryResult(queryResult);
 
         String expected = "1. Bloop\n" +
                           "2. Bloop2\n";
-        menuHandler.printQueryResult(queryResult);
-
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
 
     @Test
     void printAllSessionsTest() {
-
         SessionHandler sessionHandler = user.getSessionCollection();
-        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
-        sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
-        sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(1990, 1, 1));
-
         List<String> fullSessionList = sessionHandler.getSessionIDs();
-        String expected = "1. Bloop\n" +
-                          "2. EXTRA\n" +
-                          "3. Bloop2\n";
 
         menuHandler.printAllSessions(fullSessionList);
 
+        String expected = "1. Bloop\n" +
+                          "2. New years run!\n" +
+                          "3. Morning walk\n";
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
