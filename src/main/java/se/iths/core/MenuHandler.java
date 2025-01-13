@@ -76,7 +76,8 @@ public class MenuHandler {
 
     }
 
-    private void resolveUserConfig(UserConfig choice) {
+    // private tehcnically
+    public void resolveUserConfig(UserConfig choice) {
         CmdUtility.clearConsole();
         System.out.println("Are you sure you want to change your " + choice.name().toLowerCase() + "?");
         printInputPrompt();
@@ -116,7 +117,7 @@ public class MenuHandler {
         System.out.println("1. Change Name\n" +
                            "2. Change Age\n" +
                            "3. Change Weight\n" +
-                           "4. Change Height" +
+                           "4. Change Height\n" +
                            "0. Exit");
 
     }

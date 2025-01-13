@@ -301,3 +301,7 @@ I feel like I've worked somewhat backwards with this, or at least I should've lo
 I had some gigantic troubles with **Scanner** and mocking. Which caused me to go down a rabbit hole of cursed stuff.
 The idea of mocking for `menuHandlerTest` is to avoid essentially testing whatever scanner already have. We should not
 care about the logic and if the return is correct, but rather the outcome of the entire method.
+
+---
+## MenuHandler (again)
+
