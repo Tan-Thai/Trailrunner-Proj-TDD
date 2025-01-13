@@ -10,8 +10,10 @@
 
     <properties>
         <!-- Had 1.8 for some reason -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
@@ -36,14 +38,6 @@
             <version>5.15.2</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-inline
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-            <version>5.2.0</version>
-            <scope>test</scope>
-        </dependency>-->
     </dependencies>
 
     <build>
@@ -76,16 +70,19 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <argLine>-Djdk.attach.allowAttachSelf=true -XX:+EnableDynamicAgentLoading</argLine>
+                   <!-- This arg line removes warnings regarding dynamic loading.
+                   But if its kept then it hinders jacoco from generating an exec.
+                   <argLine>-Djdk.attach.allowAttachSelf=true -XX:+EnableDynamicAgentLoading</argLine>
+                   -->
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.13.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>22</source>
+                    <target>22</target>
                 </configuration>
             </plugin>
         </plugins>
