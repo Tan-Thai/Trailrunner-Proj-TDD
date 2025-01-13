@@ -339,3 +339,11 @@ Baseline developed code are functioning, ironing out kinks I found and in the pr
 such as `printAllSessions` and `printQueryResults`. Both essentially do the same thing, and I can refactor 
 `resolveSessionView` to take in an argument of `List<String>` so it would work with both the search logic and standard
 view.
+
+### Reflection
+**MEGA PRODUCTIVE DAY** I might've still hated on scanner *but*, it turned out to work quite smoothly when you don't
+try to solve both `byteArrayInput` and `Mockito` whilst trying to further progress your tests/code. Especially if
+2 of the issues turned out to be standard warnings that are quuuuite *recent*...
+
+I might work more today, but odds are not. Got an early hospital visit the next day (01/14), so I'll not push myself to
+work anymore unless a 💡 hits.

@@ -21,6 +21,7 @@ public class MenuHandler {
     public void runMenu() {
 
         while (true) {
+            CmdUtility.clearConsole();
             printMainMenu();
             printInputPrompt();
             double userInput = scannerWrapper.numberInput();
@@ -37,7 +38,6 @@ public class MenuHandler {
                 default:
                     System.out.println("Invalid choice, please try again");
                     scannerWrapper.promptEnterKey();
-                    CmdUtility.clearConsole();
                     break;
             }
         }
