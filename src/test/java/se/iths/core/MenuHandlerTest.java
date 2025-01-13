@@ -94,12 +94,55 @@ public class MenuHandlerTest {
 
     @Test
     void resolveSessionSearch() {
+        user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
+        user.getSessionCollection().createSession("Bloop3", 8,3600, LocalDate.of(2024, 12, 30));
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0)
+                .thenReturn(2.0)
+                .thenReturn(0.0);
+
+        when(scannerMock.textInput(15)).thenReturn("Bloop");
+
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        String relevantOutput = actual.substring(actual.indexOf("1. Bloop"));
+        String expected = "1. Bloop\n" +
+                          "2. Bloop2\n" +
+                          "3. Bloop3\n";
+
+        assertEquals(expected, relevantOutput, "Session search result does not match.");
 
     }
 
     @Test
     void resolveSessionCreation() {
 
+        when(scannerMock.numberInput())
+                .thenReturn(2.0)
+                .thenReturn(1.0)
+                .thenReturn(0.0);
+
+        when(scannerMock.textInput(15)).thenReturn("One cold run");
+        when(scannerMock.numberInput())
+                .thenReturn(5.1) // distance in km
+                .thenReturn(30.2); // duration in min (convert behind the scenes)
+        when(scannerMock.textInput(15)).thenReturn("2025-01-13");
+
+        menuHandler.runMenu();
+
+        List<String> sessions = user.getSessionCollection().getSessionIDs();
+        assertTrue(sessions.contains("One cold run"), "Created session was not found.");
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        String relevantOutput = actual.substring(actual.indexOf("Please enter the corresponding info for this session:"));
+        String expected = "Please enter the corresponding info for this session:\n" +
+                          "Name of session: \n" +
+                          "Duration in minutes: \n" +
+                          "Date (YYYY-MM-DD): \n)";
+        assertEquals(expected, relevantOutput, "Print for session creation does not match.");
     }
 
     @Test

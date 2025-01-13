@@ -323,3 +323,7 @@ passing me through to the right methods. If I went the other way around, then so
 Test created and fully functional. Started with working on the method itself as a public call. Then worked my way
 outwards towards runMainMenu(). That way the preceding menus will be created and tested along the path but not fully
 developed due to missing method calls within the other cases.
+
+With the deletion sorted, I'm now more confident in writing tests for this type of code. Going over to creation and 
+searching for sessions tests. Ideally I would like to assert that the `sessionHandler` properly executed the task
+and assert that the output was correct.

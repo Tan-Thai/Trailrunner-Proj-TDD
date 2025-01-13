@@ -48,8 +48,10 @@ public class MenuHandler {
         double userInput = scannerWrapper.numberInput();
         switch ((int) userInput){
             case 1:
+                resolveSessionCreation();
                 break;
             case 2:
+                resolveSessionSearch();
                 break;
             case 3:
                 resolveSessionView();
@@ -59,6 +61,10 @@ public class MenuHandler {
             default:
                 break;
         }
+    }
+
+    private void resolveSessionSearch() {
+        System.out.println("Searching for session");
     }
 
     private void runUserMenu() {
@@ -209,5 +215,10 @@ public class MenuHandler {
             scannerWrapper.promptEnterKey();
         }
 
+    }
+
+    public void resolveSessionCreation() {
+        CmdUtility.clearConsole();
+        System.out.println("creating session");
     }
 }
