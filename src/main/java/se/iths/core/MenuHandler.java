@@ -2,8 +2,7 @@ package se.iths.core;
 
 import se.iths.utility.ScannerWrapper;
 
-import java.io.PrintStream;
-import java.time.LocalDate;
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class MenuHandler {
@@ -18,6 +17,93 @@ public class MenuHandler {
 
     public void runMenu() {
 
+        while (true) {
+            printMainMenu();
+            printInputPrompt();
+            double userInput = scannerWrapper.numberInput();
+
+            switch ((int) userInput){
+                case 1:
+                    runUserMenu();
+                    break;
+                case 2:
+                    runSessionMenu();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Invalid choice, please try again");
+                    scannerWrapper.promptEnterKey();
+                    CmdUtility.clearConsole();
+                    break;
+            }
+        }
+    }
+
+    private void runSessionMenu() {
+        CmdUtility.clearConsole();
+        printSessionMenu();
+        printInputPrompt();
+
+    }
+
+    private void runUserMenu() {
+        CmdUtility.clearConsole();
+        printUserSettingsMenu();
+        printInputPrompt();
+
+        double userInput = scannerWrapper.numberInput();
+        switch ((int) userInput){
+            case 1:
+                resolveUserConfig(UserConfig.NAME);
+                break;
+            case 2:
+                resolveUserConfig(UserConfig.AGE);
+                break;
+            case 3:
+                resolveUserConfig(UserConfig.WEIGHT);
+                break;
+            case 4:
+                resolveUserConfig(UserConfig.HEIGHT);
+                break;
+            case 0:
+                return;
+            default:
+                System.out.println("Invalid choice, please try again");
+                scannerWrapper.promptEnterKey();
+                break;
+        }
+
+    }
+
+    private void resolveUserConfig(UserConfig choice) {
+        CmdUtility.clearConsole();
+        System.out.println("Are you sure you want to change your " + choice.name().toLowerCase() + "?");
+        printInputPrompt();
+
+        if (scannerWrapper.yesOrNoInput()) {
+            CmdUtility.clearConsole();
+            System.out.print("Please enter your new " + choice.name().toLowerCase() + ": ");
+
+            switch (choice) {
+                case NAME:
+                    user.setName(scannerWrapper.textInput(15));
+                    break;
+                case AGE:
+                    user.setAge((int) scannerWrapper.numberInput());
+                    break;
+                case WEIGHT:
+                    user.setWeight(scannerWrapper.numberInput());
+                    break;
+                case HEIGHT:
+                    user.setHeight(scannerWrapper.numberInput());
+                    break;
+                default:
+                    System.out.println("Invalid choice, please try again");
+                    scannerWrapper.promptEnterKey();
+                    break;
+            }
+        }
     }
 
     public void printMainMenu() {
@@ -41,7 +127,7 @@ public class MenuHandler {
                            "0. Exit");
     }
 
-    public void printUserChoicePrompt() {
+    public void printInputPrompt() {
         System.out.print("\nPlease enter your choice: ");
     }
 

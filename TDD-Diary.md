@@ -159,13 +159,13 @@ This and all leftover code/plans will be pushed to day 3.
 
 ---
 
-## Day 3 - 11/01-25 - 11/01-25
+## Day 3 - 11/01-25 - 12/01-25
 
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
-- [ ] Create a **Main** that will allow the user to input and use the program.
+- [x] Create a **Main** that will allow the user to input and use the program.
 - [x] Reformat/Re-do **Scanner** in its entirety. (Removing Singleton)
-- [x] Complete the writing of tests for **MenuHandler**.
+- [ ] Complete the writing of tests for **MenuHandler**.
 - [x] Develop **MenuHandler** based on tests.
 
 ### Agenda
@@ -277,3 +277,27 @@ of different opinions, styles, versions both testing and mockito have. I went th
 figure out the issue to no avail. I'm not getting any compilation errors anymore which I'm glad for, but at the cost of
 a super messy project. This can be seen by my mixture of variable naming, code structure. 
 
+---
+
+---
+## Day "4" - 13/01-25 (Will most likely just put the dates as titles due to days not fitting) 
+
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [ ] Refactor `MenuHandlerTest`, and add more tests
+- [ ] Complete `MenuHandler`'s functions
+- [x] Hate on Scanner a bit more
+- [ ] Look into mocking further and refactor accordingly.
+
+### Agenda 
+
+Goal for this part would be to finish up the `menuHanlder` so that the project will be an actually functional program.
+The methods in question will be mostly menu systems to redirect to appropriate method calling, such as add session, that
+will have its own followup of prompted inputs to fill in the details of a session.
+
+## Fleeting-Notes
+
+I feel like I've worked somewhat backwards with this, or at least I should've looked more into mockito properly since 
+I had some gigantic troubles with **Scanner** and mocking. Which caused me to go down a rabbit hole of cursed stuff.
+The idea of mocking for `menuHandlerTest` is to avoid essentially testing whatever scanner already have. We should not
+care about the logic and if the return is correct, but rather the outcome of the entire method.

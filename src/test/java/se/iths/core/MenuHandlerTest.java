@@ -127,7 +127,7 @@ public class MenuHandlerTest {
 
     @Test
     void printUserPromptTest() {
-        menuHandler.printUserChoicePrompt();
+        menuHandler.printInputPrompt();
 
         String actual = outputStream.toString().replace("\r\n", "\n");
         String expected = "\nPlease enter your choice: ";

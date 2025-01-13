@@ -15,9 +15,8 @@ public class Main {
         addSessionCollection(user);
 
         MenuHandler menuHandler = new MenuHandler(scanner, user);
-
-        menuHandler.printMainMenu();
-
+        menuHandler.runMenu();
+        scanner.closeScanner();
     }
 
     private static User createMockUser() {

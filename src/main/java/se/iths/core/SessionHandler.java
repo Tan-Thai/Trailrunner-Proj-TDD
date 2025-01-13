@@ -59,9 +59,12 @@ public class SessionHandler {
     }
 
     public List<String> searchSessionByID(String query) {
-
-        // ??? intellisense might be good for something.
-        return sessionCollection.keySet().stream().filter(id -> id.toString().contains(query)).collect(Collectors.toList());
+        if (query == null || query.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return sessionCollection.keySet().stream()
+                .filter(id -> id.toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     public List<String> getSortedSessions(SortType sortType) {
