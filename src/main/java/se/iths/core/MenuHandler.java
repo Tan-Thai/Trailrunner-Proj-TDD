@@ -3,7 +3,10 @@ package se.iths.core;
 import se.iths.utility.CmdUtility;
 import se.iths.utility.ScannerWrapper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Scanner;
 
 public class MenuHandler {
     private ScannerWrapper scannerWrapper;
@@ -64,7 +67,14 @@ public class MenuHandler {
     }
 
     private void resolveSessionSearch() {
-        System.out.println("Searching for session");
+        CmdUtility.clearConsole();
+        System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
+
+        String searchQuery = scannerWrapper.textInput(15);
+        List<String> foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
+
+        printQueryResult(foundSessions);
+        printInputPrompt();
     }
 
     private void runUserMenu() {
@@ -219,6 +229,28 @@ public class MenuHandler {
 
     public void resolveSessionCreation() {
         CmdUtility.clearConsole();
-        System.out.println("creating session");
+        System.out.println("Please enter the corresponding info for this session:");
+        System.out.print("Name of the session: \n");
+        String sessionName = scannerWrapper.textInput(15);
+
+        System.out.print("Distance in km: \n");
+        Double sessionDistance = scannerWrapper.numberInput();
+
+        System.out.print("Duration in minutes: \n");
+        int sessionDuration = (int) scannerWrapper.numberInput();
+
+        // This entire part below can become its own method within scanner.
+        System.out.print("Date (YYYY-MM-DD): \n");
+        String sessionDate = scannerWrapper.textInput(15);
+
+        try {
+            LocalDate date = LocalDate.parse(sessionDate);
+            user.getSessionCollection().createSession(sessionName, sessionDistance ,sessionDuration, date);
+            System.out.println("Session created successfully!");
+            scannerWrapper.promptEnterKey();
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+            scannerWrapper.promptEnterKey();
+        }
     }
 }

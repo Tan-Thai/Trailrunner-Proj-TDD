@@ -108,12 +108,15 @@ public class MenuHandlerTest {
         menuHandler.runMenu();
 
         String actual = outputStream.toString().replace("\r\n", "\n");
-        String relevantOutput = actual.substring(actual.indexOf("1. Bloop"));
-        String expected = "1. Bloop\n" +
-                          "2. Bloop2\n" +
-                          "3. Bloop3\n";
+        int startIndex = actual.indexOf("1. Bloop");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
 
-        assertEquals(expected, relevantOutput, "Session search result does not match.");
+        String expected = "1. Bloop\n" +
+                          "2. Bloop3\n" +
+                          "3. Bloop2";
+
+        assertEquals(expected, actual, "Session search result does not match.");
 
     }
 
@@ -123,26 +126,32 @@ public class MenuHandlerTest {
         when(scannerMock.numberInput())
                 .thenReturn(2.0)
                 .thenReturn(1.0)
+                .thenReturn(5.1) // distance in km
+                .thenReturn(30.2) // duration in min (convert behind the scenes)
                 .thenReturn(0.0);
 
-        when(scannerMock.textInput(15)).thenReturn("One cold run");
-        when(scannerMock.numberInput())
-                .thenReturn(5.1) // distance in km
-                .thenReturn(30.2); // duration in min (convert behind the scenes)
-        when(scannerMock.textInput(15)).thenReturn("2025-01-13");
+        when(scannerMock.textInput(15))
+                .thenReturn("One cold run")
+                .thenReturn("2025-01-13");
 
         menuHandler.runMenu();
 
+        // finds the start point of our check, since stream keeps *all* text printed.
+        // Finds the end string-line starting the search from the start index pos.
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("Please enter the corresponding info for this session:");
+        int endIndex = actual.indexOf("Session created successfully!", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "Please enter the corresponding info for this session:\n" +
+                          "Name of the session: \n" +
+                          "Distance in km: \n" +
+                          "Duration in minutes: \n" +
+                          "Date (YYYY-MM-DD):";
+        assertEquals(expected, actual, "Print for session creation does not match.");
+
         List<String> sessions = user.getSessionCollection().getSessionIDs();
         assertTrue(sessions.contains("One cold run"), "Created session was not found.");
-
-        String actual = outputStream.toString().replace("\r\n", "\n");
-        String relevantOutput = actual.substring(actual.indexOf("Please enter the corresponding info for this session:"));
-        String expected = "Please enter the corresponding info for this session:\n" +
-                          "Name of session: \n" +
-                          "Duration in minutes: \n" +
-                          "Date (YYYY-MM-DD): \n)";
-        assertEquals(expected, relevantOutput, "Print for session creation does not match.");
     }
 
     @Test

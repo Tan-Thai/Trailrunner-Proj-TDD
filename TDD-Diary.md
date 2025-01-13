@@ -327,3 +327,8 @@ developed due to missing method calls within the other cases.
 With the deletion sorted, I'm now more confident in writing tests for this type of code. Going over to creation and 
 searching for sessions tests. Ideally I would like to assert that the `sessionHandler` properly executed the task
 and assert that the output was correct.
+
+Currently hitting a bit of a snag, I want to create more `scannerWrapper` methods to fulfill unique needs
+such as `dateInput()` or `minutesInput()` that would parse input and return proper data to create
+a session. Will try to make a functioning base for now and then write tests for these methods and then develop them
+<br/>✨(ITS SOON REFACTORING TIME)✨
