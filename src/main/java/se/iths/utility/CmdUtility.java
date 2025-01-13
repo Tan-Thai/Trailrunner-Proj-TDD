@@ -1,6 +1,4 @@
-package se.iths.core;
-
-import java.util.Scanner;
+package se.iths.utility;
 
 public class CmdUtility {
 

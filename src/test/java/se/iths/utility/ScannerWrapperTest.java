@@ -59,7 +59,8 @@ public class ScannerWrapperTest {
 
         // Had to both StacksOverflow this and Chatgpt to figure out what my issue was. The forsaken issue stemmed from
         // a singular fricking "\n". The other issue was me not creating a stream for "err" prints...
-        String pulledOutput = outputStream.toString().replace("\r\n", "\n"); // Normalize newlines
+        // Normalize newlines
+        String pulledOutput = outputStream.toString().replace("\r\n", "\n");
         assertTrue(pulledOutput.contains(
                 "The name you entered is too long. Please enter a name with a maximum of 15 characters\n"),
                 "Expected error due to word limit.");

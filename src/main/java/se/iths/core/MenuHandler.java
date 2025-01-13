@@ -1,8 +1,8 @@
 package se.iths.core;
 
+import se.iths.utility.CmdUtility;
 import se.iths.utility.ScannerWrapper;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class MenuHandler {
@@ -76,8 +76,7 @@ public class MenuHandler {
 
     }
 
-    // private tehcnically
-    public void resolveUserConfig(UserConfig choice) {
+    private void resolveUserConfig(UserConfig choice) {
         CmdUtility.clearConsole();
         System.out.println("Are you sure you want to change your " + choice.name().toLowerCase() + "?");
         printInputPrompt();
@@ -125,6 +124,7 @@ public class MenuHandler {
     public void printSessionMenu() {
         System.out.println("1. View all sessions\n" +
                            "2. Search by name\n" +
+                           "3. Add session\n" +
                            "0. Exit");
     }
 
@@ -146,5 +146,9 @@ public class MenuHandler {
         for (String s : fullSessionList) {
             System.out.println(i++ + ". " + s);
         }
+    }
+
+    public void resolveSessionView() {
+        printAllSessions(user.getSessionCollection().getSortedSessions(SortType.BY_DATE_DESC));
     }
 }

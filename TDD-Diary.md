@@ -305,3 +305,7 @@ care about the logic and if the return is correct, but rather the outcome of the
 ---
 ## MenuHandler (again)
 
+Refactored the entire `MenuHandlerTest` and it now incorporates mocking, specifically scannerWrapper. Tests works properly
+now and I can proceed to make more tests for the branching menu. I won't cover all the branching paths if they call for a similar
+method/ same method with another argument. 
+

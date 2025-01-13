@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import org.mockito.MockitoAnnotations;
 import se.iths.utility.ScannerWrapper;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -28,10 +27,14 @@ public class MenuHandlerTest {
     @BeforeEach
     public void setUp() {
         scannerMock = mock(ScannerWrapper.class);
-        user = new User("OldName", 25, 70, 175, new SessionHandler());
         menuHandler = new MenuHandler(scannerMock, user);
         outputStream = new ByteArrayOutputStream();
         originalPrintStream = System.out;
+        user = new User("Old Name", 25, 70, 175, new SessionHandler());
+
+        user.getSessionCollection().createSession("Bloop", 8,3600, LocalDate.of(2024, 12, 30));
+        user.getSessionCollection().createSession("New years run!", 3,1230, LocalDate.of(2025, 1, 1));
+        user.getSessionCollection().createSession("Morning walk", 4,4200, LocalDate.of(2025, 1, 2));
 
         System.setOut(new PrintStream(outputStream));
     }
@@ -49,13 +52,55 @@ public class MenuHandlerTest {
                 .thenReturn(1.0)
                 .thenReturn(1.0)
                 .thenReturn(0.0);
-        when(scannerMock.yesOrNoInput()).thenReturn(true); // Confirm change
-        when(scannerMock.textInput(15)).thenReturn("NewName"); // Provide new name
-
+        when(scannerMock.yesOrNoInput()).thenReturn(true);
+        when(scannerMock.textInput(15)).thenReturn("New Name");
 
         menuHandler.runMenu();
 
-        assertEquals("NewName", user.getName(), "User name should be updated.");
+        assertEquals("New Name", user.getName(), "User name should be updated.");
+    }
+
+    @Test
+    public void resolveUserConfig_AbortedNameChange() {
+        // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
+        when(scannerMock.numberInput())
+                .thenReturn(1.0)
+                .thenReturn(1.0)
+                .thenReturn(0.0);
+        when(scannerMock.yesOrNoInput()).thenReturn(false);
+
+        menuHandler.runMenu();
+
+        assertEquals("Old Name", user.getName(), "User name should *not* be updated.");
+    }
+
+    @Test
+    public void resolveSessionView() {
+        // Test expectations : enter session view (ev. details) from runMenu()
+
+        when(scannerMock.numberInput())
+                .thenReturn(1.0)
+                .thenReturn(2.0)
+                .thenReturn(0.0);
+
+        menuHandler.runMenu();
+
+        String expected = "1. Morning walk\n" +
+                          "2. New years run!\n" +
+                          "3. Bloop" +
+                          "\n Please enter your choice: ";
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        assertEquals(expected, actual, "Session view does not match expected output.");
+    }
+
+    @Test
+    void resolveSessionSearch() {
+
+    }
+
+    @Test
+    void resolveSessionCreation() {
+
     }
 
     @Test
@@ -99,16 +144,16 @@ public class MenuHandlerTest {
 
     @Test
     void printQueryResultTest() {
-        // creating a session handler with 3 sessions
+        // Adding 3 sessions to the user's collection
         SessionHandler sessionHandler = user.getSessionCollection();
         sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
         sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
         sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(1990, 1, 1));
 
         List<String> queryResult = sessionHandler.searchSessionByID("Bloop");
+
         String expected = "1. Bloop\n" +
                           "2. Bloop2\n";
-
         menuHandler.printQueryResult(queryResult);
 
         String actual = outputStream.toString().replace("\r\n", "\n");
@@ -118,7 +163,7 @@ public class MenuHandlerTest {
     @Test
     void printAllSessionsTest() {
 
-        SessionHandler sessionHandler = new SessionHandler();
+        SessionHandler sessionHandler = user.getSessionCollection();
         sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
         sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
         sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(1990, 1, 1));
