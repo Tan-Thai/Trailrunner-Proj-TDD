@@ -284,10 +284,10 @@ a super messy project. This can be seen by my mixture of variable naming, code s
 
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
-- [ ] Refactor `MenuHandlerTest`, and add more tests
+- [x] Refactor `MenuHandlerTest`, and add more tests
 - [ ] Complete `MenuHandler`'s functions
 - [x] Hate on Scanner a bit more
-- [ ] Look into mocking further and refactor accordingly.
+- [x] Look into mocking further and refactor accordingly.
 
 ### Agenda 
 
@@ -301,6 +301,8 @@ I feel like I've worked somewhat backwards with this, or at least I should've lo
 I had some gigantic troubles with **Scanner** and mocking. Which caused me to go down a rabbit hole of cursed stuff.
 The idea of mocking for `menuHandlerTest` is to avoid essentially testing whatever scanner already have. We should not
 care about the logic and if the return is correct, but rather the outcome of the entire method.
+
+Totally forgot to check off the lil checklist. Most of the documentation are within the text and my rants!
 
 ---
 ## MenuHandler (again)
@@ -321,7 +323,7 @@ passing me through to the right methods. If I went the other way around, then so
 **TDLR**: Menus are a means to an end.
 
 Test created and fully functional. Started with working on the method itself as a public call. Then worked my way
-outwards towards runMainMenu(). That way the preceding menus will be created and tested along the path but not fully
+outwards towards `runMainMenu()`. That way the preceding menus will be created and tested along the path but not fully
 developed due to missing method calls within the other cases.
 
 With the deletion sorted, I'm now more confident in writing tests for this type of code. Going over to creation and 
@@ -331,4 +333,9 @@ and assert that the output was correct.
 Currently hitting a bit of a snag, I want to create more `scannerWrapper` methods to fulfill unique needs
 such as `dateInput()` or `minutesInput()` that would parse input and return proper data to create
 a session. Will try to make a functioning base for now and then write tests for these methods and then develop them
-<br/>✨(ITS SOON REFACTORING TIME)✨
+<br/>✨(ITS SOON REFACTORING TIME)✨ <br/>
+
+Baseline developed code are functioning, ironing out kinks I found and in the process of removing some redundant methods
+such as `printAllSessions` and `printQueryResults`. Both essentially do the same thing, and I can refactor 
+`resolveSessionView` to take in an argument of `List<String>` so it would work with both the search logic and standard
+view.

@@ -57,7 +57,8 @@ public class MenuHandler {
                 resolveSessionSearch();
                 break;
             case 3:
-                resolveSessionView();
+                List<String> sessionList = this.user.getSessionCollection().getSortedSessions(SortType.BY_DATE_DESC);
+                resolveSessionView(sessionList);
                 break;
             case 0:
                 return;
@@ -69,12 +70,10 @@ public class MenuHandler {
     private void resolveSessionSearch() {
         CmdUtility.clearConsole();
         System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
-
         String searchQuery = scannerWrapper.textInput(15);
         List<String> foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
 
-        printQueryResult(foundSessions);
-        printInputPrompt();
+        resolveSessionView(foundSessions);
     }
 
     private void runUserMenu() {
@@ -163,6 +162,7 @@ public class MenuHandler {
     }
 
     public void printQueryResult(List<String> queryResult) {
+        CmdUtility.clearConsole();
         int i = 1;
         for (String s : queryResult) {
             System.out.println(i++ + ". " + s);
@@ -174,11 +174,11 @@ public class MenuHandler {
         for (String s : fullSessionList) {
             System.out.println(i++ + ". " + s);
         }
+        // TODO need to print 0. Exit at the end
     }
 
-    public void resolveSessionView() {
+    public void resolveSessionView(List<String> sessionList) {
         CmdUtility.clearConsole();
-        List<String> sessionList = this.user.getSessionCollection().getSortedSessions(SortType.BY_DATE_DESC);
         printAllSessions(sessionList);
         printInputPrompt();
 
@@ -234,12 +234,12 @@ public class MenuHandler {
         String sessionName = scannerWrapper.textInput(15);
 
         System.out.print("Distance in km: \n");
-        Double sessionDistance = scannerWrapper.numberInput();
+        double sessionDistance = scannerWrapper.numberInput();
 
         System.out.print("Duration in minutes: \n");
         int sessionDuration = (int) scannerWrapper.numberInput();
 
-        // This entire part below can become its own method within scanner.
+        // TODO This entire part below can become its own method within scanner.
         System.out.print("Date (YYYY-MM-DD): \n");
         String sessionDate = scannerWrapper.textInput(15);
 
