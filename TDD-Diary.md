@@ -309,3 +309,17 @@ Refactored the entire `MenuHandlerTest` and it now incorporates mocking, specifi
 now and I can proceed to make more tests for the branching menu. I won't cover all the branching paths if they call for a similar
 method/ same method with another argument. 
 
+Deep diving into the furthest branch to develop first due to me technically branch testing all the way
+to reach that endpoint. So I will test "some" branches more due to me passing through menus. In this case deleting
+a session whilst viewing the details
+
+**Order of menus:**
+Main Menu > session menu > view all sessions > detailed session view > delete method. 
+
+By going this way I won't need to create tests for the menus themselves, but more if they accomplish the goal of 
+passing me through to the right methods. If I went the other way around, then some of these tests would become redundant.
+**TDLR**: Menus are a means to an end.
+
+Test created and fully functional. Started with working on the method itself as a public call. Then worked my way
+outwards towards runMainMenu(). That way the preceding menus will be created and tested along the path but not fully
+developed due to missing method calls within the other cases.

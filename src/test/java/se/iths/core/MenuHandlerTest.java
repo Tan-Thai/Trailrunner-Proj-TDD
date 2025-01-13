@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +28,6 @@ public class MenuHandlerTest {
     @BeforeEach
     public void setUp() {
         scannerMock = mock(ScannerWrapper.class);
-        menuHandler = new MenuHandler(scannerMock, user);
         outputStream = new ByteArrayOutputStream();
         originalPrintStream = System.out;
         user = new User("Old Name", 25, 70, 175, new SessionHandler());
@@ -36,6 +36,7 @@ public class MenuHandlerTest {
         user.getSessionCollection().createSession("New years run!", 3,1230, LocalDate.of(2025, 1, 1));
         user.getSessionCollection().createSession("Morning walk", 4,4200, LocalDate.of(2025, 1, 2));
 
+        menuHandler = new MenuHandler(scannerMock, user);
         System.setOut(new PrintStream(outputStream));
     }
 
@@ -75,22 +76,20 @@ public class MenuHandlerTest {
     }
 
     @Test
-    public void resolveSessionView() {
+    public void deleteSessionQueryTest() {
         // Test expectations : enter session view (ev. details) from runMenu()
 
         when(scannerMock.numberInput())
+                .thenReturn(2.0)
+                .thenReturn(3.0)
                 .thenReturn(1.0)
                 .thenReturn(2.0)
                 .thenReturn(0.0);
+        when(scannerMock.yesOrNoInput()).thenReturn(true);
 
         menuHandler.runMenu();
 
-        String expected = "1. Morning walk\n" +
-                          "2. New years run!\n" +
-                          "3. Bloop" +
-                          "\n Please enter your choice: ";
-        String actual = outputStream.toString().replace("\r\n", "\n");
-        assertEquals(expected, actual, "Session view does not match expected output.");
+        assertTrue(user.getSessionCollection().getSessionIDs().size() == 2);
     }
 
     @Test

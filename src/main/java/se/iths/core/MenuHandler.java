@@ -45,6 +45,20 @@ public class MenuHandler {
         printSessionMenu();
         printInputPrompt();
 
+        double userInput = scannerWrapper.numberInput();
+        switch ((int) userInput){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                resolveSessionView();
+                break;
+            case 0:
+                return;
+            default:
+                break;
+        }
     }
 
     private void runUserMenu() {
@@ -78,7 +92,7 @@ public class MenuHandler {
 
     private void resolveUserConfig(UserConfig choice) {
         CmdUtility.clearConsole();
-        System.out.println("Are you sure you want to change your " + choice.name().toLowerCase() + "?");
+        System.out.println("Are you sure you want to change your " + choice.name().toLowerCase() + "? (y/n)");
         printInputPrompt();
 
         if (scannerWrapper.yesOrNoInput()) {
@@ -122,9 +136,9 @@ public class MenuHandler {
     }
 
     public void printSessionMenu() {
-        System.out.println("1. View all sessions\n" +
+        System.out.println("1. Add session\n" +
                            "2. Search by name\n" +
-                           "3. Add session\n" +
+                           "3. View all sessions\n" +
                            "0. Exit");
     }
 
@@ -133,12 +147,10 @@ public class MenuHandler {
     }
 
     public void printQueryResult(List<String> queryResult) {
-
         int i = 1;
         for (String s : queryResult) {
             System.out.println(i++ + ". " + s);
         }
-
     }
 
     public void printAllSessions(List<String> fullSessionList) {
@@ -149,6 +161,53 @@ public class MenuHandler {
     }
 
     public void resolveSessionView() {
-        printAllSessions(user.getSessionCollection().getSortedSessions(SortType.BY_DATE_DESC));
+        CmdUtility.clearConsole();
+        List<String> sessionList = this.user.getSessionCollection().getSortedSessions(SortType.BY_DATE_DESC);
+        printAllSessions(sessionList);
+        printInputPrompt();
+
+        int userInput = (int) scannerWrapper.numberInput();
+        if (userInput > 0 && userInput <= sessionList.size()) {
+            String selectedSession = sessionList.get(userInput - 1);
+            Session pulledSession = user.getSessionCollection().readSession(selectedSession);
+            viewSessionDetails(pulledSession);
+        }
+    }
+
+    private void viewSessionDetails(Session pulledSession) {
+        CmdUtility.clearConsole();
+        System.out.println(
+                "You have selected: " + pulledSession.getId() + "\n" +
+                "Duration: " + pulledSession.getTime() + "\n" +
+                "Distance: " + pulledSession.getDistance() + "\n" +
+                "Date: " + pulledSession.getDate());
+
+        printInputPrompt();
+
+        int choice = (int) scannerWrapper.numberInput();
+        switch (choice) {
+            case 1:
+                break;
+            case 2:
+                deleteSessionQuery(pulledSession);
+                break;
+            case 0:
+                return;
+            default:
+                break;
+        }
+    }
+
+    public void deleteSessionQuery(Session pulledSession) {
+        CmdUtility.clearConsole();
+        System.out.println("Are you sure you want to delete your " + pulledSession.getId() + "? (y/n)");
+        printInputPrompt();
+
+        if (scannerWrapper.yesOrNoInput()) {
+            user.getSessionCollection().deleteSession(pulledSession.getId());
+            System.out.println("Deleted session: " + pulledSession.getId());
+            scannerWrapper.promptEnterKey();
+        }
+
     }
 }
