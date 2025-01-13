@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SessionHandler {
     private Calculator calculator = new Calculator();
@@ -55,5 +56,26 @@ public class SessionHandler {
         }
 
         sessionCollection.remove(id);
+    }
+
+    public List<String> searchSessionByID(String query) {
+        if (query == null || query.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return sessionCollection.keySet().stream()
+                .filter(id -> id.toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getSortedSessions(SortType sortType) {
+
+        List<String> sortedList = sessionCollection
+                .values()
+                .stream()
+                .sorted(sortType.getComparator())
+                .map(Session::getId)
+                .collect(Collectors.toList());
+
+        return sortedList;
     }
 }

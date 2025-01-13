@@ -81,6 +81,62 @@ class SessionHandlerTest {
     }
 
     @Test
+    void searchSessionByIdTest() {
+
+        sessionHandler.createSession(
+                "Bloop2",
+                3,
+                2030,
+                LocalDate.of(1990, 1, 4));
+
+        sessionHandler.createSession(
+                "EXTRA",
+                33,
+                5032,
+                LocalDate.of(1990, 1, 4));
+
+        List<String> foundSessions = sessionHandler.searchSessionByID("Bloop");
+
+        assertFalse(foundSessions.isEmpty(), "Expected to find at least one session.");
+        assertEquals(foundSessions.size(), 2, "Expected two sessions.");
+
+        // Emptying sessions-handler to test 0 results
+        sessionHandler.deleteSession("Bloop");
+        sessionHandler.deleteSession("Bloop2");
+        sessionHandler.deleteSession("EXTRA");
+        foundSessions = sessionHandler.getSessionIDs();
+
+        assertTrue(foundSessions.isEmpty(), "Expected to not find any session.");
+
+    }
+
+    // keeping it as a single one for now. But if we want to implement by date, alphabetical, ascending, descending etc.
+    // Then this test will have to be refactored to take a parameter to tell it which way to sort.
+    @Test
+    void getSortedSessionsTest_Date_Descending() {
+        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("Most Recent", 33, 5032, LocalDate.of(2025, 1, 5));
+
+        List<String> sortedList = sessionHandler.getSortedSessions(SortType.BY_DATE_DESC);
+
+        assertTrue(sortedList.get(0).equals("Most Recent"), "Expected the most recent session to be first.");
+        assertTrue(sortedList.get(1).equals("Bloop2"), "Expected the second most recent session.");
+        assertTrue(sortedList.get(2).equals("Bloop"), "Expected the oldest session.");
+    }
+
+    @Test
+    void getSortedSessionsTest_Distance_Ascending() {
+        sessionHandler.createSession("Shortest Distance", 3, 2030, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("Longest Distance", 33, 5032, LocalDate.of(2025, 1, 5));
+
+        List<String> sortedList = sessionHandler.getSortedSessions(SortType.BY_DISTANCE_ASC);
+
+        assertTrue(sortedList.get(0).equals("Shortest Distance"), "Expected the shortest distance to be first.");
+        assertTrue(sortedList.get(1).equals("Bloop"), "Expected the second shortest distance.");
+        assertTrue(sortedList.get(2).equals("Longest Distance"), "Expected the furthest distance.");
+    }
+
+    @Test
     void deleteSessionTest() {
         // once again lots of StackOverflow shenanigans
         // This confirms that we don't hit an Exception and pass through properly.

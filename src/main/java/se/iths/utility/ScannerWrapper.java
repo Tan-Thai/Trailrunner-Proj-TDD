@@ -14,7 +14,7 @@ public class ScannerWrapper {
         return checkIfValidString(maxLength);
     }
 
-    public int numberInput() {
+    public double numberInput() {
         return checkIfNumber();
     }
 
@@ -59,8 +59,8 @@ public class ScannerWrapper {
         } while (true);
     }
 
-    private int checkIfNumber() {
-        int userInput;
+    private double checkIfNumber() {
+        double userInput;
         while (true) {
             String input = scanner.nextLine();
 

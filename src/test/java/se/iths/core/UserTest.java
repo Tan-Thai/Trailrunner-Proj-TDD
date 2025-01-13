@@ -3,15 +3,16 @@ package se.iths.core;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
     User user;
 
     @BeforeEach
     public void setUp() {
-        user = new User("Tan", 29, 177, 56);
+        user = new User("Tan", 29, 177, 56, new SessionHandler());
     }
 
     @Test
@@ -64,6 +65,17 @@ public class UserTest {
         user.setWeight(54.7);
         double userWeight = user.getWeight();
         assertEquals(54.7, userWeight, "New weight does not match");
+    }
+
+    @Test
+    void getSessionSize() {
+        user.getSessionCollection().createSession(
+                "Bloop",
+                12.3,
+                30934,
+                LocalDate.of(2000, 4, 2));
+
+        assertFalse(user.getSessionCollection().getSessionIDs().isEmpty(), "SessionCollection should not be empty");
     }
 
 }

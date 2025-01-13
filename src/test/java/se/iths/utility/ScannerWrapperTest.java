@@ -59,16 +59,17 @@ public class ScannerWrapperTest {
 
         // Had to both StacksOverflow this and Chatgpt to figure out what my issue was. The forsaken issue stemmed from
         // a singular fricking "\n". The other issue was me not creating a stream for "err" prints...
-        String pulledOutput = outputStream.toString().replace("\r\n", "\n"); // Normalize newlines
+        // Normalize newlines
+        String pulledOutput = outputStream.toString().replace("\r\n", "\n");
         assertTrue(pulledOutput.contains(
                 "The name you entered is too long. Please enter a name with a maximum of 15 characters\n"),
-                "Error message does not print.");
+                "Expected error due to word limit.");
 
         assertTrue(pulledOutput.contains("Please enter a name: "),
-                "Error message does not print.");
+                "Expected prompt after word limit error.");
 
         assertTrue(pulledOutput.contains("Please enter a name:"),
-                "Error message does not print.");
+                "Expected re-prompt after empty string.");
 
         assertEquals("Tan", result, "Correct input after failed attempt does not match expected string");
     }
@@ -79,8 +80,8 @@ public class ScannerWrapperTest {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         scannerWrapper = new ScannerWrapper();
 
-        int result = scannerWrapper.numberInput();
-        assertEquals(7, result, "Correct input does not match expected int.");
+        double result = scannerWrapper.numberInput();
+        assertEquals(7, result,0.1, "Correct input does not match expected int.");
     }
 
     @Test
@@ -89,11 +90,11 @@ public class ScannerWrapperTest {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         scannerWrapper = new ScannerWrapper();
 
-        int result = scannerWrapper.numberInput();
+        double result = scannerWrapper.numberInput();
         assertTrue(outputStream.toString().contains("Invalid input, please enter a number: "), "Error message does not print.");
         assertTrue(outputStream.toString().contains("Invalid input, please enter a number: "), "Error message does not print.");
         assertTrue(outputStream.toString().contains("Please enter a positive number: "),"Error message does not print.");
-        assertEquals(7, result, "Correct input after failed attempt does not match expected output.");
+        assertEquals(7, result, 0.1, "Correct input after failed attempt does not match expected output.");
 
     }
 

@@ -159,14 +159,14 @@ This and all leftover code/plans will be pushed to day 3.
 
 ---
 
-## Day 3 - 11/01-25
+## Day 3 - 11/01-25 - 12/01-25
 
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
-- [ ] Create a **Main** that will allow the user to input and use the program.
+- [x] Create a **Main** that will allow the user to input and use the program.
 - [x] Reformat/Re-do **Scanner** in its entirety. (Removing Singleton)
 - [ ] Complete the writing of tests for **MenuHandler**.
-- [ ] Develop **MenuHandler** based on tests.
+- [x] Develop **MenuHandler** based on tests.
 
 ### Agenda
 
@@ -228,3 +228,122 @@ for `ScannerWrapper`
 Final words regarding scanner; it's not fully covered yet but the important tools for inputs are sorted. I once again
 want to say that I **do not** like scanner now after this roller-coaster. 
 
+## MenuHandler
+
+I'll be looking into mocking up the other classes to make the tests independent from `Session` and `SessionHandler`.
+Though I will _start_ with writing test in a way I know works to get the project to move forward.
+
+The idea is that the menu handler will be printing instructions and menus, and ask for the input.
+One example being `searchSessionById`, this method should be called when the user selects "search for session" within
+a menu and then be prompted to input text to search for. From here it will branch into 2 cases. Either a list of matching
+sessions are printed and the user can then proceed to pick one to show details of, or no matches are found, and you will be notified
+regarding it.
+
+### Reflection
+
+I ended up essentially making identical tests and methods as `sessionHandler`. Creating a new commit to start from a clean
+slate with empty tests.
+
+Trying to break down the tests into smaller bits, in this case _only_ checking for whatever prints are happening.
+Reasoning behind that is due to us already having tests for the manipulation of sessions within `SessionHandlerTest`.
+I'll add more tests/code to `SessionHandlerTest` now when I have more functions I want to implement.
+
+## Misc - Ramble Text
+Sorting sessions method done, `getSortedSessions`. I stumbled upon a few good explanations across google and will do a 
+quick deep dive to *attempt* at making this sorting flexible based on what the user picked. Not going to implement it
+fully to the actual project, but I want to see if it's possible with `.sorted()` call. Initial idea is to make an
+Enum class that contains all types of comparators like comparing `(s1, s2) -> Double.compare(s1.getDistance(), s2.getDistance());`
+for example. The general structure is the same, but you are just comparing different values!
+
+**LETS GOOO, IT WORKED!**
+I was not too sure if it would work, but it seems to work suuuper smoothly. This means that I could in theory let the 
+user choose a sorting method with a switch-case and then pass it on to `getSortedSessions`. I won't focus on it now
+though due to it not being relevant to the project. Tests to assure it works are there as well just as a FYI.
+
+I'm diving back into singletons, I can't believe that I'm doing that... 
+Update: jokes on me, it's still horrid.🙃 I'll temporarily pass the scanner for now, refactoring it later should not
+be too difficult this time around due to the smaller project scale.
+
+## Integration of classes
+
+Whilst testing for singletons and scanner shenanigans I also started refactoring `User`. The user now includes a collection
+of sessions (`SessionHandler`). This is both because of simplicity of parameters, and it being quite logical to have
+the collection tied to a user. I've now started working on `MenuHandler` again for the 10000th time. I'll be honest and say
+that I'm somewhat lost over how to write the tests. 
+
+### Reflection
+I do think my excessive googling has backfired due to the sheer amount
+of different opinions, styles, versions both testing and mockito have. I went through so many versions of mockito to try
+figure out the issue to no avail. I'm not getting any compilation errors anymore which I'm glad for, but at the cost of
+a super messy project. This can be seen by my mixture of variable naming, code structure. 
+
+---
+
+---
+## Day "4" - 13/01-25 (Will most likely just put the dates as titles due to days not fitting) 
+
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [x] Refactor `MenuHandlerTest`, and add more tests
+- [ ] Complete `MenuHandler`'s functions
+- [x] Hate on Scanner a bit more
+- [x] Look into mocking further and refactor accordingly.
+
+### Agenda 
+
+Goal for this part would be to finish up the `menuHanlder` so that the project will be an actually functional program.
+The methods in question will be mostly menu systems to redirect to appropriate method calling, such as add session, that
+will have its own followup of prompted inputs to fill in the details of a session.
+
+## Fleeting-Notes
+
+I feel like I've worked somewhat backwards with this, or at least I should've looked more into mockito properly since 
+I had some gigantic troubles with **Scanner** and mocking. Which caused me to go down a rabbit hole of cursed stuff.
+The idea of mocking for `menuHandlerTest` is to avoid essentially testing whatever scanner already have. We should not
+care about the logic and if the return is correct, but rather the outcome of the entire method.
+
+Totally forgot to check off the lil checklist. Most of the documentation are within the text and my rants!
+
+---
+## MenuHandler (again)
+
+Refactored the entire `MenuHandlerTest` and it now incorporates mocking, specifically scannerWrapper. Tests works properly
+now and I can proceed to make more tests for the branching menu. I won't cover all the branching paths if they call for a similar
+method/ same method with another argument. 
+
+Deep diving into the furthest branch to develop first due to me technically branch testing all the way
+to reach that endpoint. So I will test "some" branches more due to me passing through menus. In this case deleting
+a session whilst viewing the details
+
+**Order of menus:**
+Main Menu > session menu > view all sessions > detailed session view > delete method. 
+
+By going this way I won't need to create tests for the menus themselves, but more if they accomplish the goal of 
+passing me through to the right methods. If I went the other way around, then some of these tests would become redundant.
+**TDLR**: Menus are a means to an end.
+
+Test created and fully functional. Started with working on the method itself as a public call. Then worked my way
+outwards towards `runMainMenu()`. That way the preceding menus will be created and tested along the path but not fully
+developed due to missing method calls within the other cases.
+
+With the deletion sorted, I'm now more confident in writing tests for this type of code. Going over to creation and 
+searching for sessions tests. Ideally I would like to assert that the `sessionHandler` properly executed the task
+and assert that the output was correct.
+
+Currently hitting a bit of a snag, I want to create more `scannerWrapper` methods to fulfill unique needs
+such as `dateInput()` or `minutesInput()` that would parse input and return proper data to create
+a session. Will try to make a functioning base for now and then write tests for these methods and then develop them
+<br/>✨(ITS SOON REFACTORING TIME)✨ <br/>
+
+Baseline developed code are functioning, ironing out kinks I found and in the process of removing some redundant methods
+such as `printAllSessions` and `printQueryResults`. Both essentially do the same thing, and I can refactor 
+`resolveSessionView` to take in an argument of `List<String>` so it would work with both the search logic and standard
+view.
+
+### Reflection
+**MEGA PRODUCTIVE DAY** I might've still hated on scanner *but*, it turned out to work quite smoothly when you don't
+try to solve both `byteArrayInput` and `Mockito` whilst trying to further progress your tests/code. Especially if
+2 of the issues turned out to be standard warnings that are quuuuite *recent*...
+
+I might work more today, but odds are not. Got an early hospital visit the next day (01/14), so I'll not push myself to
+work anymore unless a 💡 hits.

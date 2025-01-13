@@ -5,12 +5,19 @@ public class User {
     private int age;
     private double height;
     private double weight;
+    private SessionHandler sessionCollection;
 
-    public User(String name, int age, double height, double weight) {
+    public SessionHandler getSessionCollection() {
+        return sessionCollection;
+    }
+
+
+    public User(String name, int age, double height, double weight , SessionHandler sessionCollection) {
         this.name = name;
         this.age = age;
         this.height = height;
         this.weight = weight;
+        this.sessionCollection = sessionCollection;
     }
 
     public String getName() {
