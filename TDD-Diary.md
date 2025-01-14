@@ -228,6 +228,19 @@ for `ScannerWrapper`
 Final words regarding scanner; it's not fully covered yet but the important tools for inputs are sorted. I once again
 want to say that I **do not** like scanner now after this roller-coaster. 
 
+---
+***
+## "Day 4" - 01/14-25
+
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [ ] Complete `MenuHandler`'s functions (few adjustments left)
+- [ ] Code cleanup, remove old redundant code or non-used code.
+- [ ] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
+
+### Agenda
+
+Ideally get done with all the G related assignments today if I have missed any. 
 ## MenuHandler
 
 I'll be looking into mocking up the other classes to make the tests independent from `Session` and `SessionHandler`.
@@ -347,3 +360,19 @@ try to solve both `byteArrayInput` and `Mockito` whilst trying to further progre
 
 I might work more today, but odds are not. Got an early hospital visit the next day (01/14), so I'll not push myself to
 work anymore unless a 💡 hits.
+---
+***
+## "Day 4" - 01/14-25
+
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [ ] Complete `MenuHandler`'s functions (few adjustments left)
+- [ ] Code cleanup, remove old redundant code or non-used code.
+- [ ] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
+
+### Agenda
+
+Ideally get done with all the G related assignments today if I have missed any. Most of the heavy work is sorted
+and passed their respective tests. When G is done, look into VG assignments and determine if it's easier to implement
+*before* or *after* code clean-up. Before that is definitely adding tests and code for `ScannerWrapper` to preserve
+the class logic of single responsibility.
