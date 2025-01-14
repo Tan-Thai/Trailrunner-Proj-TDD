@@ -4,9 +4,7 @@ import se.iths.utility.CmdUtility;
 import se.iths.utility.ScannerWrapper;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Scanner;
 
 public class MenuHandler {
     private ScannerWrapper scannerWrapper;
@@ -203,6 +201,7 @@ public class MenuHandler {
         int choice = (int) scannerWrapper.numberInput();
         switch (choice) {
             case 1:
+                editSessionDetails(pulledSession);
                 break;
             case 2:
                 deleteSessionQuery(pulledSession);
@@ -212,6 +211,12 @@ public class MenuHandler {
             default:
                 break;
         }
+    }
+
+    private void editSessionDetails(Session pulledSession) {
+        //TODO Add tests + func.
+        System.out.println("You have selected: " + pulledSession.getId() + "\n");
+        System.out.println("Function not yet implemented - returning to main menu");
     }
 
     public void deleteSessionQuery(Session pulledSession) {
@@ -241,16 +246,10 @@ public class MenuHandler {
 
         // TODO This entire part below can become its own method within scanner.
         System.out.print("Date (YYYY-MM-DD): \n");
-        String sessionDate = scannerWrapper.textInput(15);
+        LocalDate sessionDate = scannerWrapper.dateInput();
 
-        try {
-            LocalDate date = LocalDate.parse(sessionDate);
-            user.getSessionCollection().createSession(sessionName, sessionDistance ,sessionDuration, date);
-            System.out.println("Session created successfully!");
-            scannerWrapper.promptEnterKey();
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-            scannerWrapper.promptEnterKey();
-        }
+        user.getSessionCollection().createSession(sessionName, sessionDistance ,sessionDuration, sessionDate);
+        System.out.println("Session created successfully!");
+        scannerWrapper.promptEnterKey();
     }
 }

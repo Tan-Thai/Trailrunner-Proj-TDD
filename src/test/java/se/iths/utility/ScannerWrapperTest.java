@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,13 +63,13 @@ public class ScannerWrapperTest {
         // Normalize newlines
         String pulledOutput = outputStream.toString().replace("\r\n", "\n");
         assertTrue(pulledOutput.contains(
-                "The name you entered is too long. Please enter a name with a maximum of 15 characters\n"),
+                "What you entered is too long. Please with a maximum of 15 characters\n"),
                 "Expected error due to word limit.");
 
-        assertTrue(pulledOutput.contains("Please enter a name: "),
+        assertTrue(pulledOutput.contains("Please enter something: "),
                 "Expected prompt after word limit error.");
 
-        assertTrue(pulledOutput.contains("Please enter a name:"),
+        assertTrue(pulledOutput.contains("Please try again: "),
                 "Expected re-prompt after empty string.");
 
         assertEquals("Tan", result, "Correct input after failed attempt does not match expected string");
@@ -127,5 +128,17 @@ public class ScannerWrapperTest {
         assertTrue(result, "Capital letter was not accepted");
     }
 
+    @Test
+    public void dateInputTest_ValidInput() {
+        //(YYYY-MM-DD)
+        String input = "1999-12-31\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        scannerWrapper = new ScannerWrapper();
+
+        LocalDate actual = scannerWrapper.dateInput();
+        LocalDate expected = LocalDate.of(1999, 12, 31);
+        assertEquals(expected, actual, "Actual date does not match expected date.");
+
+    }
     // TODO Write tests for the leftover methods. Closing scanner, PromptEnterKey.
 }

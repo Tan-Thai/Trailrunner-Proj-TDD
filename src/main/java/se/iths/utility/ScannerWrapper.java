@@ -1,5 +1,7 @@
 package se.iths.utility;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class ScannerWrapper {
@@ -46,14 +48,14 @@ public class ScannerWrapper {
             }
 
             if (userInput.isEmpty()) {
-                System.err.print("Please enter a name: ");
+                System.err.print("Please enter something: ");
 
             } else if (userInput.length() > maxLength) {
                 System.err.println(
-                        "The name you entered is too long. Please enter a name with a maximum of " + maxLength +
+                        "What you entered is too long. Please with a maximum of " + maxLength +
                         " characters");
 
-                System.err.print("Please enter a name: ");
+                System.err.print("Please try again: ");
             }
 
         } while (true);
@@ -105,6 +107,26 @@ public class ScannerWrapper {
         if (sc != null && sc.hasNextLine()) {
             sc.nextLine();
         }
+    }
+
+    public LocalDate dateInput() {
+        return checkIfValidDate();
+    }
+
+    public LocalDate checkIfValidDate() {
+        do {
+            String userInput = textInput(10);
+            try {
+
+                if (LocalDate.parse(userInput).isAfter(LocalDate.now()))
+                    System.err.print("That date is in the future, please enter a valid date: ");
+                else
+                    return LocalDate.parse(userInput);
+
+            } catch (DateTimeParseException e) {
+                System.err.print("Invalid input, please enter a valid date (YYYY-MM-DD): ");
+            }
+        } while (true);
     }
     // endregion
 }

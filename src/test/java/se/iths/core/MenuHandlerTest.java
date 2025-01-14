@@ -30,6 +30,7 @@ public class MenuHandlerTest {
         scannerMock = mock(ScannerWrapper.class);
         outputStream = new ByteArrayOutputStream();
         originalPrintStream = System.out;
+        System.setOut(new PrintStream(outputStream));
         user = new User("Old Name", 25, 70, 175, new SessionHandler());
 
         user.getSessionCollection().createSession("Bloop", 8,3600, LocalDate.of(2024, 12, 30));
@@ -37,7 +38,6 @@ public class MenuHandlerTest {
         user.getSessionCollection().createSession("Morning walk", 4,4200, LocalDate.of(2025, 1, 2));
 
         menuHandler = new MenuHandler(scannerMock, user);
-        System.setOut(new PrintStream(outputStream));
     }
 
     @AfterEach
@@ -121,7 +121,7 @@ public class MenuHandlerTest {
     }
 
     @Test
-    void resolveSessionCreation() {
+    void resolveSessionCreationTest() {
 
         when(scannerMock.numberInput())
                 .thenReturn(2.0)
@@ -131,8 +131,10 @@ public class MenuHandlerTest {
                 .thenReturn(0.0);
 
         when(scannerMock.textInput(15))
-                .thenReturn("One cold run")
-                .thenReturn("2025-01-13");
+                .thenReturn("One cold run");
+
+        when(scannerMock.dateInput())
+                .thenReturn(LocalDate.of(2025, 1, 13));
 
         menuHandler.runMenu();
 
@@ -232,4 +234,6 @@ public class MenuHandlerTest {
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
+
+
 }

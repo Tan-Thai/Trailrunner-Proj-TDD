@@ -376,3 +376,20 @@ Ideally get done with all the G related assignments today if I have missed any. 
 and passed their respective tests. When G is done, look into VG assignments and determine if it's easier to implement
 *before* or *after* code clean-up. Before that is definitely adding tests and code for `ScannerWrapper` to preserve
 the class logic of single responsibility.
+
+### Fleeting-Notes
+
+Once again, I'm struck with narcolepsy and now started working at 23:27 on the 14th... I feel like the "Day x" for me does not 
+work at all due to this.🙃
+
+### ScannerWrapper
+
+Added tests for valid date input `checkIfValidDate`. Might change the rest of input validations to reflect a specific
+assignment if the need is specific it enough, such as date, double/int instead of casting (int) etc.
+
+All of that is lower prio due to not being related to assignment as a whole, back to `MenuHandler`!
+
+### MenuHandler
+
+I'll have to restructure the menu slightly to accommodate `showUserInfo()` within the main menu. Multiple tests
+will most likely fail due to mocking of menu choices changing.
