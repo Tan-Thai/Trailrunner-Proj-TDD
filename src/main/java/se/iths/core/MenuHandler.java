@@ -1,5 +1,6 @@
 package se.iths.core;
 
+import se.iths.utility.Calculator;
 import se.iths.utility.CmdUtility;
 import se.iths.utility.ScannerWrapper;
 
@@ -9,6 +10,7 @@ import java.util.List;
 public class MenuHandler {
     private ScannerWrapper scannerWrapper;
     private User user;
+    private Calculator calc = new Calculator();
 
 
     public MenuHandler(ScannerWrapper scannerWrapper,User user) {
@@ -26,38 +28,57 @@ public class MenuHandler {
 
             switch ((int) userInput){
                 case 1:
-                    runUserSettingsMenu();
+                    viewUserDetails();
                     break;
                 case 2:
                     runSessionMenu();
                     break;
-                case 3:
-                    break;
                 case 0:
                     return;
                 default:
-                    System.out.println("Invalid choice, please try again");
-                    scannerWrapper.promptEnterKey();
+                    printFailedMenuChoice();
                     break;
             }
         }
     }
 
-    private void viewUserDetails() {
-        // Todo prints out user details and then allows people to edit from here
-        System.out.println("Welcome " + user.getName());
+    private void printFailedMenuChoice() {
+        System.out.println("Invalid choice, please try again");
+        scannerWrapper.promptEnterKey();
+    }
 
+    private void viewUserDetails() {
+        // Todo this does not have a test (it's essentially another menu check test I would need to do.)
+        SessionHandler sessionHandler = user.getSessionCollection();
+        System.out.println("Welcome " + user.getName() + "!");
+        System.out.println("This is the current details of you: \n" +
+                           "Age: " + user.getAge() + "\n" +
+                           "Height: " + user.getHeight() + "cm\n" +
+                           "Weight: " + user.getWeight() + "kg\n" +
+                           "-----\n" +
+                           "Fitness Score: " + sessionHandler.getTotalFitnessScore() + "\n" +
+                           "Total Distance Traveled: " + calc.calcTotalDistanceTraveled(sessionHandler) + "\n" +
+                           "Average Distance Traveled per Session: " + calc.calcAverageDistanceTraveled(sessionHandler) + "\n");
+
+        printUserDetailsMenu();
+        printInputPrompt();
         double userInput = scannerWrapper.numberInput();
         switch ((int) userInput) {
             case 1:
-                break;
-            case 2:
+                runUserSettingsMenu();
                 break;
             case 0:
                 return;
             default:
+                printFailedMenuChoice();
+                break;
 
         }
+    }
+
+    private void printUserDetailsMenu() {
+        System.out.println("1. Edit your details\n" +
+                           "0. Exit");
     }
 
     private void runSessionMenu() {
@@ -80,6 +101,7 @@ public class MenuHandler {
             case 0:
                 return;
             default:
+                printFailedMenuChoice();
                 break;
         }
     }
@@ -88,9 +110,13 @@ public class MenuHandler {
         CmdUtility.clearConsole();
         System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
         String searchQuery = scannerWrapper.textInput(15);
-        List<String> foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
 
-        viewSessionList(foundSessions);
+        List<String> foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
+        if (foundSessions.isEmpty()) {
+            System.out.println("No sessions found");
+            printInputPrompt();
+        } else
+            viewSessionList(foundSessions);
     }
 
     private void runUserSettingsMenu() {
@@ -115,8 +141,7 @@ public class MenuHandler {
             case 0:
                 return;
             default:
-                System.out.println("Invalid choice, please try again");
-                scannerWrapper.promptEnterKey();
+                printFailedMenuChoice();
                 break;
         }
 
@@ -145,8 +170,7 @@ public class MenuHandler {
                     user.setHeight(scannerWrapper.numberInput());
                     break;
                 default:
-                    System.out.println("Invalid choice, please try again");
-                    scannerWrapper.promptEnterKey();
+                    printFailedMenuChoice();
                     break;
             }
         }
@@ -162,6 +186,9 @@ public class MenuHandler {
             String selectedSession = sessionList.get(userInput - 1);
             Session pulledSession = user.getSessionCollection().readSession(selectedSession);
             viewSessionDetails(pulledSession);
+        } else if (userInput == 0) {
+            System.out.println("Going back to session menu.");
+            printInputPrompt();
         }
     }
 
@@ -186,6 +213,7 @@ public class MenuHandler {
             case 0:
                 return;
             default:
+                printFailedMenuChoice();
                 break;
         }
     }
@@ -270,7 +298,7 @@ public class MenuHandler {
         for (String s : fullSessionList) {
             System.out.println(i++ + ". " + s);
         }
-        // TODO need to print 0. Exit at the end
+        System.out.println("0. Exit");
     }
     //endregion
 

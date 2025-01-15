@@ -114,9 +114,16 @@ public class ScannerWrapper {
     }
 
     public LocalDate checkIfValidDate() {
+        /* Forced loop:
+        If user enters a blank then it will use the current date.
+        If the date is ahead of current time then an error will be put out.
+        Try catch is if the input does not match anything at all in terms of (YYYY-MM-DD) structure.
+        * */
         do {
             String userInput = textInput(10);
             try {
+                if (userInput.isBlank())
+                    return LocalDate.now();
 
                 if (LocalDate.parse(userInput).isAfter(LocalDate.now()))
                     System.err.print("That date is in the future, please enter a valid date: ");

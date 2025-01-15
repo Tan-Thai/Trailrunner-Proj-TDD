@@ -51,7 +51,7 @@ public class MenuHandlerTest {
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
                 .thenReturn(1.0)
-                .thenReturn(2.0)
+                .thenReturn(1.0)
                 .thenReturn(1.0)
                 .thenReturn(0.0);
         when(scannerMock.yesOrNoInput()).thenReturn(true);
@@ -67,7 +67,7 @@ public class MenuHandlerTest {
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
                 .thenReturn(1.0)
-                .thenReturn(2.0)
+                .thenReturn(1.0)
                 .thenReturn(1.0)
                 .thenReturn(0.0);
         when(scannerMock.yesOrNoInput()).thenReturn(false);
@@ -116,7 +116,8 @@ public class MenuHandlerTest {
 
         String expected = "1. Bloop\n" +
                           "2. Bloop3\n" +
-                          "3. Bloop2";
+                          "3. Bloop2\n" +
+                          "0. Exit";
 
         assertEquals(expected, actual, "Session search result does not match.");
 
@@ -222,7 +223,8 @@ public class MenuHandlerTest {
 
         String expected = "1. Bloop\n" +
                           "2. New years run!\n" +
-                          "3. Morning walk\n";
+                          "3. Morning walk\n" +
+                          "0. Exit\n";
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }

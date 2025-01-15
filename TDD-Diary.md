@@ -2,6 +2,9 @@
 
 ## Summary
 
+Important notes: automatic date will be set if it finds an empty whitespace, if *nothing* is entered then you will
+hit the error handler for string-input.
+
 ## Introduction
 
 The general structure of the diary will follow a daily chapter including the goals and solutions to said goals.
@@ -389,7 +392,24 @@ assignment if the need is specific it enough, such as date, double/int instead o
 
 All of that is lower prio due to not being related to assignment as a whole, back to `MenuHandler`!
 
+I've made use of `scannerWrapper` to ensure that a date always is returned, even if someone enters a **blank**
+space. `dateInput` will automatically return the current time if no other *proper* date is given.
+**if** they somehow manage to enter nothing for date, then I created a constructor for session that does not
+take in a `LocalDate` which sends `LocalDate.now()` to the date. Tests was also made ahead of time. 
+
+Another test added is `dateInputTest_BlankInput()` in `ScannerWrapper`.
+
 ### MenuHandler
 
 I'll have to restructure the menu slightly to accommodate `showUserInfo()` within the main menu. Multiple tests
 will most likely fail due to mocking of menu choices changing.
+
+Tried to create an adaptable mock that counted switch-cases(choices) and sent in an `int` to `numberInput` to add that
+as a max limit. The issue is that I then would have to remake the entire structure of Mock/when inputs for each
+singular menu (since they are all different in amounts). For the sake of the assignment, I'll not work on this function
+despite knowing that people can enter a number that would result it in being out of bounds.
+
+I can do a `while(true)` forced loop during wrong input. But that would also lead to multitudes of
+mocked `0`inputs to step out one menu after the other.
+
+Need to add an option pre search or post search to sort list based on time/distance

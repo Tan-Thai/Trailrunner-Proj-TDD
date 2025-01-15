@@ -140,5 +140,18 @@ public class ScannerWrapperTest {
         assertEquals(expected, actual, "Actual date does not match expected date.");
 
     }
+
+    @Test
+    public void dateInputTest_BlankInput() {
+        //(YYYY-MM-DD)
+        String input = " \n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        scannerWrapper = new ScannerWrapper();
+
+        LocalDate actual = scannerWrapper.dateInput();
+        LocalDate expected = LocalDate.now();
+        assertEquals(expected, actual, "Blank date should match current date.");
+
+    }
     // TODO Write tests for the leftover methods. Closing scanner, PromptEnterKey.
 }
