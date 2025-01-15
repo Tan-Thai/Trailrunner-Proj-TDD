@@ -1,5 +1,9 @@
 package se.iths.utility;
 
+import se.iths.core.InputLimit;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class ScannerWrapper {
@@ -46,14 +50,14 @@ public class ScannerWrapper {
             }
 
             if (userInput.isEmpty()) {
-                System.err.print("Please enter a name: ");
+                System.err.print("Please enter something: ");
 
             } else if (userInput.length() > maxLength) {
                 System.err.println(
-                        "The name you entered is too long. Please enter a name with a maximum of " + maxLength +
+                        "What you entered is too long. Please with a maximum of " + maxLength +
                         " characters");
 
-                System.err.print("Please enter a name: ");
+                System.err.print("Please try again: ");
             }
 
         } while (true);
@@ -70,11 +74,11 @@ public class ScannerWrapper {
             }
 
             try {
-                userInput = Integer.parseInt(input);
-                if (userInput >= 0) {
-                    return userInput;
-                } else {
+                userInput = Double.parseDouble(input);
+                if (userInput < 0) {
                     System.err.print("Please enter a positive number: ");
+                } else {
+                    return userInput;
                 }
             } catch (NumberFormatException e) {
                 System.err.print("Invalid input, please enter a number: ");
@@ -105,6 +109,33 @@ public class ScannerWrapper {
         if (sc != null && sc.hasNextLine()) {
             sc.nextLine();
         }
+    }
+
+    public LocalDate dateInput() {
+        return checkIfValidDate();
+    }
+
+    public LocalDate checkIfValidDate() {
+        /* Forced loop:
+        If user enters a blank then it will use the current date.
+        If the date is ahead of current time then an error will be put out.
+        Try catch is if the input does not match anything at all in terms of (YYYY-MM-DD) structure.
+        * */
+        do {
+            String userInput = textInput(InputLimit.DISTANCE.getLimit());
+            try {
+                if (userInput.isBlank())
+                    return LocalDate.now();
+
+                if (LocalDate.parse(userInput).isAfter(LocalDate.now()))
+                    System.err.print("That date is in the future, please enter a valid date: ");
+                else
+                    return LocalDate.parse(userInput);
+
+            } catch (DateTimeParseException e) {
+                System.err.print("Invalid input, please enter a valid date (YYYY-MM-DD): ");
+            }
+        } while (true);
     }
     // endregion
 }

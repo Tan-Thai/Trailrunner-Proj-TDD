@@ -95,18 +95,20 @@ class SessionHandlerTest {
                 5032,
                 LocalDate.of(1990, 1, 4));
 
-        List<String> foundSessions = sessionHandler.searchSessionByID("Bloop");
 
-        assertFalse(foundSessions.isEmpty(), "Expected to find at least one session.");
-        assertEquals(foundSessions.size(), 2, "Expected two sessions.");
+        SessionHandler foundSessions = sessionHandler.searchSessionByID("Bloop");
+        List<String> sessionList = foundSessions.getSessionIDs();
+
+        assertFalse(sessionList.isEmpty(), "Expected to find at least one session.");
+        assertEquals(sessionList.size(), 2, "Expected two sessions.");
 
         // Emptying sessions-handler to test 0 results
         sessionHandler.deleteSession("Bloop");
         sessionHandler.deleteSession("Bloop2");
         sessionHandler.deleteSession("EXTRA");
-        foundSessions = sessionHandler.getSessionIDs();
+        sessionList = sessionHandler.getSessionIDs();
 
-        assertTrue(foundSessions.isEmpty(), "Expected to not find any session.");
+        assertTrue(sessionList.isEmpty(), "Expected to not find any session.");
 
     }
 

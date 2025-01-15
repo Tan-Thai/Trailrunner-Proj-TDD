@@ -41,4 +41,14 @@ public class SessionTest {
         assertNotNull(session.getDate());
         assertEquals(LocalDate.of(2025, 1,2), session.getDate());
     }
+
+    @Test
+    void constructorWithoutDateTest() {
+        session = new Session("1", 2.3, 1350);
+
+        LocalDate expected = LocalDate.now();
+        LocalDate actual = session.getDate();
+        assertNotNull(actual, "Actual date should not be null");
+        assertEquals(expected, actual, "Actual date should be " + expected);
+    }
 }

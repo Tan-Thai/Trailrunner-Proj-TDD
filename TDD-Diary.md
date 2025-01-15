@@ -2,6 +2,9 @@
 
 ## Summary
 
+Important notes: automatic date will be set if it finds an empty whitespace, if *nothing* is entered then you will
+hit the error handler for string-input.
+
 ## Introduction
 
 The general structure of the diary will follow a daily chapter including the goals and solutions to said goals.
@@ -228,6 +231,19 @@ for `ScannerWrapper`
 Final words regarding scanner; it's not fully covered yet but the important tools for inputs are sorted. I once again
 want to say that I **do not** like scanner now after this roller-coaster. 
 
+---
+***
+## "Day 4" - 01/14-25
+
+- [ ] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [ ] Complete `MenuHandler`'s functions (few adjustments left)
+- [ ] Code cleanup, remove old redundant code or non-used code.
+- [ ] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
+
+### Agenda
+
+Ideally get done with all the G related assignments today if I have missed any. 
 ## MenuHandler
 
 I'll be looking into mocking up the other classes to make the tests independent from `Session` and `SessionHandler`.
@@ -347,3 +363,78 @@ try to solve both `byteArrayInput` and `Mockito` whilst trying to further progre
 
 I might work more today, but odds are not. Got an early hospital visit the next day (01/14), so I'll not push myself to
 work anymore unless a 💡 hits.
+---
+***
+## "Day 4" - 01/14-25
+
+- [x] Advanced G assignments. (Kept as a single point for now)
+- [ ] Start on VG assignments.
+- [x] Complete `MenuHandler`'s functions (few adjustments left)
+- [ ] Code cleanup, remove old redundant code or non-used code. (Partial)
+- [x] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
+
+### Agenda
+
+Ideally get done with all the G related assignments today if I have missed any. Most of the heavy work is sorted
+and passed their respective tests. When G is done, look into VG assignments and determine if it's easier to implement
+*before* or *after* code clean-up. Before that is definitely adding tests and code for `ScannerWrapper` to preserve
+the class logic of single responsibility.
+
+### Fleeting-Notes
+
+Once again, I'm struck with narcolepsy and now started working at 23:27 on the 14th... I feel like the "Day x" for me does not 
+work at all due to this.🙃
+
+Added a few `minutes > seconds` methods and the inverse to avoid faffing with writing 10023 seconds. It feels more
+normal to input how many minutes you have been exercising.
+
+Missed to write a try/catch block in `MenuHandler > resolveSessionCreation()`, also added `id.tolower()` for the hashmap
+to ensure that the key's stay the same.
+
+Not going to lie, `menuHandler` is handling **A LOT**. It should have been split into multiple classes. But it was 
+created with *hate* and *despair*... I'll ~~maybe~~ fix it if I find the time. But it's a cursed child of mine that was 
+made during the projects darkest times and shall forever be stained as such.👀 I'll at least sort it somewhat with regions.
+
+Noticed some small spots I've missed due to only seeing green tests. It was more UX/UI related or logic that the tests
+*shouldn't* cover. I would say the reason for that is because so much is tied to the menu logic that is not related
+to the assignment.
+
+### ScannerWrapper
+
+Added tests for valid date input `checkIfValidDate`. Might change the rest of input validations to reflect a specific
+assignment if the need is specific it enough, such as date, double/int instead of casting (int) etc.
+
+All of that is lower prio due to not being related to assignment as a whole, back to `MenuHandler`!
+
+I've made use of `scannerWrapper` to ensure that a date always is returned, even if someone enters a **blank**
+space. `dateInput` will automatically return the current time if no other *proper* date is given.
+**if** they somehow manage to enter nothing for date, then I created a constructor for session that does not
+take in a `LocalDate` which sends `LocalDate.now()` to the date. Tests was also made ahead of time. 
+
+Another test added is `dateInputTest_BlankInput()` in `ScannerWrapper`.
+
+### MenuHandler
+
+I'll have to restructure the menu slightly to accommodate `showUserInfo()` within the main menu. Multiple tests
+will most likely fail due to mocking of menu choices changing.
+
+Tried to create an adaptable mock that counted switch-cases(choices) and sent in an `int` to `numberInput` to add that
+as a max limit. The issue is that I then would have to remake the entire structure of Mock/when inputs for each
+singular menu (since they are all different in amounts). For the sake of the assignment, I'll not work on this function
+despite knowing that people can enter a number that would result it in being out of bounds.
+
+I can do a `while(true)` forced loop during wrong input. But that would also lead to multitudes of
+mocked `0`inputs to step out one menu after the other.
+
+Need to add an option pre search or post search to sort list based on time/distance. <br/>
+I decided to change the logic instead, sending in restructured session based on search into `viewSessionList()`.
+From there on out it loops within itself and re-arranges the list as needed depending on the choices of the user.
+The one drawback would be that you have to exit manually instead of getting lobbed to the out-most menu. 
+`changeSortMethod_SessionPrintTest()` tests this functionality and by proxy, ensuring that one of the 6 sort
+methods are functional.
+
+### InputLimit
+Added a quick enum for the character limit for certain inputs. Only name and session are implemented due to ease of change.
+Int would most likely rely on me changing a few things with how int works, and that would in turn cause quite an effect
+on the whole system. Ofc tests help minimise the time spent, but we also have to consider the fact that it's out of 
+scope of our assignment.

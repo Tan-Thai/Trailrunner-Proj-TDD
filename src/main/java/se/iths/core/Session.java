@@ -17,6 +17,13 @@ public class Session {
         this.date = date;
     }
 
+    public Session(String id, double distance, float time) {
+        this.id = id;
+        this.distance = distance;
+        this.time = time;
+        this.date = LocalDate.now();
+    }
+
     public int getFitnessScore() {
         return fitnessScore;
     }
