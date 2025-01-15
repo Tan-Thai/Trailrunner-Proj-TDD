@@ -30,9 +30,9 @@ public class Main {
 
     private static SessionHandler addSessionCollection(User user) {
         SessionHandler sessionHandler = user.getSessionCollection();
-        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
-        sessionHandler.createSession("Most Recent", 33, 5032, LocalDate.of(2025, 1, 5));
-        sessionHandler.createSession("Bloop", 12.3, 30934, LocalDate.of(2000, 4, 2));
+        sessionHandler.createSession("Short Fast Run - Christmas!", 3, 2030, LocalDate.of(2024, 12, 24));
+        sessionHandler.createSession("New year, new me!", 11.2, 5032, LocalDate.of(2025, 1, 5));
+        sessionHandler.createSession("Not that new I'm afraid...", 7, 3203, LocalDate.of(2025, 1, 13));
         return sessionHandler;
     }
 

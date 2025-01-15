@@ -12,12 +12,12 @@ public class MenuHandler {
     private User user;
     private Calculator calc = new Calculator();
 
-
     public MenuHandler(ScannerWrapper scannerWrapper,User user) {
         this.scannerWrapper = scannerWrapper;
         this.user = user;
     }
 
+    //region Run - First tier of the branching menu. General menu(User/Session)
     public void runMenu() {
 
         while (true) {
@@ -42,11 +42,61 @@ public class MenuHandler {
         }
     }
 
-    private void printFailedMenuChoice() {
-        System.out.println("Invalid choice, please try again");
-        scannerWrapper.promptEnterKey();
+    private void runSessionMenu() {
+        CmdUtility.clearConsole();
+        printSessionMenu();
+        printInputPrompt();
+
+        double userInput = scannerWrapper.numberInput();
+        switch ((int) userInput){
+            case 1:
+                addSessionToCollection();
+                break;
+            case 2:
+                resolveSessionSearch();
+                break;
+            case 3:
+                viewSessionList(user.getSessionCollection());
+                break;
+            case 0:
+                return;
+            default:
+                printFailedMenuChoice();
+                break;
+        }
     }
 
+    private void runUserSettingsMenu() {
+        CmdUtility.clearConsole();
+        printUserEditMenu();
+        printInputPrompt();
+
+        double userInput = scannerWrapper.numberInput();
+        switch ((int) userInput){
+            case 1:
+                editUserDetails(UserConfig.NAME);
+                break;
+            case 2:
+                editUserDetails(UserConfig.AGE);
+                break;
+            case 3:
+                editUserDetails(UserConfig.WEIGHT);
+                break;
+            case 4:
+                editUserDetails(UserConfig.HEIGHT);
+                break;
+            case 0:
+                return;
+            default:
+                printFailedMenuChoice();
+                break;
+        }
+
+    }
+    //endregion
+
+
+    //region View - Second tier of the branching menu. Enters details and larger scale views.
     private void viewUserDetails() {
         CmdUtility.clearConsole();
         // Todo this does not have a test (it's essentially another menu check test I would need to do.)
@@ -77,26 +127,53 @@ public class MenuHandler {
         }
     }
 
-    private void printUserDetailsMenu() {
-        System.out.println("1. Edit your details\n" +
-                           "0. Exit");
+    public void viewSessionList(SessionHandler sessionHandler) {
+        SortType currentSortType = SortType.BY_DATE_DESC;
+
+        boolean viewingSessions = true;
+        while (viewingSessions) {
+            List<String> sessionList = sessionHandler.getSortedSessions(currentSortType);
+            CmdUtility.clearConsole();
+            printAllSessions(sessionList);
+            printInputPrompt();
+
+            int userInput = (int) scannerWrapper.numberInput();
+
+            if (userInput > 0 && userInput <= sessionList.size()) {
+                String selectedSession = sessionList.get(userInput - 1);
+                Session pulledSession = user.getSessionCollection().readSession(selectedSession);
+                viewSessionDetails(pulledSession);
+
+            } else if (userInput == sessionList.size() + 1) {
+                currentSortType = resolveChangeSessionOrder();
+                sessionHandler.getSortedSessions(currentSortType);
+
+            } else if (userInput == 0) {
+                System.out.println("Going back to main menu.");
+                viewingSessions = false;
+                scannerWrapper.promptEnterKey();
+            }
+        }
     }
 
-    private void runSessionMenu() {
+    private void viewSessionDetails(Session pulledSession) {
         CmdUtility.clearConsole();
-        printSessionMenu();
-        printInputPrompt();
+        System.out.println(
+                "You have selected: " + pulledSession.getId() + "\n" +
+                "Duration: " + calc.calcSecToMin(pulledSession.getTime()) + " minutes\n" +
+                "Distance: " + pulledSession.getDistance() + " km\n" +
+                "Date: " + pulledSession.getDate());
 
-        double userInput = scannerWrapper.numberInput();
-        switch ((int) userInput){
+        printInputPrompt();
+        printSessionDetailMenu();
+
+        int choice = (int) scannerWrapper.numberInput();
+        switch (choice) {
             case 1:
-                resolveSessionCreation();
+                editSessionDetails(pulledSession);
                 break;
             case 2:
-                resolveSessionSearch();
-                break;
-            case 3:
-                viewSessionList(user.getSessionCollection());
+                deleteSessionQuery(pulledSession);
                 break;
             case 0:
                 return;
@@ -105,49 +182,11 @@ public class MenuHandler {
                 break;
         }
     }
+    //endregion
 
-    private void resolveSessionSearch() {
-        CmdUtility.clearConsole();
-        System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
-        String searchQuery = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
 
-        SessionHandler foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
-        if (foundSessions.getSessionIDs().isEmpty()) {
-            System.out.println("No sessions found, returning to main menu.");
-            scannerWrapper.promptEnterKey();
-        } else
-            viewSessionList(foundSessions);
-    }
-
-    private void runUserSettingsMenu() {
-        CmdUtility.clearConsole();
-        printUserEditMenu();
-        printInputPrompt();
-
-        double userInput = scannerWrapper.numberInput();
-        switch ((int) userInput){
-            case 1:
-                resolveUserConfig(UserConfig.NAME);
-                break;
-            case 2:
-                resolveUserConfig(UserConfig.AGE);
-                break;
-            case 3:
-                resolveUserConfig(UserConfig.WEIGHT);
-                break;
-            case 4:
-                resolveUserConfig(UserConfig.HEIGHT);
-                break;
-            case 0:
-                return;
-            default:
-                printFailedMenuChoice();
-                break;
-        }
-
-    }
-
-    private void resolveUserConfig(UserConfig choice) {
+    //region Methods that leads into data manipulation (add, delete, edit)
+    private void editUserDetails(UserConfig choice) {
         CmdUtility.clearConsole();
         System.out.println("Are you sure you want to change your " + choice.name().toLowerCase() + "? (y/n)");
         printInputPrompt();
@@ -176,33 +215,67 @@ public class MenuHandler {
         }
     }
 
-    public void viewSessionList(SessionHandler sessionHandler) {
-        SortType currentSortType = SortType.BY_DATE_DESC;
+    private void editSessionDetails(Session pulledSession) {
+        //TODO Add tests + func.
+        System.out.println("You have selected to edit: " + pulledSession.getId() + "\n");
+        System.out.println("Function not yet implemented - returning to main menu");
+        scannerWrapper.promptEnterKey();
+    }
 
-        boolean viewingSessions = true;
-        while (viewingSessions) {
-            List<String> sessionList = sessionHandler.getSortedSessions(currentSortType);
-            CmdUtility.clearConsole();
-            printAllSessions(sessionList);
-            printInputPrompt();
+    public void deleteSessionQuery(Session pulledSession) {
+        CmdUtility.clearConsole();
+        System.out.println("Are you sure you want to delete the session: " + pulledSession.getId() + "? (y/n)");
+        printInputPrompt();
 
-            int userInput = (int) scannerWrapper.numberInput();
-
-            if (userInput > 0 && userInput <= sessionList.size()) {
-                String selectedSession = sessionList.get(userInput - 1);
-                Session pulledSession = user.getSessionCollection().readSession(selectedSession);
-                viewSessionDetails(pulledSession);
-
-            } else if (userInput == sessionList.size() + 1) {
-                currentSortType = resolveChangeSessionOrder();
-                sessionHandler.getSortedSessions(currentSortType);
-
-            } else if (userInput == 0) {
-                System.out.println("Going back to session menu.");
-                viewingSessions = false;
-                scannerWrapper.promptEnterKey();
-            }
+        if (scannerWrapper.yesOrNoInput()) {
+            user.getSessionCollection().deleteSession(pulledSession.getId());
+            System.out.println("Deleted session: " + pulledSession.getId());
+            scannerWrapper.promptEnterKey();
         }
+
+    }
+
+    public void addSessionToCollection() {
+        CmdUtility.clearConsole();
+        System.out.println("Please enter the corresponding info for this session:");
+        System.out.print("\nName of the session: ");
+        String sessionName = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
+
+        System.out.print("\nDistance in km: ");
+        double sessionDistance = scannerWrapper.numberInput();
+
+        System.out.print("\nDuration in minutes: ");
+        int sessionDuration = (int) calc.calcMinToSec(scannerWrapper.numberInput());
+
+        // TODO This entire part below can become its own method within scanner.
+        System.out.print("\nDate (YYYY-MM-DD): ");
+        LocalDate sessionDate = scannerWrapper.dateInput();
+
+        try {
+            user.getSessionCollection().createSession(sessionName, sessionDistance ,sessionDuration, sessionDate);
+            System.out.println("\nSession created successfully!");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nSession already exists!");
+        }
+
+        scannerWrapper.promptEnterKey();
+    }
+    //endregion
+
+
+    //region Resolves - Executes parts of a function connected to a larger method.
+    private void resolveSessionSearch() {
+        CmdUtility.clearConsole();
+        System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
+        String searchQuery = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
+
+        SessionHandler foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
+        if (foundSessions.getSessionIDs().isEmpty()) {
+            System.out.println("No sessions found, returning to main menu.");
+            scannerWrapper.promptEnterKey();
+        } else
+            viewSessionList(foundSessions);
     }
 
     private SortType resolveChangeSessionOrder() {
@@ -230,7 +303,10 @@ public class MenuHandler {
                 return SortType.BY_DATE_DESC;
         }
     }
+    //endregion
 
+
+    //region Prints (should maybe be their own class)
     private void printSortTypesAlternatives() {
 
         System.out.println("Pick the order you wish to have.");
@@ -244,80 +320,22 @@ public class MenuHandler {
 
     }
 
-    private void viewSessionDetails(Session pulledSession) {
-        CmdUtility.clearConsole();
-        System.out.println(
-                "You have selected: " + pulledSession.getId() + "\n" +
-                "Duration: " + calc.calcSecToMin(pulledSession.getTime()) + " minutes\n" +
-                "Distance: " + pulledSession.getDistance() + " km\n" +
-                "Date: " + pulledSession.getDate());
-
-        printInputPrompt();
-
-        int choice = (int) scannerWrapper.numberInput();
-        switch (choice) {
-            case 1:
-                editSessionDetails(pulledSession);
-                break;
-            case 2:
-                deleteSessionQuery(pulledSession);
-                break;
-            case 0:
-                return;
-            default:
-                printFailedMenuChoice();
-                break;
-        }
+    private void printUserDetailsMenu() {
+        System.out.println("1. Edit your details\n" +
+                           "0. Exit");
     }
 
-    private void editSessionDetails(Session pulledSession) {
-        //TODO Add tests + func.
-        System.out.println("You have selected: " + pulledSession.getId() + "\n");
-        System.out.println("Function not yet implemented - returning to main menu");
+    private void printSessionDetailMenu() {
+        System.out.println("1. Edit session details\n" +
+                           "2. Delete this session.\n" +
+                           "0. Exit");
+    }
+
+    private void printFailedMenuChoice() {
+        System.out.println("Invalid choice, please try again");
         scannerWrapper.promptEnterKey();
     }
 
-    public void deleteSessionQuery(Session pulledSession) {
-        CmdUtility.clearConsole();
-        System.out.println("Are you sure you want to delete the session: " + pulledSession.getId() + "? (y/n)");
-        printInputPrompt();
-
-        if (scannerWrapper.yesOrNoInput()) {
-            user.getSessionCollection().deleteSession(pulledSession.getId());
-            System.out.println("Deleted session: " + pulledSession.getId());
-            scannerWrapper.promptEnterKey();
-        }
-
-    }
-
-    public void resolveSessionCreation() {
-        CmdUtility.clearConsole();
-        System.out.println("Please enter the corresponding info for this session:");
-        System.out.print("\nName of the session: ");
-        String sessionName = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
-
-        System.out.print("\nDistance in km: ");
-        double sessionDistance = scannerWrapper.numberInput();
-
-        System.out.print("\nDuration in minutes: ");
-        int sessionDuration = (int) calc.calcMinToSec(scannerWrapper.numberInput());
-
-        // TODO This entire part below can become its own method within scanner.
-        System.out.print("\nDate (YYYY-MM-DD): ");
-        LocalDate sessionDate = scannerWrapper.dateInput();
-
-        try {
-            user.getSessionCollection().createSession(sessionName, sessionDistance ,sessionDuration, sessionDate);
-            System.out.println("\nSession created successfully!");
-
-        } catch (IllegalArgumentException e) {
-            System.out.println("\nSession already exists!");
-        }
-
-        scannerWrapper.promptEnterKey();
-    }
-
-    //region Prints (should maybe be their own class)
     public void printMainMenu() {
         System.out.println("1. User Settings\n" +
                            "2. Session Menu\n" +
@@ -343,14 +361,6 @@ public class MenuHandler {
         System.out.print("\nPlease enter your choice: ");
     }
 
-    public void printQueryResult(List<String> queryResult) {
-        CmdUtility.clearConsole();
-        int i = 1;
-        for (String s : queryResult) {
-            System.out.println(i++ + ". " + s);
-        }
-    }
-
     public void printAllSessions(List<String> fullSessionList) {
         int i = 1;
         for (String s : fullSessionList) {
@@ -360,5 +370,4 @@ public class MenuHandler {
         System.out.println("0. Exit");
     }
     //endregion
-
 }

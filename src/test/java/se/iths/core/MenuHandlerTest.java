@@ -46,7 +46,7 @@ public class MenuHandlerTest {
     }
 
     @Test
-    public void resolveUserConfig_ValidNameChange() {
+    public void editUserDetails_ValidNameChange() {
 
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
@@ -63,7 +63,7 @@ public class MenuHandlerTest {
     }
 
     @Test
-    public void resolveUserConfig_AbortedNameChange() {
+    public void editUserDetails_AbortedNameChange() {
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
                 .thenReturn(1.0)
@@ -145,7 +145,7 @@ public class MenuHandlerTest {
     }
 
     @Test
-    void resolveSessionCreationTest() {
+    void addSessionToCollectionTest() {
 
         when(scannerMock.numberInput())
                 .thenReturn(2.0)
@@ -216,24 +216,6 @@ public class MenuHandlerTest {
 
         menuHandler.printUserEditMenu();
 
-        String actual = outputStream.toString().replace("\r\n", "\n");
-        assertEquals(expected, actual, "Expected print does not match the actual output.");
-    }
-
-    @Test
-    void printQueryResultTest() {
-        // Adding 3 sessions to the user's collection
-        SessionHandler sessionHandler = user.getSessionCollection();
-        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
-
-
-        SessionHandler queryResult = sessionHandler.searchSessionByID("Bloop");
-        List<String> sessionList = queryResult.getSessionIDs();
-
-        menuHandler.printQueryResult(sessionList);
-
-        String expected = "1. Bloop\n" +
-                          "2. Bloop2\n";
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }

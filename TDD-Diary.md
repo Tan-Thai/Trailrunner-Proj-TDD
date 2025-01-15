@@ -370,7 +370,7 @@ work anymore unless a 💡 hits.
 - [x] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
 - [x] Complete `MenuHandler`'s functions (few adjustments left)
-- [ ] Code cleanup, remove old redundant code or non-used code.
+- [ ] Code cleanup, remove old redundant code or non-used code. (Partial)
 - [x] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
 
 ### Agenda
@@ -390,6 +390,14 @@ normal to input how many minutes you have been exercising.
 
 Missed to write a try/catch block in `MenuHandler > resolveSessionCreation()`, also added `id.tolower()` for the hashmap
 to ensure that the key's stay the same.
+
+Not going to lie, `menuHandler` is handling **A LOT**. It should have been split into multiple classes. But it was 
+created with *hate* and *despair*... I'll ~~maybe~~ fix it if I find the time. But it's a cursed child of mine that was 
+made during the projects darkest times and shall forever be stained as such.👀 I'll at least sort it somewhat with regions.
+
+Noticed some small spots I've missed due to only seeing green tests. It was more UX/UI related or logic that the tests
+*shouldn't* cover. I would say the reason for that is because so much is tied to the menu logic that is not related
+to the assignment.
 
 ### ScannerWrapper
 
