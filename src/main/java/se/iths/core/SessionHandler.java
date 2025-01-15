@@ -23,7 +23,9 @@ public class SessionHandler {
     }
 
     public void createSession(String id, double distance, int time_seconds, LocalDate date) {
-        if (sessionCollection.containsKey(id)) {
+        String normalizedId = id.toLowerCase();
+
+        if (sessionCollection.containsKey(normalizedId)) {
             throw new IllegalArgumentException("A recorded session with this ID already exists.");
         }
 
@@ -33,12 +35,12 @@ public class SessionHandler {
         newSession.setFitnessScore(newFitnessScore - totalFitnessScore);
         setTotalFitnessScore(newFitnessScore);
 
-        sessionCollection.put(id, newSession);
+        sessionCollection.put(normalizedId, newSession);
     }
 
     // I would keep IOException if we worked with a database. But since we don't im converting it to "Illegal-arg"
     public Session readSession(String id){
-        Session session = sessionCollection.get(id);
+        Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
         if (session == null) {
             throw new IllegalArgumentException("No recorded session with this ID exists.");
         }
@@ -47,15 +49,21 @@ public class SessionHandler {
     }
 
     public List<String> getSessionIDs() {
-        return new ArrayList<>(sessionCollection.keySet());
+        List<String> sessionIDs = new ArrayList<>();
+
+        for (Session session : sessionCollection.values()) {
+            sessionIDs.add(session.getId());
+        }
+
+        return sessionIDs;
     }
     
     public void deleteSession(String id) {
-        if (!sessionCollection.containsKey(id)) {
+        if (!sessionCollection.containsKey(id.toLowerCase())) {
             throw new IllegalArgumentException("No recorded session with this ID exists.");
         }
 
-        sessionCollection.remove(id);
+        sessionCollection.remove(id.toLowerCase());
     }
 
 
@@ -86,7 +94,7 @@ public class SessionHandler {
     private SessionHandler createSubset(List<String> sessionIDs) {
         SessionHandler curatedCollection = new SessionHandler();
         for (String id : sessionIDs) {
-            if (sessionCollection.containsKey(id)) {
+            if (sessionCollection.containsKey(id.toLowerCase())) { //to lower to search for case-insensitive id's
                 Session session = sessionCollection.get(id);
                 curatedCollection.sessionCollection.put(id, session);
             }

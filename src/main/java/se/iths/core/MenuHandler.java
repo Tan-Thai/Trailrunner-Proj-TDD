@@ -200,7 +200,7 @@ public class MenuHandler {
             } else if (userInput == 0) {
                 System.out.println("Going back to session menu.");
                 viewingSessions = false;
-                printInputPrompt();
+                scannerWrapper.promptEnterKey();
             }
         }
     }
@@ -248,8 +248,8 @@ public class MenuHandler {
         CmdUtility.clearConsole();
         System.out.println(
                 "You have selected: " + pulledSession.getId() + "\n" +
-                "Duration: " + pulledSession.getTime() + "\n" +
-                "Distance: " + pulledSession.getDistance() + "\n" +
+                "Duration: " + calc.calcSecToMin(pulledSession.getTime()) + " minutes\n" +
+                "Distance: " + pulledSession.getDistance() + " km\n" +
                 "Date: " + pulledSession.getDate());
 
         printInputPrompt();
@@ -274,11 +274,12 @@ public class MenuHandler {
         //TODO Add tests + func.
         System.out.println("You have selected: " + pulledSession.getId() + "\n");
         System.out.println("Function not yet implemented - returning to main menu");
+        scannerWrapper.promptEnterKey();
     }
 
     public void deleteSessionQuery(Session pulledSession) {
         CmdUtility.clearConsole();
-        System.out.println("Are you sure you want to delete your " + pulledSession.getId() + "? (y/n)");
+        System.out.println("Are you sure you want to delete the session: " + pulledSession.getId() + "? (y/n)");
         printInputPrompt();
 
         if (scannerWrapper.yesOrNoInput()) {
@@ -292,21 +293,27 @@ public class MenuHandler {
     public void resolveSessionCreation() {
         CmdUtility.clearConsole();
         System.out.println("Please enter the corresponding info for this session:");
-        System.out.print("Name of the session: \n");
+        System.out.print("\nName of the session: ");
         String sessionName = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
 
-        System.out.print("Distance in km: \n");
+        System.out.print("\nDistance in km: ");
         double sessionDistance = scannerWrapper.numberInput();
 
-        System.out.print("Duration in minutes: \n");
-        int sessionDuration = (int) scannerWrapper.numberInput();
+        System.out.print("\nDuration in minutes: ");
+        int sessionDuration = (int) calc.calcMinToSec(scannerWrapper.numberInput());
 
         // TODO This entire part below can become its own method within scanner.
-        System.out.print("Date (YYYY-MM-DD): \n");
+        System.out.print("\nDate (YYYY-MM-DD): ");
         LocalDate sessionDate = scannerWrapper.dateInput();
 
-        user.getSessionCollection().createSession(sessionName, sessionDistance ,sessionDuration, sessionDate);
-        System.out.println("Session created successfully!");
+        try {
+            user.getSessionCollection().createSession(sessionName, sessionDistance ,sessionDuration, sessionDate);
+            System.out.println("\nSession created successfully!");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nSession already exists!");
+        }
+
         scannerWrapper.promptEnterKey();
     }
 

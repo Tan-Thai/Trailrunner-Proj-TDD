@@ -367,11 +367,11 @@ work anymore unless a 💡 hits.
 ***
 ## "Day 4" - 01/14-25
 
-- [ ] Advanced G assignments. (Kept as a single point for now)
+- [x] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
-- [ ] Complete `MenuHandler`'s functions (few adjustments left)
+- [x] Complete `MenuHandler`'s functions (few adjustments left)
 - [ ] Code cleanup, remove old redundant code or non-used code.
-- [ ] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
+- [x] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
 
 ### Agenda
 
@@ -384,6 +384,12 @@ the class logic of single responsibility.
 
 Once again, I'm struck with narcolepsy and now started working at 23:27 on the 14th... I feel like the "Day x" for me does not 
 work at all due to this.🙃
+
+Added a few `minutes > seconds` methods and the inverse to avoid faffing with writing 10023 seconds. It feels more
+normal to input how many minutes you have been exercising.
+
+Missed to write a try/catch block in `MenuHandler > resolveSessionCreation()`, also added `id.tolower()` for the hashmap
+to ensure that the key's stay the same.
 
 ### ScannerWrapper
 

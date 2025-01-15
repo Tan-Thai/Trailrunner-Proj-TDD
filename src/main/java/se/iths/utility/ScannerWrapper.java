@@ -74,7 +74,7 @@ public class ScannerWrapper {
             }
 
             try {
-                userInput = Integer.parseInt(input);
+                userInput = Double.parseDouble(input);
                 if (userInput < 0) {
                     System.err.print("Please enter a positive number: ");
                 } else {

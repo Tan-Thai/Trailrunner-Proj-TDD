@@ -91,4 +91,13 @@ public class Calculator {
     private int getSessionCount(SessionHandler sessionHandler) {
         return sessionHandler.getSessionIDs().size();
     }
+
+    public double calcSecToMin(double timeSec) {
+        double secondsToMinutes = timeSec / 60;
+        return (double) Math.round(secondsToMinutes * 10) / 10;
+    }
+
+    public double calcMinToSec(double timeSec) {
+        return timeSec * 60;
+    }
 }

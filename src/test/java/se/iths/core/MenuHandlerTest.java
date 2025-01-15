@@ -114,8 +114,8 @@ public class MenuHandlerTest {
         actual = actual.substring(startIndex, endIndex).trim();
 
         String expected = "1. Bloop\n" +
-                          "2. Bloop3\n" +
-                          "3. Bloop2\n" +
+                          "2. Bloop2\n" +
+                          "3. Bloop3\n" +
                           "4. To change sort method\n" +
                           "0. Exit";
 
@@ -170,10 +170,10 @@ public class MenuHandlerTest {
         actual = actual.substring(startIndex, endIndex).trim();
 
         String expected = "Please enter the corresponding info for this session:\n" +
-                          "Name of the session: \n" +
-                          "Distance in km: \n" +
-                          "Duration in minutes: \n" +
-                          "Date (YYYY-MM-DD):";
+                          "\nName of the session: " +
+                          "\nDistance in km: " +
+                          "\nDuration in minutes: " +
+                          "\nDate (YYYY-MM-DD):";
         assertEquals(expected, actual, "Print for session creation does not match.");
 
         List<String> sessions = user.getSessionCollection().getSessionIDs();
@@ -246,8 +246,8 @@ public class MenuHandlerTest {
         menuHandler.printAllSessions(fullSessionList);
 
         String expected = "1. Bloop\n" +
-                          "2. New years run!\n" +
-                          "3. Morning walk\n" +
+                          "2. Morning walk\n" +
+                          "3. New years run!\n" +
                           "4. To change sort method\n" +
                           "0. Exit\n";
         String actual = outputStream.toString().replace("\r\n", "\n");
