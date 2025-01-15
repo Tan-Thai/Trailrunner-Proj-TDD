@@ -412,4 +412,15 @@ despite knowing that people can enter a number that would result it in being out
 I can do a `while(true)` forced loop during wrong input. But that would also lead to multitudes of
 mocked `0`inputs to step out one menu after the other.
 
-Need to add an option pre search or post search to sort list based on time/distance
+Need to add an option pre search or post search to sort list based on time/distance. <br/>
+I decided to change the logic instead, sending in restructured session based on search into `viewSessionList()`.
+From there on out it loops within itself and re-arranges the list as needed depending on the choices of the user.
+The one drawback would be that you have to exit manually instead of getting lobbed to the out-most menu. 
+`changeSortMethod_SessionPrintTest()` tests this functionality and by proxy, ensuring that one of the 6 sort
+methods are functional.
+
+### InputLimit
+Added a quick enum for the character limit for certain inputs. Only name and session are implemented due to ease of change.
+Int would most likely rely on me changing a few things with how int works, and that would in turn cause quite an effect
+on the whole system. Ofc tests help minimise the time spent, but we also have to consider the fact that it's out of 
+scope of our assignment.

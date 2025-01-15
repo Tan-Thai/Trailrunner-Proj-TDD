@@ -1,5 +1,7 @@
 package se.iths.utility;
 
+import se.iths.core.InputLimit;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -120,7 +122,7 @@ public class ScannerWrapper {
         Try catch is if the input does not match anything at all in terms of (YYYY-MM-DD) structure.
         * */
         do {
-            String userInput = textInput(10);
+            String userInput = textInput(InputLimit.DISTANCE.getLimit());
             try {
                 if (userInput.isBlank())
                     return LocalDate.now();

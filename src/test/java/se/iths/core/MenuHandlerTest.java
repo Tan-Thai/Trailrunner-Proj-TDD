@@ -55,7 +55,7 @@ public class MenuHandlerTest {
                 .thenReturn(1.0)
                 .thenReturn(0.0);
         when(scannerMock.yesOrNoInput()).thenReturn(true);
-        when(scannerMock.textInput(15)).thenReturn("New Name");
+        when(scannerMock.textInput(InputLimit.USERNAME.getLimit())).thenReturn("New Name");
 
         menuHandler.runMenu();
 
@@ -95,7 +95,7 @@ public class MenuHandlerTest {
     }
 
     @Test
-    void resolveSessionSearch() {
+    void resolveSessionSearch_ValidSearch() {
         user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
         user.getSessionCollection().createSession("Bloop3", 8,3600, LocalDate.of(2024, 12, 30));
 
@@ -104,8 +104,7 @@ public class MenuHandlerTest {
                 .thenReturn(2.0)
                 .thenReturn(0.0);
 
-        when(scannerMock.textInput(15)).thenReturn("Bloop");
-
+        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit())).thenReturn("Bloop");
 
         menuHandler.runMenu();
 
@@ -117,10 +116,32 @@ public class MenuHandlerTest {
         String expected = "1. Bloop\n" +
                           "2. Bloop3\n" +
                           "3. Bloop2\n" +
+                          "4. To change sort method\n" +
                           "0. Exit";
 
         assertEquals(expected, actual, "Session search result does not match.");
+    }
 
+    @Test
+    void resolveSessionSearch_InvalidSearch() {
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0)
+                .thenReturn(2.0)
+                .thenReturn(0.0);
+
+        when(scannerMock.textInput(InputLimit.USERNAME.getLimit())).thenReturn("YOOO THAT ONE EXTREME DAY");
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("No sessions found, ");
+        int endIndex = actual.indexOf("returning to main menu.\n", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "No sessions found,";
+
+        assertEquals(expected, actual, "0 query results print does not match.");
     }
 
     @Test
@@ -133,7 +154,7 @@ public class MenuHandlerTest {
                 .thenReturn(30.2) // duration in min (convert behind the scenes)
                 .thenReturn(0.0);
 
-        when(scannerMock.textInput(15))
+        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
                 .thenReturn("One cold run");
 
         when(scannerMock.dateInput())
@@ -204,9 +225,12 @@ public class MenuHandlerTest {
         // Adding 3 sessions to the user's collection
         SessionHandler sessionHandler = user.getSessionCollection();
         sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
-        List<String> queryResult = sessionHandler.searchSessionByID("Bloop");
 
-        menuHandler.printQueryResult(queryResult);
+
+        SessionHandler queryResult = sessionHandler.searchSessionByID("Bloop");
+        List<String> sessionList = queryResult.getSessionIDs();
+
+        menuHandler.printQueryResult(sessionList);
 
         String expected = "1. Bloop\n" +
                           "2. Bloop2\n";
@@ -224,8 +248,37 @@ public class MenuHandlerTest {
         String expected = "1. Bloop\n" +
                           "2. New years run!\n" +
                           "3. Morning walk\n" +
+                          "4. To change sort method\n" +
                           "0. Exit\n";
         String actual = outputStream.toString().replace("\r\n", "\n");
+        assertEquals(expected, actual, "Expected print does not match the actual output.");
+    }
+
+    @Test
+    void changeSortMethod_SessionPrintTest() {
+        // tests both the menu system to change sort-order. time-asc specifically.
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0)
+                .thenReturn(3.0)
+                .thenReturn(4.0)
+                .thenReturn(3.0)
+                .thenReturn(0.0)
+                .thenReturn(0.0);
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. New years run!");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. New years run!\n" +
+                          "2. Bloop\n" +
+                          "3. Morning walk\n" +
+                          "4. To change sort method\n" +
+                          "0. Exit";
+
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
 

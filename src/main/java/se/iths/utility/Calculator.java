@@ -58,7 +58,10 @@ public class Calculator {
         double totalDistanceTraveled = calcTotalDistanceTraveled(sessionHandler);
         int sessionCount = getSessionCount(sessionHandler);
 
-        return totalDistanceTraveled / sessionCount;
+
+        // rounds it, and keeps 2 decimals.
+        // contemplated decimalformat, but I rather not introduce new stuff at this point.
+        return (double) Math.round((totalDistanceTraveled / sessionCount) * 100) / 100;
     }
 
     // TODO: Create a yolo stream variant of this method.

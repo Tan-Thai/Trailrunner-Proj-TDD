@@ -48,17 +48,18 @@ public class MenuHandler {
     }
 
     private void viewUserDetails() {
+        CmdUtility.clearConsole();
         // Todo this does not have a test (it's essentially another menu check test I would need to do.)
         SessionHandler sessionHandler = user.getSessionCollection();
         System.out.println("Welcome " + user.getName() + "!");
-        System.out.println("This is the current details of you: \n" +
-                           "Age: " + user.getAge() + "\n" +
-                           "Height: " + user.getHeight() + "cm\n" +
-                           "Weight: " + user.getWeight() + "kg\n" +
+        System.out.println("This is the current details of you:\n");
+        System.out.println("Age: " + user.getAge() + "\n" +
+                           "Height: " + user.getHeight() + " cm\n" +
+                           "Weight: " + user.getWeight() + " kg\n" +
                            "-----\n" +
                            "Fitness Score: " + sessionHandler.getTotalFitnessScore() + "\n" +
-                           "Total Distance Traveled: " + calc.calcTotalDistanceTraveled(sessionHandler) + "\n" +
-                           "Average Distance Traveled per Session: " + calc.calcAverageDistanceTraveled(sessionHandler) + "\n");
+                           "Total Distance Traveled: " + calc.calcTotalDistanceTraveled(sessionHandler) + " km\n" +
+                           "Average Distance Traveled per Session: " + calc.calcAverageDistanceTraveled(sessionHandler) + " km\n");
 
         printUserDetailsMenu();
         printInputPrompt();
@@ -95,8 +96,7 @@ public class MenuHandler {
                 resolveSessionSearch();
                 break;
             case 3:
-                List<String> sessionList = this.user.getSessionCollection().getSortedSessions(SortType.BY_DATE_DESC);
-                viewSessionList(sessionList);
+                viewSessionList(user.getSessionCollection());
                 break;
             case 0:
                 return;
@@ -109,12 +109,12 @@ public class MenuHandler {
     private void resolveSessionSearch() {
         CmdUtility.clearConsole();
         System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
-        String searchQuery = scannerWrapper.textInput(15);
+        String searchQuery = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
 
-        List<String> foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
-        if (foundSessions.isEmpty()) {
-            System.out.println("No sessions found");
-            printInputPrompt();
+        SessionHandler foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
+        if (foundSessions.getSessionIDs().isEmpty()) {
+            System.out.println("No sessions found, returning to main menu.");
+            scannerWrapper.promptEnterKey();
         } else
             viewSessionList(foundSessions);
     }
@@ -158,7 +158,7 @@ public class MenuHandler {
 
             switch (choice) {
                 case NAME:
-                    user.setName(scannerWrapper.textInput(15));
+                    user.setName(scannerWrapper.textInput(InputLimit.USERNAME.getLimit()));
                     break;
                 case AGE:
                     user.setAge((int) scannerWrapper.numberInput());
@@ -176,20 +176,72 @@ public class MenuHandler {
         }
     }
 
-    public void viewSessionList(List<String> sessionList) {
+    public void viewSessionList(SessionHandler sessionHandler) {
+        SortType currentSortType = SortType.BY_DATE_DESC;
+
+        boolean viewingSessions = true;
+        while (viewingSessions) {
+            List<String> sessionList = sessionHandler.getSortedSessions(currentSortType);
+            CmdUtility.clearConsole();
+            printAllSessions(sessionList);
+            printInputPrompt();
+
+            int userInput = (int) scannerWrapper.numberInput();
+
+            if (userInput > 0 && userInput <= sessionList.size()) {
+                String selectedSession = sessionList.get(userInput - 1);
+                Session pulledSession = user.getSessionCollection().readSession(selectedSession);
+                viewSessionDetails(pulledSession);
+
+            } else if (userInput == sessionList.size() + 1) {
+                currentSortType = resolveChangeSessionOrder();
+                sessionHandler.getSortedSessions(currentSortType);
+
+            } else if (userInput == 0) {
+                System.out.println("Going back to session menu.");
+                viewingSessions = false;
+                printInputPrompt();
+            }
+        }
+    }
+
+    private SortType resolveChangeSessionOrder() {
         CmdUtility.clearConsole();
-        printAllSessions(sessionList);
+        printSortTypesAlternatives();
         printInputPrompt();
 
         int userInput = (int) scannerWrapper.numberInput();
-        if (userInput > 0 && userInput <= sessionList.size()) {
-            String selectedSession = sessionList.get(userInput - 1);
-            Session pulledSession = user.getSessionCollection().readSession(selectedSession);
-            viewSessionDetails(pulledSession);
-        } else if (userInput == 0) {
-            System.out.println("Going back to session menu.");
-            printInputPrompt();
+        switch (userInput) {
+            case 1:
+                return SortType.BY_DATE_ASC;
+            case 2:
+                return SortType.BY_DATE_DESC;
+            case 3:
+                return SortType.BY_TIME_ASC;
+            case 4:
+                return SortType.BY_TIME_DESC;
+            case 5:
+                return SortType.BY_DISTANCE_ASC;
+            case 6:
+                return SortType.BY_DISTANCE_DESC;
+            case 0:
+                return SortType.BY_DATE_DESC; // defaulting back to standard sort
+            default:
+                return SortType.BY_DATE_DESC;
         }
+    }
+
+    private void printSortTypesAlternatives() {
+
+        System.out.println("Pick the order you wish to have.");
+        System.out.print("1. Date (ascending)\n" +
+                         "2. Date (descending)\n" +
+                         "3. Time (ascending)\n" +
+                         "4. Time (descending)\n" +
+                         "5. Distance (ascending)\n" +
+                         "6. Distance (descending)\n" +
+                         "0. Exit");
+
     }
 
     private void viewSessionDetails(Session pulledSession) {
@@ -241,7 +293,7 @@ public class MenuHandler {
         CmdUtility.clearConsole();
         System.out.println("Please enter the corresponding info for this session:");
         System.out.print("Name of the session: \n");
-        String sessionName = scannerWrapper.textInput(15);
+        String sessionName = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
 
         System.out.print("Distance in km: \n");
         double sessionDistance = scannerWrapper.numberInput();
@@ -271,7 +323,6 @@ public class MenuHandler {
                            "3. Change Weight\n" +
                            "4. Change Height\n" +
                            "0. Exit");
-
     }
 
     public void printSessionMenu() {
@@ -298,6 +349,7 @@ public class MenuHandler {
         for (String s : fullSessionList) {
             System.out.println(i++ + ". " + s);
         }
+        System.out.println( i + ". To change sort method");
         System.out.println("0. Exit");
     }
     //endregion

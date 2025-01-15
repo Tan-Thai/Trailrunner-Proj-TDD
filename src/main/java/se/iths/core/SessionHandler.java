@@ -58,24 +58,39 @@ public class SessionHandler {
         sessionCollection.remove(id);
     }
 
-    public List<String> searchSessionByID(String query) {
+
+    public SessionHandler searchSessionByID(String query) {
         if (query == null || query.isEmpty()) {
-            return new ArrayList<>();
+            return new SessionHandler();
         }
-        return sessionCollection.keySet().stream()
+
+        List<String> foundSessions = sessionCollection.keySet().stream()
                 .filter(id -> id.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
+
+        return createSubset(foundSessions);
     }
 
     public List<String> getSortedSessions(SortType sortType) {
 
-        List<String> sortedList = sessionCollection
+        return sessionCollection
                 .values()
                 .stream()
                 .sorted(sortType.getComparator())
                 .map(Session::getId)
                 .collect(Collectors.toList());
+    }
 
-        return sortedList;
+    // created this to unify the output for searched/non searched sessions so that they can be re-sorted multiple times
+    // without dropping its context. The issue was in me passing the list with no data to compare.
+    private SessionHandler createSubset(List<String> sessionIDs) {
+        SessionHandler curatedCollection = new SessionHandler();
+        for (String id : sessionIDs) {
+            if (sessionCollection.containsKey(id)) {
+                Session session = sessionCollection.get(id);
+                curatedCollection.sessionCollection.put(id, session);
+            }
+        }
+        return curatedCollection;
     }
 }
