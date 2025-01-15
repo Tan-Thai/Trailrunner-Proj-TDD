@@ -26,10 +26,12 @@ public class MenuHandler {
 
             switch ((int) userInput){
                 case 1:
-                    runUserMenu();
+                    runUserSettingsMenu();
                     break;
                 case 2:
                     runSessionMenu();
+                    break;
+                case 3:
                     break;
                 case 0:
                     return;
@@ -38,6 +40,23 @@ public class MenuHandler {
                     scannerWrapper.promptEnterKey();
                     break;
             }
+        }
+    }
+
+    private void viewUserDetails() {
+        // Todo prints out user details and then allows people to edit from here
+        System.out.println("Welcome " + user.getName());
+
+        double userInput = scannerWrapper.numberInput();
+        switch ((int) userInput) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 0:
+                return;
+            default:
+
         }
     }
 
@@ -56,7 +75,7 @@ public class MenuHandler {
                 break;
             case 3:
                 List<String> sessionList = this.user.getSessionCollection().getSortedSessions(SortType.BY_DATE_DESC);
-                resolveSessionView(sessionList);
+                viewSessionList(sessionList);
                 break;
             case 0:
                 return;
@@ -71,12 +90,12 @@ public class MenuHandler {
         String searchQuery = scannerWrapper.textInput(15);
         List<String> foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
 
-        resolveSessionView(foundSessions);
+        viewSessionList(foundSessions);
     }
 
-    private void runUserMenu() {
+    private void runUserSettingsMenu() {
         CmdUtility.clearConsole();
-        printUserSettingsMenu();
+        printUserEditMenu();
         printInputPrompt();
 
         double userInput = scannerWrapper.numberInput();
@@ -133,49 +152,7 @@ public class MenuHandler {
         }
     }
 
-    public void printMainMenu() {
-        System.out.println("1. User Settings\n" +
-                           "2. Session Menu\n" +
-                           "0. Exit");
-    }
-
-    public void printUserSettingsMenu() {
-        System.out.println("1. Change Name\n" +
-                           "2. Change Age\n" +
-                           "3. Change Weight\n" +
-                           "4. Change Height\n" +
-                           "0. Exit");
-
-    }
-
-    public void printSessionMenu() {
-        System.out.println("1. Add session\n" +
-                           "2. Search by name\n" +
-                           "3. View all sessions\n" +
-                           "0. Exit");
-    }
-
-    public void printInputPrompt() {
-        System.out.print("\nPlease enter your choice: ");
-    }
-
-    public void printQueryResult(List<String> queryResult) {
-        CmdUtility.clearConsole();
-        int i = 1;
-        for (String s : queryResult) {
-            System.out.println(i++ + ". " + s);
-        }
-    }
-
-    public void printAllSessions(List<String> fullSessionList) {
-        int i = 1;
-        for (String s : fullSessionList) {
-            System.out.println(i++ + ". " + s);
-        }
-        // TODO need to print 0. Exit at the end
-    }
-
-    public void resolveSessionView(List<String> sessionList) {
+    public void viewSessionList(List<String> sessionList) {
         CmdUtility.clearConsole();
         printAllSessions(sessionList);
         printInputPrompt();
@@ -252,4 +229,49 @@ public class MenuHandler {
         System.out.println("Session created successfully!");
         scannerWrapper.promptEnterKey();
     }
+
+    //region Prints (should maybe be their own class)
+    public void printMainMenu() {
+        System.out.println("1. User Settings\n" +
+                           "2. Session Menu\n" +
+                           "0. Exit");
+    }
+
+    public void printUserEditMenu() {
+        System.out.println("1. Change Name\n" +
+                           "2. Change Age\n" +
+                           "3. Change Weight\n" +
+                           "4. Change Height\n" +
+                           "0. Exit");
+
+    }
+
+    public void printSessionMenu() {
+        System.out.println("1. Add session\n" +
+                           "2. Search by name\n" +
+                           "3. View all sessions\n" +
+                           "0. Exit");
+    }
+
+    public void printInputPrompt() {
+        System.out.print("\nPlease enter your choice: ");
+    }
+
+    public void printQueryResult(List<String> queryResult) {
+        CmdUtility.clearConsole();
+        int i = 1;
+        for (String s : queryResult) {
+            System.out.println(i++ + ". " + s);
+        }
+    }
+
+    public void printAllSessions(List<String> fullSessionList) {
+        int i = 1;
+        for (String s : fullSessionList) {
+            System.out.println(i++ + ". " + s);
+        }
+        // TODO need to print 0. Exit at the end
+    }
+    //endregion
+
 }

@@ -73,10 +73,10 @@ public class ScannerWrapper {
 
             try {
                 userInput = Integer.parseInt(input);
-                if (userInput >= 0) {
-                    return userInput;
-                } else {
+                if (userInput < 0) {
                     System.err.print("Please enter a positive number: ");
+                } else {
+                    return userInput;
                 }
             } catch (NumberFormatException e) {
                 System.err.print("Invalid input, please enter a number: ");

@@ -51,6 +51,7 @@ public class MenuHandlerTest {
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
                 .thenReturn(1.0)
+                .thenReturn(2.0)
                 .thenReturn(1.0)
                 .thenReturn(0.0);
         when(scannerMock.yesOrNoInput()).thenReturn(true);
@@ -66,6 +67,7 @@ public class MenuHandlerTest {
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
                 .thenReturn(1.0)
+                .thenReturn(2.0)
                 .thenReturn(1.0)
                 .thenReturn(0.0);
         when(scannerMock.yesOrNoInput()).thenReturn(false);
@@ -190,7 +192,7 @@ public class MenuHandlerTest {
                           "4. Change Height\n" +
                           "0. Exit\n";
 
-        menuHandler.printUserSettingsMenu();
+        menuHandler.printUserEditMenu();
 
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
