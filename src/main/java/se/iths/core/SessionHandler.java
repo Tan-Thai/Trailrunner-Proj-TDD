@@ -55,6 +55,8 @@ public class SessionHandler {
     public List<String> getSessionIDs() {
         List<String> sessionIDs = new ArrayList<>();
 
+        fileStorage.getRecordIDs();
+
         for (Session session : sessionCollection.values()) {
             sessionIDs.add(session.getId());
         }
@@ -63,6 +65,8 @@ public class SessionHandler {
     }
 
     public List<String> getSortedSessions(SortType sortType) {
+
+        fileStorage.getRecordIDs();
 
         return sessionCollection
                 .values()
@@ -77,7 +81,7 @@ public class SessionHandler {
     }
     //endregion
 
-    // I would keep IOException if we worked with a database. But since we don't im converting it to "Illegal-arg"
+
     public Session readSession(String id){
         Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
 
@@ -117,6 +121,10 @@ public class SessionHandler {
         if (query == null || query.isEmpty()) {
             return new SessionHandler(fileStorage);
         }
+
+        // could implement this code to actually work its returns into the found session.
+        // I'm holding off on it due to the risk of bricking more code for now.
+        fileStorage.getRecordIDs();
 
         List<String> foundSessions = sessionCollection.keySet().stream()
                 .filter(id -> id.toLowerCase().contains(query.toLowerCase()))

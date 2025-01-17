@@ -5,9 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.iths.core.Session;
 import se.iths.core.SessionHandler;
+import se.iths.core.SortType;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -45,6 +47,23 @@ public class FileStorageTest {
     }
 
     @Test
+    public void saveRecordTest_ExceptionThrow() throws IOException {
+        String sessionId = "First File!";
+        double distance = 5.0;
+        int time = 3000;
+        LocalDate date = LocalDate.now();
+
+        doThrow(IOException.class).when(fileStorageMock).saveRecord(sessionId, distance, time, date);
+
+        sessionHandler.createSession(sessionId, distance, time, date);
+
+        verify(fileStorageMock, times(1)).saveRecord(sessionId, distance, time, date);
+        assertThrows(IOException.class, () -> fileStorageMock.saveRecord(sessionId, distance, time, date));
+    }
+
+    // readSession occurs when we want to bring out 1 session instance.
+    // In this case it would occur when viewing details, or session manipulation.
+    @Test
     public void loadRecordTest_FoundMatch() throws IOException {
         sessionHandler.createSession("I exist!", 5, 3000, LocalDate.now());
         Session expectedSession = sessionHandler.readSession("I exist!");
@@ -60,13 +79,13 @@ public class FileStorageTest {
     @Test
     public void loadRecordTest_NoMatchFound() throws IOException {
         // error message need to be sent out when match wasn't found.
-        when(fileStorageMock.loadRecord("I exist! Maybe?"))
+        when(fileStorageMock.loadRecord(anyString()))
                 .thenReturn(null);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            sessionHandler.readSession("I exist! Maybe?");
+            sessionHandler.readSession(anyString());
         });
-        verify(fileStorageMock, times(1)).loadRecord("I exist! Maybe?");
+        verify(fileStorageMock, times(1)).loadRecord(anyString());
     }
 
     @Test
@@ -77,5 +96,38 @@ public class FileStorageTest {
 
         verify(fileStorageMock, times(1)).deleteRecord("Delete me!");
         assertFalse(sessionHandler.getSessionIDs().contains("Delete me!"), "Expected session was not deleted.");
+    }
+
+    @Test
+    public void getRecordIdsTest() {
+        when(fileStorageMock.getRecordIDs())
+                .thenReturn(new ArrayList<>());
+
+        sessionHandler.getSessionIDs();
+
+        verify(fileStorageMock, times(1)).getRecordIDs();
+    }
+
+    // Test for the method being called during search of session.
+    // The "error" message of no match is resolved outside the called method. resolveSessionSearch() in MenuHandler.
+    @Test
+    public void getSessionIDsTest_SearchNoMatchFound() {
+        when(fileStorageMock.getRecordIDs())
+                .thenReturn(new ArrayList<>());
+
+        sessionHandler.searchSessionsByID("The Maximus Hike");
+
+        verify(fileStorageMock, times(1)).getRecordIDs();
+    }
+
+    // Doesn't return anything since the collection is empty. But illustrates that it's called.
+    @Test
+    public void getSessionIDsTest_GetSortedSessionIDs() {
+        when(fileStorageMock.getRecordIDs())
+                .thenReturn(new ArrayList<>());
+
+        sessionHandler.getSortedSessions(SortType.BY_DISTANCE_ASC);
+
+        verify(fileStorageMock, times(1)).getRecordIDs();
     }
 }

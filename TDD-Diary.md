@@ -455,3 +455,7 @@ external "memory".
 
 Creating a commit here to give a view of the start of RED. Next commit will be greens + refactors most likely since these
 methods only need to be called.
+
+I've now created tests and added a simple call to each method responsible for the same function within my actual project
+to mock our `FileStorage`'s function. I also just discovered and made use of `anyString()`. That and the related
+methods like int and more are amazing!!

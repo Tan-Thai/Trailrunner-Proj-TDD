@@ -4,6 +4,7 @@ import se.iths.core.Session;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class FileStorage {
     }
 
     public List<String> getRecordIDs() {
-        return null;
+        return new ArrayList<>();
     }
 
     public void deleteRecord(String id) throws IOException {
