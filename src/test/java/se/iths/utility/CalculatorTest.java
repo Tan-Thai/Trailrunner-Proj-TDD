@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import se.iths.core.Session;
 import se.iths.core.SessionHandler;
 
+import java.io.File;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,11 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CalculatorTest {
     private Calculator calculator;
     private SessionHandler sessionHandler;
+    private FileStorage fileStorage;
 
     @BeforeEach
     public void setUp() {
         calculator = new Calculator();
-        sessionHandler = new SessionHandler();
+        sessionHandler = new SessionHandler(fileStorage);
 
         sessionHandler.createSession(
                 "Bloop",

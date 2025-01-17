@@ -438,3 +438,10 @@ Int would most likely rely on me changing a few things with how int works, and t
 on the whole system. Ofc tests help minimise the time spent, but we also have to consider the fact that it's out of 
 scope of our assignment.
 
+### Day "most likely 5.5" - 17/01-25
+
+## Agenda
+Finish off everything I might have missed and sort `FileStorage`. My current idea is to just move over the collection to
+`fileStorage` to mimic our data storage. This means that I have to move over the collection from `sessionhandler` which 
+hopefully won´t cause any issues, especially now when all tests are green and fully functional. Some adjustments might be
+needed.

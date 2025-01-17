@@ -2,6 +2,7 @@ package se.iths.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se.iths.utility.FileStorage;
 
 import java.time.LocalDate;
 
@@ -12,7 +13,7 @@ public class UserTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("Tan", 29, 177, 56, new SessionHandler());
+        user = new User("Tan", 29, 177, 56, new SessionHandler(new FileStorage()));
     }
 
     @Test

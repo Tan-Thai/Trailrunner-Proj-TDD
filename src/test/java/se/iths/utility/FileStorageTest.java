@@ -9,8 +9,7 @@ import se.iths.core.SessionHandler;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class FileStorageTest {
@@ -37,20 +36,38 @@ public class FileStorageTest {
 
         //Assert - times(1) since we want to ensure that it got called.
         verify(fileStorageMock).SaveRecord("First File!", 5, 3000, LocalDate.now());
-        assertTrue(fileStorageMock.getRecordIDs().contains("First File!"), "Expected file not found.");
+        assertTrue(fileStorageMock.getRecordIDs().contains("First File!"), "Expected ID not found.");
     }
 
     @Test
-    public void retrieveRecordTest() throws IOException {
+    public void loadRecordTest() throws IOException {
         Session expectedSession = new Session("I exist!", 5, 3000, LocalDate.now());
 
-        when(fileStorageMock.LoadRecord("I exist!"))
+        when(fileStorageMock.loadRecord("I exist!"))
                 .thenReturn(expectedSession);
 
         Session actualSession = sessionHandler.readSession("I exist!");
-        verify(fileStorageMock).LoadRecord("I exist!");
+        verify(fileStorageMock).loadRecord("I exist!");
         assertEquals(expectedSession, actualSession, "Returned session does not match.");
     }
 
+    @Test
+    public void loadRecordTest_NoMatchFound() throws IOException {
+        // error message need to be sent out when match wasn't found.
+        when(fileStorageMock.loadRecord("I exist! Maybe?"))
+                .thenReturn(null);
+
+        verify(fileStorageMock).loadRecord("I exist! Maybe?");
+    }
+
+    @Test
+    public void deleteRecordTest() throws IOException {
+        sessionHandler.createSession("Delete me!", 5, 3000, LocalDate.now());
+
+        fileStorageMock.deleteRecord("Delete me!");
+
+        verify(fileStorageMock, times(1)).deleteRecord("Delete me!");
+        assertFalse(fileStorageMock.getRecordIDs().contains("Delete me!"), "Expected session was not deleted.");
+    }
 
 }

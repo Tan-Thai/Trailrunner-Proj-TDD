@@ -11,7 +11,7 @@ public class FileStorage {
         throw new UnsupportedOperationException();
     }
 
-    public Record LoadRecord(String id) throws IOException {
+    public Record loadRecord(String id) throws IOException {
         throw new UnsupportedOperationException();
     }
 
