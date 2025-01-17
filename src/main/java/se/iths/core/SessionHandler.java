@@ -81,6 +81,15 @@ public class SessionHandler {
     public Session readSession(String id){
         Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
 
+        try {
+            // not normalising the ID here since it would happen within the load-Record method.
+            // similar to how this method does it in row 82.
+            fileStorage.loadRecord(id);
+        } catch (IOException e) {
+            System.out.println("Error loading session from external file.\n" + e.getMessage());
+            e.printStackTrace();
+        }
+
         if (session == null)
             throw new IllegalArgumentException("No recorded session with this ID exists.");
 
@@ -90,6 +99,15 @@ public class SessionHandler {
     public void deleteSession(String id) {
         if (!sessionCollection.containsKey(id.toLowerCase())) {
             throw new IllegalArgumentException("No recorded session with this ID exists.");
+        }
+
+        try {
+            // not normalising the ID here since it would happen within the load-Record method.
+            // similar to how this method converts it after taking in the argument.
+            fileStorage.deleteRecord(id);
+        } catch (IOException e) {
+            System.out.println("Error removing session from external file.\n" + e.getMessage());
+            e.printStackTrace();
         }
 
         sessionCollection.remove(id.toLowerCase());

@@ -45,7 +45,7 @@ public class FileStorageTest {
     }
 
     @Test
-    public void loadRecordTest() throws IOException {
+    public void loadRecordTest_FoundMatch() throws IOException {
         sessionHandler.createSession("I exist!", 5, 3000, LocalDate.now());
         Session expectedSession = sessionHandler.readSession("I exist!");
 
@@ -78,5 +78,4 @@ public class FileStorageTest {
         verify(fileStorageMock, times(1)).deleteRecord("Delete me!");
         assertFalse(sessionHandler.getSessionIDs().contains("Delete me!"), "Expected session was not deleted.");
     }
-
 }

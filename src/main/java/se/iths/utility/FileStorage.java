@@ -19,10 +19,9 @@ public class FileStorage {
     }
 
     public List<String> getRecordIDs() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     public void deleteRecord(String id) throws IOException {
-        throw new UnsupportedOperationException();
     }
 }
