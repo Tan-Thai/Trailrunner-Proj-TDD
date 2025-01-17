@@ -30,25 +30,31 @@ public class FileStorageTest {
     @Test
     public void saveRecordTest() throws IOException {
         // Setup/Input
+        String sessionId = "First File!";
+        double distance = 5.0;
+        int time = 3000;
+        LocalDate date = LocalDate.now();
+
+        doNothing().when(fileStorageMock).saveRecord(sessionId, distance, time, date);
 
         // Act
-        sessionHandler.createSession("First File!", 5, 3000, LocalDate.now());
+        sessionHandler.createSession(sessionId, distance, time, date);
 
         //Assert - times(1) since we want to ensure that it got called.
-        verify(fileStorageMock).SaveRecord("First File!", 5, 3000, LocalDate.now());
-        assertTrue(fileStorageMock.getRecordIDs().contains("First File!"), "Expected ID not found.");
+        verify(fileStorageMock, times(1)).saveRecord(sessionId, distance, time, date);
     }
 
     @Test
     public void loadRecordTest() throws IOException {
-        Session expectedSession = new Session("I exist!", 5, 3000, LocalDate.now());
+        sessionHandler.createSession("I exist!", 5, 3000, LocalDate.now());
+        Session expectedSession = sessionHandler.readSession("I exist!");
 
         when(fileStorageMock.loadRecord("I exist!"))
                 .thenReturn(expectedSession);
 
-        Session actualSession = sessionHandler.readSession("I exist!");
-        verify(fileStorageMock).loadRecord("I exist!");
-        assertEquals(expectedSession, actualSession, "Returned session does not match.");
+        verify(fileStorageMock, times(1)).loadRecord("I exist!");
+        // I would normally add an assertEquals here but this method does not return anything properly
+        // as of now. The actual stored session is tested within SessionHandlerTest.
     }
 
     @Test
@@ -57,17 +63,20 @@ public class FileStorageTest {
         when(fileStorageMock.loadRecord("I exist! Maybe?"))
                 .thenReturn(null);
 
-        verify(fileStorageMock).loadRecord("I exist! Maybe?");
+        assertThrows(IllegalArgumentException.class, () -> {
+            sessionHandler.readSession("I exist! Maybe?");
+        });
+        verify(fileStorageMock, times(1)).loadRecord("I exist! Maybe?");
     }
 
     @Test
     public void deleteRecordTest() throws IOException {
         sessionHandler.createSession("Delete me!", 5, 3000, LocalDate.now());
 
-        fileStorageMock.deleteRecord("Delete me!");
+        sessionHandler.deleteSession("Delete me!");
 
         verify(fileStorageMock, times(1)).deleteRecord("Delete me!");
-        assertFalse(fileStorageMock.getRecordIDs().contains("Delete me!"), "Expected session was not deleted.");
+        assertFalse(sessionHandler.getSessionIDs().contains("Delete me!"), "Expected session was not deleted.");
     }
 
 }

@@ -3,6 +3,7 @@ package se.iths.core;
 import se.iths.utility.Calculator;
 import se.iths.utility.FileStorage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +22,9 @@ public class SessionHandler {
     }
 
     public void createSession(String id, double distance, int time_seconds, LocalDate date) {
-        String normalizedId = id.toLowerCase();
+        String normalisedId = id.toLowerCase();
 
-        if (sessionCollection.containsKey(normalizedId)) {
+        if (sessionCollection.containsKey(normalisedId)) {
             throw new IllegalArgumentException("A recorded session with this ID already exists.");
         }
 
@@ -33,7 +34,17 @@ public class SessionHandler {
         newSession.setFitnessScore(newFitnessScore - totalFitnessScore);
         setTotalFitnessScore(newFitnessScore);
 
-        sessionCollection.put(normalizedId, newSession);
+        // Saves this to the local memory
+        sessionCollection.put(normalisedId, newSession);
+
+        // Tries to save it to an external file. Throws IOException if failed.
+            try {
+                fileStorage.saveRecord(id , distance, time_seconds, date);
+            } catch (IOException e) {
+                System.out.println("Error saving session to external file.\n" + e.getMessage());
+                e.printStackTrace();
+            }
+
     }
 
     //region Getters-Setters
@@ -69,9 +80,9 @@ public class SessionHandler {
     // I would keep IOException if we worked with a database. But since we don't im converting it to "Illegal-arg"
     public Session readSession(String id){
         Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
-        if (session == null) {
+
+        if (session == null)
             throw new IllegalArgumentException("No recorded session with this ID exists.");
-        }
 
         return session;
     }

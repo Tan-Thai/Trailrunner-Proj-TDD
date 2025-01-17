@@ -21,7 +21,6 @@ public class MenuHandlerTest {
     private MenuHandler menuHandler;
     private PrintStream originalPrintStream;
     private ByteArrayOutputStream outputStream;
-    private FileStorage fileStorage;
 
     @Mock
     private ScannerWrapper scannerMock;
@@ -33,7 +32,7 @@ public class MenuHandlerTest {
         outputStream = new ByteArrayOutputStream();
         originalPrintStream = System.out;
         System.setOut(new PrintStream(outputStream));
-        user = new User("Old Name", 25, 70, 175, new SessionHandler(fileStorage));
+        user = new User("Old Name", 25, 70, 175, new SessionHandler(new FileStorage()));
 
         user.getSessionCollection().createSession("Bloop", 8,3600, LocalDate.of(2024, 12, 30));
         user.getSessionCollection().createSession("New years run!", 3,1230, LocalDate.of(2025, 1, 1));

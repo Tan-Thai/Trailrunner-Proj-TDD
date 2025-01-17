@@ -14,12 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CalculatorTest {
     private Calculator calculator;
     private SessionHandler sessionHandler;
-    private FileStorage fileStorage;
 
     @BeforeEach
     public void setUp() {
         calculator = new Calculator();
-        sessionHandler = new SessionHandler(fileStorage);
+        sessionHandler = new SessionHandler(new FileStorage());
 
         sessionHandler.createSession(
                 "Bloop",

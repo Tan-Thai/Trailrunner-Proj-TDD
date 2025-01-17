@@ -445,3 +445,13 @@ Finish off everything I might have missed and sort `FileStorage`. My current ide
 `fileStorage` to mimic our data storage. This means that I have to move over the collection from `sessionhandler` which 
 hopefully won´t cause any issues, especially now when all tests are green and fully functional. Some adjustments might be
 needed.
+
+## FileStorage
+Added a few tests that the rest will follow in terms of structure, the way I'm implementing the external `FileStorage`
+mock is by calling for it with no actual return. These calls will be put into methods that performs the exact same functions,
+but towards the local memory instead of external. Example in the image where I create a session to both the local and
+external "memory".
+![Mock input for File Storage in create session method.](assets/CallToMock_FileStorage.png "Mock input for File Storage")
+
+Creating a commit here to give a view of the start of RED. Next commit will be greens + refactors most likely since these
+methods only need to be called.
