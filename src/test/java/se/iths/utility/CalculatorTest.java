@@ -67,6 +67,7 @@ public class CalculatorTest {
         int secondFitnessScore = secondSession.getFitnessScore();
         int secondTotalScore = sessionHandler.getTotalFitnessScore();
         int totalFitnessScore = firstFitnessScore + secondFitnessScore;
+
         assertEquals(6, secondFitnessScore, "Fitness score for the second session is incorrect.");
         assertEquals(19, secondTotalScore, "Total score for the second session is incorrect.");
         assertEquals(secondTotalScore, totalFitnessScore, "Score sum for second session is incorrect");
@@ -81,6 +82,7 @@ public class CalculatorTest {
         int thirdFitnessScore = thirdSession.getFitnessScore();
         int thirdTotalScore = sessionHandler.getTotalFitnessScore();
         totalFitnessScore = totalFitnessScore + thirdFitnessScore;
+
         assertEquals(6, thirdFitnessScore, "Fitness score for the third session is incorrect.");
         assertEquals(25, thirdTotalScore, "Total score for the third session is incorrect.");
         assertEquals(totalFitnessScore, thirdTotalScore, "Score sum for third session is incorrect");

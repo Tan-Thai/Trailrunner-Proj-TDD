@@ -30,7 +30,6 @@ if I do work on the VG part of the assignment.
 - [x] Create a **RecordHandler** that contains a Map to use ID as keys to avoid duplications.
 - [ ] Create a **Calculator** for all formulas and math needed for the project.
 - [ ] Create a **Main** that will allow the user to input and use the program.
- 
 
 ### Agenda
 Create a **RecordTest** file to create tests which includes all variables included in Records (variables based on
@@ -438,3 +437,4 @@ Added a quick enum for the character limit for certain inputs. Only name and ses
 Int would most likely rely on me changing a few things with how int works, and that would in turn cause quite an effect
 on the whole system. Ofc tests help minimise the time spent, but we also have to consider the fact that it's out of 
 scope of our assignment.
+

@@ -91,7 +91,6 @@ public class MenuHandler {
                 printFailedMenuChoice();
                 break;
         }
-
     }
     //endregion
 
@@ -232,7 +231,6 @@ public class MenuHandler {
             System.out.println("Deleted session: " + pulledSession.getId());
             scannerWrapper.promptEnterKey();
         }
-
     }
 
     public void addSessionToCollection() {
@@ -270,7 +268,7 @@ public class MenuHandler {
         System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
         String searchQuery = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
 
-        SessionHandler foundSessions = user.getSessionCollection().searchSessionByID(searchQuery);
+        SessionHandler foundSessions = user.getSessionCollection().searchSessionsByID(searchQuery);
         if (foundSessions.getSessionIDs().isEmpty()) {
             System.out.println("No sessions found, returning to main menu.");
             scannerWrapper.promptEnterKey();
@@ -278,6 +276,7 @@ public class MenuHandler {
             viewSessionList(foundSessions);
     }
 
+    // TODO add search based on date and time - both before/after.
     private SortType resolveChangeSessionOrder() {
         CmdUtility.clearConsole();
         printSortTypesAlternatives();

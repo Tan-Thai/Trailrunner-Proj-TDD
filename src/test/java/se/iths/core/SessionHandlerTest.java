@@ -2,6 +2,7 @@ package se.iths.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se.iths.utility.FileStorage;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SessionHandlerTest {
     private SessionHandler sessionHandler;
+    private FileStorage fileStorage;
 
     @BeforeEach
     void setUp() {
-        sessionHandler = new SessionHandler();
+        fileStorage = new FileStorage();
+        sessionHandler = new SessionHandler(fileStorage);
 
         sessionHandler.createSession(
                 "Bloop",
@@ -81,7 +84,7 @@ class SessionHandlerTest {
     }
 
     @Test
-    void searchSessionByIdTest() {
+    void searchSessionsByIdTest() {
 
         sessionHandler.createSession(
                 "Bloop2",
@@ -96,7 +99,7 @@ class SessionHandlerTest {
                 LocalDate.of(1990, 1, 4));
 
 
-        SessionHandler foundSessions = sessionHandler.searchSessionByID("Bloop");
+        SessionHandler foundSessions = sessionHandler.searchSessionsByID("Bloop");
         List<String> sessionList = foundSessions.getSessionIDs();
 
         assertFalse(sessionList.isEmpty(), "Expected to find at least one session.");

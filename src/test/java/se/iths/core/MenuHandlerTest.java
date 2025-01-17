@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import se.iths.utility.FileStorage;
 import se.iths.utility.ScannerWrapper;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -20,6 +21,7 @@ public class MenuHandlerTest {
     private MenuHandler menuHandler;
     private PrintStream originalPrintStream;
     private ByteArrayOutputStream outputStream;
+    private FileStorage fileStorage;
 
     @Mock
     private ScannerWrapper scannerMock;
@@ -31,7 +33,7 @@ public class MenuHandlerTest {
         outputStream = new ByteArrayOutputStream();
         originalPrintStream = System.out;
         System.setOut(new PrintStream(outputStream));
-        user = new User("Old Name", 25, 70, 175, new SessionHandler());
+        user = new User("Old Name", 25, 70, 175, new SessionHandler(fileStorage));
 
         user.getSessionCollection().createSession("Bloop", 8,3600, LocalDate.of(2024, 12, 30));
         user.getSessionCollection().createSession("New years run!", 3,1230, LocalDate.of(2025, 1, 1));
@@ -50,12 +52,16 @@ public class MenuHandlerTest {
 
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
-                .thenReturn(1.0)
-                .thenReturn(1.0)
-                .thenReturn(1.0)
-                .thenReturn(0.0);
-        when(scannerMock.yesOrNoInput()).thenReturn(true);
-        when(scannerMock.textInput(InputLimit.USERNAME.getLimit())).thenReturn("New Name");
+                .thenReturn(1.0) // enter view user details
+                .thenReturn(1.0) // enter user settings
+                .thenReturn(1.0) // enter change username
+                .thenReturn(0.0); // exit the menu to exit the program.
+
+        when(scannerMock.yesOrNoInput())
+                .thenReturn(true); // confirm the want to change
+
+        when(scannerMock.textInput(InputLimit.USERNAME.getLimit()))
+                .thenReturn("New Name"); // the new input of name
 
         menuHandler.runMenu();
 
@@ -70,7 +76,9 @@ public class MenuHandlerTest {
                 .thenReturn(1.0)
                 .thenReturn(1.0)
                 .thenReturn(0.0);
-        when(scannerMock.yesOrNoInput()).thenReturn(false);
+
+        when(scannerMock.yesOrNoInput())
+                .thenReturn(false);
 
         menuHandler.runMenu();
 
@@ -82,7 +90,7 @@ public class MenuHandlerTest {
         // Test expectations : enter session view (ev. details) from runMenu()
 
         when(scannerMock.numberInput())
-                .thenReturn(2.0)
+                .thenReturn(2.0) // TODO ADD EXPLANATIONS FOR EACH MENU INPUT
                 .thenReturn(3.0)
                 .thenReturn(1.0)
                 .thenReturn(2.0)
@@ -104,7 +112,8 @@ public class MenuHandlerTest {
                 .thenReturn(2.0)
                 .thenReturn(0.0);
 
-        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit())).thenReturn("Bloop");
+        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
+                .thenReturn("Bloop");
 
         menuHandler.runMenu();
 

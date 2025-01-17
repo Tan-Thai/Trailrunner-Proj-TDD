@@ -79,7 +79,7 @@ public class Calculator {
             // Then counts from the previous date all the way to the date of the new session.
             // Compares them between the current "minimum" date and picks the lower.
             if (previousDate.isBefore(sessionDate)) {
-                int daysDifference = (int) previousDate.until(sessionDate).getDays();
+                int daysDifference = previousDate.until(sessionDate).getDays();
                 minDays = Math.min(minDays, daysDifference);
             }
         }
