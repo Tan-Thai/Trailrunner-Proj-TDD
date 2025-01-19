@@ -153,5 +153,4 @@ public class ScannerWrapperTest {
         assertEquals(expected, actual, "Blank date should match current date.");
 
     }
-    // TODO Write tests for the leftover methods. Closing scanner, PromptEnterKey.
 }

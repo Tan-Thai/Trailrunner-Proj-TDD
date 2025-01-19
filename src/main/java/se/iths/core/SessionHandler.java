@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SessionHandler {
@@ -17,6 +18,7 @@ public class SessionHandler {
     private final Map<String, Session> sessionCollection = new HashMap<>();
     private int totalFitnessScore = 0;
 
+    //region CRUD
     public SessionHandler(FileStorage fileStorage) {
         this.fileStorage = fileStorage;
     }
@@ -47,7 +49,24 @@ public class SessionHandler {
 
     }
 
-    //region Getters-Setters
+    public Session readSession(String id){
+        Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
+
+        try {
+            // not normalising the ID here since it would happen within the load-Record method.
+            // similar to how this method does it in row 82.
+            fileStorage.loadRecord(id);
+        } catch (IOException e) {
+            System.out.println("Error loading session from external file.\n" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        if (session == null)
+            throw new IllegalArgumentException("No recorded session with this ID exists.");
+
+        return session;
+    }
+
     public int getTotalFitnessScore() {
         return totalFitnessScore;
     }
@@ -84,26 +103,6 @@ public class SessionHandler {
             this.totalFitnessScore = 0;
         }
     }
-    //endregion
-
-
-    public Session readSession(String id){
-        Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
-
-        try {
-            // not normalising the ID here since it would happen within the load-Record method.
-            // similar to how this method does it in row 82.
-            fileStorage.loadRecord(id);
-        } catch (IOException e) {
-            System.out.println("Error loading session from external file.\n" + e.getMessage());
-            e.printStackTrace();
-        }
-
-        if (session == null)
-            throw new IllegalArgumentException("No recorded session with this ID exists.");
-
-        return session;
-    }
 
     public void deleteSession(String id) {
         if (!sessionCollection.containsKey(id.toLowerCase())) {
@@ -121,8 +120,10 @@ public class SessionHandler {
 
         sessionCollection.remove(id.toLowerCase());
     }
+    //endregion
 
-    public SessionHandler searchSessionsByID(String query) {
+    //region Search functions
+    public SessionHandler searchSessions_ByID(String query) {
         if (query == null || query.isEmpty()) {
             return new SessionHandler(fileStorage);
         }
@@ -133,6 +134,40 @@ public class SessionHandler {
 
         List<String> foundSessions = sessionCollection.keySet().stream()
                 .filter(id -> id.toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
+
+        return createSubset(foundSessions);
+    }
+
+    /* Experimenting with Function<t, R>
+    https://stackoverflow.com/questions/38270384/value-extractor-for-predicates
+    https://stackoverflow.com/questions/72592138/method-declaration-with-a-function-to-extract-fields-of-an-object-and-a-binary-o
+    *  */
+    public SessionHandler searchSessions_ByDistance_or_ByTime(double query, Function<Session, Double> function, InputLimit inputLimit) {
+        if (query < 0 || query > inputLimit.getLimit()) {
+            return new SessionHandler(fileStorage);
+        }
+        // I miss LINQ... The func should in theory bring out the correct method/property and compare.
+        List<String> foundSessions = sessionCollection
+                .entrySet()
+                .stream()
+                .filter(entry -> function.apply(entry.getValue()).equals(query))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return createSubset(foundSessions);
+    }
+
+    public SessionHandler searchSessions_ByDate(LocalDate query) {
+        if (query.isAfter(LocalDate.now()) ) {
+            return new SessionHandler(fileStorage);
+        }
+
+        List<String> foundSessions = sessionCollection
+                .entrySet()
+                .stream()
+                .filter(entry -> query.equals(entry.getValue().getDate()))
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
         return createSubset(foundSessions);
@@ -150,4 +185,5 @@ public class SessionHandler {
         }
         return curatedCollection;
     }
+    //endregion
 }

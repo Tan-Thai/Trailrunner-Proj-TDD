@@ -6,6 +6,7 @@ import se.iths.utility.ScannerWrapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Function;
 
 public class MenuHandler {
     private ScannerWrapper scannerWrapper;
@@ -53,10 +54,37 @@ public class MenuHandler {
                 addSessionToCollection();
                 break;
             case 2:
-                resolveSessionSearch();
+                runSessionSearch();
                 break;
             case 3:
                 viewSessionList(user.getSessionCollection());
+                break;
+            case 0:
+                return;
+            default:
+                printFailedMenuChoice();
+                break;
+        }
+    }
+
+    private void runSessionSearch() {
+        CmdUtility.clearConsole();
+        printSessionSearchMenu();
+        printInputPrompt();
+
+        double userInput = scannerWrapper.numberInput();
+        switch ((int) userInput){
+            case 1:
+                resolveSessionSearch_ByString();
+                break;
+            case 2:
+                resolveSessionSearch_ByDistance_or_ByTime(Session::getDistance, InputLimit.DISTANCE);
+                break;
+            case 3:
+                resolveSessionSearch_ByDistance_or_ByTime(Session::getTime, InputLimit.TIME);
+                break;
+            case 4:
+                resolveSessionSearch_ByDate();
                 break;
             case 0:
                 return;
@@ -103,8 +131,8 @@ public class MenuHandler {
         System.out.println("Welcome " + user.getName() + "!");
         System.out.println("This is the current details of you:\n");
         System.out.println("Age: " + user.getAge() + "\n" +
-                           "Height: " + user.getHeight() + " cm\n" +
-                           "Weight: " + user.getWeight() + " kg\n" +
+                           "Height: " + user.getHeightInCm() + " cm\n" +
+                           "Weight: " + user.getWeightInKg() + " kg\n" +
                            "-----\n" +
                            "Fitness Score: " + sessionHandler.getTotalFitnessScore() + "\n" +
                            "Total Distance Traveled: " + calc.calcTotalDistanceTraveled(sessionHandler) + " km\n" +
@@ -124,6 +152,14 @@ public class MenuHandler {
                 break;
 
         }
+    }
+
+    private void viewSearchResults(SessionHandler foundSessions) {
+        if (foundSessions.getSessionIDs().isEmpty()) {
+            System.out.println("No sessions found, returning to main menu.");
+            scannerWrapper.promptEnterKey();
+        } else
+            viewSessionList(foundSessions);
     }
 
     public void viewSessionList(SessionHandler sessionHandler) {
@@ -184,7 +220,7 @@ public class MenuHandler {
     //endregion
 
 
-    //region Methods that leads into data manipulation (add, delete, edit)
+    //region Methods that leads into data manipulation (CRUD)
     private void editUserDetails(UserConfig choice) {
         CmdUtility.clearConsole();
         System.out.println("Are you sure you want to change your " + choice.name().toLowerCase() + "? (y/n)");
@@ -202,10 +238,10 @@ public class MenuHandler {
                     user.setAge((int) scannerWrapper.numberInput());
                     break;
                 case WEIGHT:
-                    user.setWeight(scannerWrapper.numberInput());
+                    user.setWeightInKg(scannerWrapper.numberInput());
                     break;
                 case HEIGHT:
-                    user.setHeight(scannerWrapper.numberInput());
+                    user.setHeightInCm(scannerWrapper.numberInput());
                     break;
                 default:
                     printFailedMenuChoice();
@@ -263,20 +299,45 @@ public class MenuHandler {
 
 
     //region Resolves - Executes parts of a function connected to a larger method.
-    private void resolveSessionSearch() {
+    private void resolveSessionSearch_ByString() {
         CmdUtility.clearConsole();
         System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
         String searchQuery = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
 
-        SessionHandler foundSessions = user.getSessionCollection().searchSessionsByID(searchQuery);
-        if (foundSessions.getSessionIDs().isEmpty()) {
-            System.out.println("No sessions found, returning to main menu.");
-            scannerWrapper.promptEnterKey();
-        } else
-            viewSessionList(foundSessions);
+        SessionHandler foundSessions = user.getSessionCollection().searchSessions_ByID(searchQuery);
+        viewSearchResults(foundSessions);
     }
 
-    // TODO add search based on date and time - both before/after.
+    private void resolveSessionSearch_ByDate() {
+        CmdUtility.clearConsole();
+        System.out.print("Enter the search term: ");
+        printInputPrompt();
+
+        LocalDate searchQuery = scannerWrapper.dateInput();
+
+        SessionHandler foundSessions = user.getSessionCollection()
+                .searchSessions_ByDate(searchQuery);
+        viewSearchResults(foundSessions);
+
+    }
+
+    private void resolveSessionSearch_ByDistance_or_ByTime(Function<Session, Double> function, InputLimit inputLimit) {
+        CmdUtility.clearConsole();
+        if (inputLimit == InputLimit.DISTANCE)
+            System.out.print("Enter the distance in km: ");
+        else
+            System.out.print("Enter the time in minutes: ");
+
+        printInputPrompt();
+        double searchQuery = scannerWrapper.numberInput();
+        if (inputLimit == InputLimit.TIME)
+            searchQuery = calc.calcMinToSec(searchQuery);
+
+        SessionHandler foundSessions = user.getSessionCollection()
+                .searchSessions_ByDistance_or_ByTime(searchQuery, function, inputLimit);
+        viewSearchResults(foundSessions);
+    }
+
     private SortType resolveChangeSessionOrder() {
         CmdUtility.clearConsole();
         printSortTypesAlternatives();
@@ -367,6 +428,14 @@ public class MenuHandler {
         }
         System.out.println( i + ". To change sort method");
         System.out.println("0. Exit");
+    }
+
+    private void printSessionSearchMenu() {
+        System.out.println("1. Search by name\n" +
+                           "2. Search by distance\n" +
+                           "3. Search by time" +
+                           "4. Search by date\n" +
+                           "0. Exit");
     }
     //endregion
 }

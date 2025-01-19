@@ -46,118 +46,14 @@ public class MenuHandlerTest {
         System.setOut(originalPrintStream);
     }
 
-    @Test
-    public void editUserDetails_ValidNameChange() {
-
-        // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
-        when(scannerMock.numberInput())
-                .thenReturn(1.0) // enter view user details
-                .thenReturn(1.0) // enter user settings
-                .thenReturn(1.0) // enter change username
-                .thenReturn(0.0); // exit the menu to exit the program.
-
-        when(scannerMock.yesOrNoInput())
-                .thenReturn(true); // confirm the want to change
-
-        when(scannerMock.textInput(InputLimit.USERNAME.getLimit()))
-                .thenReturn("New Name"); // the new input of name
-
-        menuHandler.runMenu();
-
-        assertEquals("New Name", user.getName(), "User name should be updated.");
-    }
-
-    @Test
-    public void editUserDetails_AbortedNameChange() {
-        // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
-        when(scannerMock.numberInput())
-                .thenReturn(1.0)
-                .thenReturn(1.0)
-                .thenReturn(1.0)
-                .thenReturn(0.0);
-
-        when(scannerMock.yesOrNoInput())
-                .thenReturn(false);
-
-        menuHandler.runMenu();
-
-        assertEquals("Old Name", user.getName(), "User name should *not* be updated.");
-    }
-
-    @Test
-    public void deleteSessionQueryTest() {
-        // Test expectations : enter session view (ev. details) from runMenu()
-
-        when(scannerMock.numberInput())
-                .thenReturn(2.0) // TODO ADD EXPLANATIONS FOR EACH MENU INPUT
-                .thenReturn(3.0)
-                .thenReturn(1.0)
-                .thenReturn(2.0)
-                .thenReturn(0.0);
-        when(scannerMock.yesOrNoInput()).thenReturn(true);
-
-        menuHandler.runMenu();
-
-        assertTrue(user.getSessionCollection().getSessionIDs().size() == 2);
-    }
-
-    @Test
-    void resolveSessionSearch_ValidSearch() {
-        user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
-        user.getSessionCollection().createSession("Bloop3", 8,3600, LocalDate.of(2024, 12, 30));
-
-        when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(2.0)
-                .thenReturn(0.0);
-
-        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
-                .thenReturn("Bloop");
-
-        menuHandler.runMenu();
-
-        String actual = outputStream.toString().replace("\r\n", "\n");
-        int startIndex = actual.indexOf("1. Bloop");
-        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
-        actual = actual.substring(startIndex, endIndex).trim();
-
-        String expected = "1. Bloop\n" +
-                          "2. Bloop2\n" +
-                          "3. Bloop3\n" +
-                          "4. To change sort method\n" +
-                          "0. Exit";
-
-        assertEquals(expected, actual, "Session search result does not match.");
-    }
-
-    @Test
-    void resolveSessionSearch_InvalidSearch() {
-
-        when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(2.0)
-                .thenReturn(0.0);
-
-        when(scannerMock.textInput(InputLimit.USERNAME.getLimit())).thenReturn("YOOO THAT ONE EXTREME DAY");
-
-        menuHandler.runMenu();
-
-        String actual = outputStream.toString().replace("\r\n", "\n");
-        int startIndex = actual.indexOf("No sessions found, ");
-        int endIndex = actual.indexOf("returning to main menu.\n", startIndex);
-        actual = actual.substring(startIndex, endIndex).trim();
-
-        String expected = "No sessions found,";
-
-        assertEquals(expected, actual, "0 query results print does not match.");
-    }
-
+    //region CRUD Tests
+    // TODO User should be able to save attributes to a session.
     @Test
     void addSessionToCollectionTest() {
 
         when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(1.0)
+                .thenReturn(2.0) // enter session menu
+                .thenReturn(1.0) // add session
                 .thenReturn(5.1) // distance in km
                 .thenReturn(30.2) // duration in min (convert behind the scenes)
                 .thenReturn(0.0);
@@ -188,6 +84,196 @@ public class MenuHandlerTest {
         assertTrue(sessions.contains("One cold run"), "Created session was not found.");
     }
 
+    @Test
+    void editUserDetails_ValidNameChange() {
+
+        // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
+        when(scannerMock.numberInput())
+                .thenReturn(1.0) // enter view user details
+                .thenReturn(1.0) // enter user settings
+                .thenReturn(1.0) // enter change username
+                .thenReturn(0.0); // exit the menu to exit the program.
+
+        when(scannerMock.yesOrNoInput())
+                .thenReturn(true); // confirm the want to change
+
+        when(scannerMock.textInput(InputLimit.USERNAME.getLimit()))
+                .thenReturn("New Name"); // the new input of name
+
+        menuHandler.runMenu();
+
+        assertEquals("New Name", user.getName(), "User name should be updated.");
+    }
+
+    @Test
+    void editUserDetails_AbortedNameChange() {
+        // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
+        when(scannerMock.numberInput())
+                .thenReturn(1.0) // enter view user details
+                .thenReturn(1.0) // enter user settings
+                .thenReturn(1.0) // enter change username
+                .thenReturn(0.0);
+
+        when(scannerMock.yesOrNoInput())
+                .thenReturn(false); // abort change.
+
+        menuHandler.runMenu();
+
+        assertEquals("Old Name", user.getName(), "User name should *not* be updated.");
+    }
+
+    @Test
+    void deleteSessionQueryTest() {
+        // Test expectations : enter session view (ev. details) from runMenu()
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // enter session menu
+                .thenReturn(3.0) // view sessions
+                .thenReturn(1.0 ) // choose 1st session
+                .thenReturn(2.0) // choose delete
+                .thenReturn(0.0);
+
+        when(scannerMock.yesOrNoInput()).thenReturn(true); // confirms deletion
+
+        menuHandler.runMenu();
+
+        assertTrue(user.getSessionCollection().getSessionIDs().size() == 2);
+    }
+    //endregion
+
+    // TODO Filter related searches is under this region.
+    //region Search Tests
+    @Test
+    void resolveSessionSearch_ByString_ValidSearch() {
+        user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
+        user.getSessionCollection().createSession("Bloop3", 8,3600, LocalDate.of(2024, 12, 30));
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(1.0) // search by string
+                .thenReturn(0.0);
+
+        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
+                .thenReturn("Bloop");
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Bloop");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Bloop\n" +
+                          "2. Bloop2\n" +
+                          "3. Bloop3\n" +
+                          "4. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+
+    // TODO Error message prints out when user looks for a session that does not exist/non-existent string ID.
+    @Test
+    void resolveSessionSearch_ByString_InvalidSearch() {
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(1.0)  // search by string
+                .thenReturn(0.0);
+
+        when(scannerMock.textInput(InputLimit.USERNAME.getLimit())).thenReturn("YOOO THAT ONE EXTREME DAY");
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("No sessions found, ");
+        int endIndex = actual.indexOf("returning to main menu.\n", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "No sessions found,";
+
+        assertEquals(expected, actual, "0 query results print does not match.");
+    }
+
+    @Test
+    void resolveSessionSearch_ByDistance_ValidSearch() {
+        user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(2.0) // choose to search by distance
+                .thenReturn(8.0) // enter distance in km.
+                .thenReturn(0.0);
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Bloop");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Bloop\n" +
+                          "2. Bloop2\n" +
+                          "3. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+
+    @Test
+    void resolveSessionSearch_ByTime_ValidSearch() {
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(3.0) // choose to search by time
+                .thenReturn(60.0) // enter time in min
+                .thenReturn(0.0);
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Bloop");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Bloop\n" +
+                          "2. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+
+    @Test
+    void resolveSessionSearch_ByDate_ValidSearch() {
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(4.0) // choose to search by date
+                .thenReturn(0.0);
+
+        when(scannerMock.dateInput())
+                .thenReturn(LocalDate.of(2025, 1, 2)); // enter date
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Morning walk");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Morning walk\n" +
+                          "2. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+    //endregion
+
+    //region Print Tests
     @Test
     void printMainMenuTest() {
 
@@ -249,11 +335,11 @@ public class MenuHandlerTest {
         // tests both the menu system to change sort-order. time-asc specifically.
 
         when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(3.0)
-                .thenReturn(4.0)
-                .thenReturn(3.0)
-                .thenReturn(0.0)
+                .thenReturn(2.0) // view session menu
+                .thenReturn(3.0) // view session list
+                .thenReturn(4.0) // change sort order
+                .thenReturn(3.0) // sort by time ascending
+                .thenReturn(0.0) // exit list view
                 .thenReturn(0.0);
 
         menuHandler.runMenu();
@@ -281,6 +367,6 @@ public class MenuHandlerTest {
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
-
+    //endregion
 
 }

@@ -3,8 +3,8 @@ package se.iths.core;
 public class User {
     private String name;
     private int age;
-    private double height;
-    private double weight;
+    private double heightInCm;
+    private double weightInKg;
     private SessionHandler sessionCollection;
 
     public SessionHandler getSessionCollection() {
@@ -12,11 +12,11 @@ public class User {
     }
 
 
-    public User(String name, int age, double height, double weight , SessionHandler sessionCollection) {
+    public User(String name, int age, double heightInCm, double weightInKg, SessionHandler sessionCollection) {
         this.name = name;
         this.age = age;
-        this.height = height;
-        this.weight = weight;
+        this.heightInCm = heightInCm;
+        this.weightInKg = weightInKg;
         this.sessionCollection = sessionCollection;
     }
 
@@ -26,24 +26,30 @@ public class User {
     public int getAge() {
         return age;
     }
-    public double getHeight() {
-        return height;
+    public double getHeightInCm() {
+        return heightInCm;
     }
-    public double getWeight() {
-        return weight;
+    public double getWeightInKg() {
+        return weightInKg;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void setWeightInKg(double weightInKg) {
+        this.weightInKg = weightInKg;
+        if (this.weightInKg < 0 )
+            this.weightInKg = 0;
     }
     public void setName(String name) {
         this.name = name;
     }
     public void setAge(int age) {
         this.age = age;
+        if (this.age < 0 )
+            this.age = 0;
     }
-    public void setHeight(double height) {
-        this.height = height;
+    public void setHeightInCm(double heightInCm) {
+        this.heightInCm = heightInCm;
+        if (this.heightInCm < 0 )
+            this.heightInCm = 0;
     }
 
 }
