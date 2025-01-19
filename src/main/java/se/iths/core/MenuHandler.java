@@ -6,6 +6,7 @@ import se.iths.utility.ScannerWrapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Function;
 
 public class MenuHandler {
     private ScannerWrapper scannerWrapper;
@@ -53,7 +54,7 @@ public class MenuHandler {
                 addSessionToCollection();
                 break;
             case 2:
-                resolveSessionSearch();
+                runSessionSearch();
                 break;
             case 3:
                 viewSessionList(user.getSessionCollection());
@@ -64,6 +65,57 @@ public class MenuHandler {
                 printFailedMenuChoice();
                 break;
         }
+    }
+
+    private void runSessionSearch() {
+        CmdUtility.clearConsole();
+        printSessionSearchMenu();
+        printInputPrompt();
+
+        double userInput = scannerWrapper.numberInput();
+        switch ((int) userInput){
+            case 1:
+                resolveSessionSearch_ByString();
+                break;
+            case 2:
+                resolveSessionSearch_ByDistance_or_ByTime(Session::getDistance, InputLimit.DISTANCE);
+                break;
+            case 3:
+                resolveSessionSearch_ByDistance_or_ByTime(Session::getTime, InputLimit.TIME);
+                break;
+            case 4:
+               //resolveSessionSearch_ByDate();
+                break;
+            case 0:
+                return;
+            default:
+                    printFailedMenuChoice();
+                    break;
+        }
+    }
+
+    private void printSessionSearchMenu() {
+        System.out.println("1. Search by name\n" +
+                           "2. Search by distance\n" +
+                           "3. Search by time" +
+                           "4. Search by date\n" +
+                           "0. Exit");
+    }
+
+    private void resolveSessionSearch_ByDistance_or_ByTime(Function<Session, Double> function, InputLimit inputLimit) {
+        CmdUtility.clearConsole();
+        System.out.print("Enter the search term: ");
+        printInputPrompt();
+
+        double searchQuery = scannerWrapper.numberInput();
+        SessionHandler foundSessions = user.getSessionCollection()
+                .searchSessions_ByDistance_or_ByTime(searchQuery, function, inputLimit);
+
+        if (foundSessions.getSessionIDs().isEmpty()) {
+            System.out.println("No sessions found, returning to main menu.");
+            scannerWrapper.promptEnterKey();
+        } else
+            viewSessionList(foundSessions);
     }
 
     private void runUserSettingsMenu() {
@@ -263,7 +315,7 @@ public class MenuHandler {
 
 
     //region Resolves - Executes parts of a function connected to a larger method.
-    private void resolveSessionSearch() {
+    private void resolveSessionSearch_ByString() {
         CmdUtility.clearConsole();
         System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
         String searchQuery = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());

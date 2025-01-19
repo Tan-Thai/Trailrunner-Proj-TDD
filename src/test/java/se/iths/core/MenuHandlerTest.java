@@ -102,13 +102,14 @@ public class MenuHandlerTest {
     }
 
     @Test
-    void resolveSessionSearch_ValidSearch() {
+    void resolveSessionSearch_ByString_ValidSearch() {
         user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
         user.getSessionCollection().createSession("Bloop3", 8,3600, LocalDate.of(2024, 12, 30));
 
         when(scannerMock.numberInput())
                 .thenReturn(2.0)
                 .thenReturn(2.0)
+                .thenReturn(1.0)
                 .thenReturn(0.0);
 
         when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
@@ -131,11 +132,38 @@ public class MenuHandlerTest {
     }
 
     @Test
-    void resolveSessionSearch_InvalidSearch() {
+    void resolveSessionSearch_ByDistance_ValidSearch() {
+        user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(2.0) // choose to search by distance
+                .thenReturn(8.0) // query value
+                .thenReturn(0.0);
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Bloop");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Bloop\n" +
+                          "2. Bloop2\n" +
+                          "3. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+
+    @Test
+    void resolveSessionSearch_ByString_InvalidSearch() {
 
         when(scannerMock.numberInput())
                 .thenReturn(2.0)
                 .thenReturn(2.0)
+                .thenReturn(1.0)
                 .thenReturn(0.0);
 
         when(scannerMock.textInput(InputLimit.USERNAME.getLimit())).thenReturn("YOOO THAT ONE EXTREME DAY");

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SessionHandler {
@@ -150,4 +151,24 @@ public class SessionHandler {
         }
         return curatedCollection;
     }
+
+    /* Experimenting with Function<t, R>
+    https://stackoverflow.com/questions/38270384/value-extractor-for-predicates
+    https://stackoverflow.com/questions/72592138/method-declaration-with-a-function-to-extract-fields-of-an-object-and-a-binary-o
+    *  */
+    public SessionHandler searchSessions_ByDistance_or_ByTime(double query, Function<Session, Double> function, InputLimit inputLimit) {
+        if (query < 0 || query > inputLimit.getLimit()) {
+            return new SessionHandler(fileStorage);
+        }
+        // I miss LINQ... The func should in theory bring out the correct method/property and compare.
+        List<String> foundSessions = sessionCollection
+                .entrySet()
+                .stream()
+                .filter(entry -> function.apply(entry.getValue()).equals(query))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return createSubset(foundSessions);
+    }
+
 }

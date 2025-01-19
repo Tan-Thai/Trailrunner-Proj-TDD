@@ -6,18 +6,18 @@ public class Session {
 
     private final String id;
     private final double distance;
-    private final float time;
+    private final double time;
     private final LocalDate date;
     private int fitnessScore;
 
-    public Session(String id, double distance, float time, LocalDate date) {
+    public Session(String id, double distance, double time, LocalDate date) {
         this.id = id;
         this.distance = distance;
         this.time = time;
         this.date = date;
     }
 
-    public Session(String id, double distance, float time) {
+    public Session(String id, double distance, double time) {
         this.id = id;
         this.distance = distance;
         this.time = time;
@@ -40,7 +40,7 @@ public class Session {
         return id;
     }
 
-    public float getTime() {
+    public double getTime() {
         return time;
     }
 

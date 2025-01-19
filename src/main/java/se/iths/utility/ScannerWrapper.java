@@ -122,7 +122,7 @@ public class ScannerWrapper {
         Try catch is if the input does not match anything at all in terms of (YYYY-MM-DD) structure.
         * */
         do {
-            String userInput = textInput(InputLimit.DISTANCE.getLimit());
+            String userInput = textInput(InputLimit.DATE.getLimit());
             try {
                 if (userInput.isBlank())
                     return LocalDate.now();
