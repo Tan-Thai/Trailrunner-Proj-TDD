@@ -77,7 +77,12 @@ public class SessionHandler {
     }
 
     public void setTotalFitnessScore(int totalFitnessScore) {
+        // adding further safety to ensure that it stays 0 if it goes into the negative
+        // redundant but better safe than sorry.
         this.totalFitnessScore = totalFitnessScore;
+        if (totalFitnessScore < 0) {
+            this.totalFitnessScore = 0;
+        }
     }
     //endregion
 

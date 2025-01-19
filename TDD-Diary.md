@@ -438,20 +438,26 @@ Int would most likely rely on me changing a few things with how int works, and t
 on the whole system. Ofc tests help minimise the time spent, but we also have to consider the fact that it's out of 
 scope of our assignment.
 
-### Day "most likely 5.5" - 17/01-25
+## Day "most likely 5.5" - 17/01-25
 
-## Agenda
+- [ ] G/VG - Create test to *filter* based on time/distance/date (Dunno what's expected here, like before or after x?)
+- [ ] ~~Refactor `MenuHandler` *again*, it's way too fat and the method names is set up in such a way that I most likely can 
+break out methods without much issue.~~
+- [x] Look into code clean up, adding comments to clarify methods.
+- [x] Start VG assignments (did this before I made the checklist.) 
+
+### Agenda
 Finish off everything I might have missed and sort `FileStorage`. My current idea is to just move over the collection to
 `fileStorage` to mimic our data storage. This means that I have to move over the collection from `sessionhandler` which 
 hopefully won´t cause any issues, especially now when all tests are green and fully functional. Some adjustments might be
 needed.
 
-## FileStorage
+### FileStorage
 Added a few tests that the rest will follow in terms of structure, the way I'm implementing the external `FileStorage`
 mock is by calling for it with no actual return. These calls will be put into methods that performs the exact same functions,
 but towards the local memory instead of external. Example in the image where I create a session to both the local and
 external "memory".
-![Mock input for File Storage in create session method.](assets/CallToMock_FileStorage.png "Mock input for File Storage")
+<img style="margin: 10px; float:right" alt="Mock input for File Storage in create session method." src="assets/CallToMock_FileStorage.png" width="800" title="Mock input for File Storage" />
 
 Creating a commit here to give a view of the start of RED. Next commit will be greens + refactors most likely since these
 methods only need to be called.
@@ -459,3 +465,15 @@ methods only need to be called.
 I've now created tests and added a simple call to each method responsible for the same function within my actual project
 to mock our `FileStorage`'s function. I also just discovered and made use of `anyString()`. That and the related
 methods like int and more are amazing!!
+
+## Day "6" - Finishing Touches - 19/01-25
+
+- [ ] Add some structure and clarity to the diary for ease of navigation.
+- [ ] Add comments to point out what test covers what part of assignment.
+- [ ] G/VG - Create test to *filter* based on time/distance/date (Dunno what's expected here, like before or after x?)
+- [ ] 
+ 
+### Agenda
+Sort out the *filter* to make sure I'm covering the expected type of filter the assignment wants. Most likely skipping
+the larger refactor of `MenuHandler` due to the fact that it's technically out of scope and would clutter more.
+It would also cause more of a hassle to read through the methods due to the constant jumping back and forth with `prints`.
