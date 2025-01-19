@@ -28,8 +28,11 @@ public class Session {
         return fitnessScore;
     }
 
+    // adding this just in case someone digs manually into this method.
     public void setFitnessScore(int fitnessScore) {
         this.fitnessScore = fitnessScore;
+        if (this.fitnessScore < 0)
+            this.fitnessScore = 0;
     }
 
     public double getDistance() {

@@ -9,22 +9,22 @@ public class Calculator {
 
 
     // These two should technically take the actual values as parameters, but I tried to keep it streamlined.
-    public double calcAverageSpeed(Session session) {
+    public double calcKmPerHour(Session session) {
         // Formula: Avg speed = distance(km) / (Time(sec) / 3600)
         return session.getDistance() / (session.getTime() / 3600);
     }
-    public double calcKilometresPerMinute(Session session) {
-
-        // Formula: Km/h = (Time(sec) / 60) / distance(km)
+    public double calcKilometreTime(Session session) {
+        // Formula: KilometerTime = (Time(sec) / 60) / distance(km)
         return (session.getTime() / 60) / session.getDistance();
     }
 
+    // TODO method that ensures that fitness score starts at 0 for first run and cannot go below 0
     public int calcFitnessScore(Session session, SessionHandler sessionHandler) {
         // getting all the req values, for  both clarity and readability.
         int currentFitnessScore = sessionHandler.getTotalFitnessScore();
         double distance = session.getDistance();
-        double averageSpeed = calcAverageSpeed(session);
-        double kilometresPerMinute = calcKilometresPerMinute(session);
+        double averageSpeed = calcKmPerHour(session);
+        double kilometresPerMinute = calcKilometreTime(session);
         int daysSinceLastRun = calcDaysSinceLastRun(session, sessionHandler);
 
         double finalFitnessScore =
@@ -39,13 +39,6 @@ public class Calculator {
     public double calcTotalDistanceTraveled(SessionHandler sessionHandler) {
         double totalDistanceTraveled = 0;
 
-        /* Streams shenanigans, not 100% over this and will make a traditional loop
-        for (Session session : sessionHandler.getRecordIDs().stream()
-                .map(sessionHandler::readRecord)
-                .toList()) {
-            totalDistanceTraveled += calcAverageSpeed(session);
-        }*/
-
         for (String id : sessionHandler.getSessionIDs()) {
             Session session = sessionHandler.readSession(id);
             totalDistanceTraveled += session.getDistance();
@@ -56,15 +49,13 @@ public class Calculator {
 
     public double calcAverageDistanceTraveled(SessionHandler sessionHandler) {
         double totalDistanceTraveled = calcTotalDistanceTraveled(sessionHandler);
-        int sessionCount = getSessionCount(sessionHandler);
-
-
+        int sessionCount = sessionHandler.getSessionIDs().size();
         // rounds it, and keeps 2 decimals.
         // contemplated decimalformat, but I rather not introduce new stuff at this point.
         return (double) Math.round((totalDistanceTraveled / sessionCount) * 100) / 100;
     }
 
-    // TODO: Create a yolo stream variant of this method.
+    // TODO: Create a yolo stream variant of this method. // decided not to do it.
     private int calcDaysSinceLastRun(Session session, SessionHandler sessionHandler) {
         // Method is currently very fragile when it comes to larger scale collections due to sequential execution.
         // Could prolly do some .stream shenanigans here to improve it, but I'll leave that for later!
@@ -84,12 +75,8 @@ public class Calculator {
             }
         }
 
-        // Ternary to default to 0 if no other sessions are found, and we keep Integer.MAX_VALUE until the return.
+        // Ternary to default to 0 if no other sessions are found, and we start with Integer.MAX_VALUE.
         return minDays == Integer.MAX_VALUE ? 0 : minDays;
-    }
-
-    private int getSessionCount(SessionHandler sessionHandler) {
-        return sessionHandler.getSessionIDs().size();
     }
 
     public double calcSecToMin(double timeSec) {

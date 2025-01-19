@@ -21,52 +21,69 @@ public class UserTest {
         String userName = user.getName();
         assertEquals("Tan", userName, "Name does not match");
     }
+    @Test
+    void getAge() {
+        int userAge = user.getAge();
+        assertEquals(29, userAge, "Age does not match");
+    }
+    @Test
+    void getHeight() {
+        double userHeight = user.getHeightInCm();
+        assertEquals(177, userHeight, "Height does not match");
+    }
+    @Test
+    void getWeight() {
+        double userWeight = user.getWeightInKg();
+        assertEquals(56, userWeight, "Weight does not match");
+    }
 
+    // TODO Allow user to set their stats. (age, weight, height)
     @Test
     void setName() {
         user.setName("Thai");
         String userName = user.getName();
         assertEquals("Thai", userName, "New name does not match");
     }
-
-    @Test
-    void getAge() {
-        int userAge = user.getAge();
-        assertEquals(29, userAge, "Age does not match");
-    }
-
     @Test
     void setAge() {
         user.setAge(28);
         int userAge = user.getAge();
         assertEquals(28, userAge, "New age does not match");
     }
-
-    @Test
-    void getHeight() {
-        double userHeight = user.getHeight();
-        assertEquals(177, userHeight, "Height does not match");
-    }
-
     @Test
     void setHeight() {
-        user.setHeight(177.8);
-        double userHeight = user.getHeight();
+        user.setHeightInCm(177.8);
+        double userHeight = user.getHeightInCm();
         assertEquals(177.8, userHeight, "New height does not match");
     }
-
-    @Test
-    void getWeight() {
-        double userWeight = user.getWeight();
-        assertEquals(56, userWeight, "Weight does not match");
-    }
-
     @Test
     void setWeight() {
-        user.setWeight(54.7);
-        double userWeight = user.getWeight();
+        user.setWeightInKg(54.7);
+        double userWeight = user.getWeightInKg();
         assertEquals(54.7, userWeight, "New weight does not match");
     }
+
+    // TODO Don't allow a negative value to be set. (even if it bypasses the user-input)
+    @Test
+    void setAge_NegativeValue() {
+        user.setAge(-1);
+        int userAge = user.getAge();
+        assertEquals(0, userAge, "New age does not match");
+    }
+    @Test
+    void setHeight_NegativeValue() {
+        user.setHeightInCm(-1);
+        double userHeight = user.getHeightInCm();
+        assertEquals(0, userHeight, "New age does not match");
+    }
+    @Test
+    void setWeight_NegativeValue() {
+        user.setWeightInKg(-1);
+        double userWeight = user.getWeightInKg();
+        assertEquals(0, userWeight, "New age does not match");
+    }
+
+
 
     @Test
     void getSessionSize() {

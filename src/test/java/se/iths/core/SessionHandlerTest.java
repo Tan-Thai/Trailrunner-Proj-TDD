@@ -25,8 +25,10 @@ class SessionHandlerTest {
                 LocalDate.of(1990, 1, 1));
     }
 
+    //region CRUD Tests
+    // TODO Each session should have a unique ID number based on string (String name in this case.)
     @Test
-    void createSessionTest() {
+    void createSessionTest_InvalidInputs() {
         Session pulledTestSession = sessionHandler.readSession("Bloop");
 
         assertNotNull(pulledTestSession,"The pulled record is null");
@@ -42,6 +44,7 @@ class SessionHandlerTest {
         assertEquals("A recorded session with this ID already exists.", exception.getMessage());
     }
 
+    // TODO pulls 1 session based on ID(Key) and gives access to details.
     @Test
     void readSessionTest() {
         Session pulledTestSession = sessionHandler.readSession("Bloop");
@@ -83,6 +86,28 @@ class SessionHandlerTest {
 
     }
 
+    // TODO Delete session from collection.
+    @Test
+    void deleteSessionTest() {
+        // once again lots of StackOverflow shenanigans
+        // This confirms that we don't hit an Exception and pass through properly.
+        assertDoesNotThrow(()-> sessionHandler.deleteSession("Bloop"));
+
+        // Attempting to read the "removed" record.
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            sessionHandler.readSession("Bloop");
+        });
+        assertEquals("No recorded session with this ID exists.", exception.getMessage());
+
+        // Trying to delete something that does not exist
+        Exception deleteException = assertThrows(IllegalArgumentException.class, () -> {
+            sessionHandler.deleteSession("ThisIdDoesNotExist");
+        });
+        assertEquals("No recorded session with this ID exists.", deleteException.getMessage());
+
+    }
+    //endregion
+
     @Test
     void searchSessionsByIdTest() {
         sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
@@ -104,6 +129,7 @@ class SessionHandlerTest {
 
     }
 
+    //region Sorting Tests
     // keeping it as a single one for now. But if we want to implement by date, alphabetical, ascending, descending etc.
     // Then this test will have to be refactored to take a parameter to tell it which way to sort.
     @Test
@@ -129,24 +155,6 @@ class SessionHandlerTest {
         assertTrue(sortedList.get(1).equals("Bloop"), "Expected the second shortest distance.");
         assertTrue(sortedList.get(2).equals("Longest Distance"), "Expected the furthest distance.");
     }
+    //endregion
 
-    @Test
-    void deleteSessionTest() {
-        // once again lots of StackOverflow shenanigans
-        // This confirms that we don't hit an Exception and pass through properly.
-        assertDoesNotThrow(()-> sessionHandler.deleteSession("Bloop"));
-
-        // Attempting to read the "removed" record.
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            sessionHandler.readSession("Bloop");
-        });
-        assertEquals("No recorded session with this ID exists.", exception.getMessage());
-
-        // Trying to delete something that does not exist
-        Exception deleteException = assertThrows(IllegalArgumentException.class, () -> {
-            sessionHandler.deleteSession("ThisIdDoesNotExist");
-        });
-        assertEquals("No recorded session with this ID exists.", deleteException.getMessage());
-
-    }
 }

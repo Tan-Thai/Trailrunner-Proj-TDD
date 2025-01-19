@@ -469,9 +469,9 @@ methods like int and more are amazing!!
 ## Day "6" - Finishing Touches and Return of MenuHandler - 19/01-25
 
 - [ ] Add some structure and clarity to the diary for ease of navigation.
-- [ ] Add comments to point out what test covers what part of assignment.
-- [ ] G/VG - Create test to *filter* based on time/distance/date (Dunno what's expected here, like before or after x?)
-- [ ] 
+- [x] Add comments to point out what test covers what part of assignment.
+- [x] G/VG - Create test to *filter* based on time/distance/date (Dunno what's expected here, like before or after x?)
+- [x] *Actually* take a break for once.
  
 ### Agenda
 Sort out the *filter* to make sure I'm covering the expected type of filter the assignment wants. Most likely skipping

@@ -17,7 +17,7 @@ public class SessionTest {
     }
 
     @Test
-    void RecordConstructorTest() {
+    void sessionConstructorTest() {
         assertNotNull(session);
     }
 
@@ -40,6 +40,14 @@ public class SessionTest {
     void getDateTest() {
         assertNotNull(session.getDate());
         assertEquals(LocalDate.of(2025, 1,2), session.getDate());
+    }
+
+    // TODO User should be able to save attributes to a session.
+    @Test
+    void constructorCreationTest(){
+        Session newSession = new Session("Bloop", 2.3, 1350, LocalDate.of(2025, 1, 13));
+
+        assertNotNull(newSession);
     }
 
     @Test

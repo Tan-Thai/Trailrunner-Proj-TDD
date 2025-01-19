@@ -46,8 +46,46 @@ public class MenuHandlerTest {
         System.setOut(originalPrintStream);
     }
 
+    //region CRUD Tests
+    // TODO User should be able to save attributes to a session.
     @Test
-    public void editUserDetails_ValidNameChange() {
+    void addSessionToCollectionTest() {
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // enter session menu
+                .thenReturn(1.0) // add session
+                .thenReturn(5.1) // distance in km
+                .thenReturn(30.2) // duration in min (convert behind the scenes)
+                .thenReturn(0.0);
+
+        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
+                .thenReturn("One cold run");
+
+        when(scannerMock.dateInput())
+                .thenReturn(LocalDate.of(2025, 1, 13));
+
+        menuHandler.runMenu();
+
+        // finds the start point of our check, since stream keeps *all* text printed.
+        // Finds the end string-line starting the search from the start index pos.
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("Please enter the corresponding info for this session:");
+        int endIndex = actual.indexOf("Session created successfully!", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "Please enter the corresponding info for this session:\n" +
+                          "\nName of the session: " +
+                          "\nDistance in km: " +
+                          "\nDuration in minutes: " +
+                          "\nDate (YYYY-MM-DD):";
+        assertEquals(expected, actual, "Print for session creation does not match.");
+
+        List<String> sessions = user.getSessionCollection().getSessionIDs();
+        assertTrue(sessions.contains("One cold run"), "Created session was not found.");
+    }
+
+    @Test
+    void editUserDetails_ValidNameChange() {
 
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
@@ -68,16 +106,16 @@ public class MenuHandlerTest {
     }
 
     @Test
-    public void editUserDetails_AbortedNameChange() {
+    void editUserDetails_AbortedNameChange() {
         // adding a 3rd input to exit the menu, otherwise it would loop within itself forever.
         when(scannerMock.numberInput())
-                .thenReturn(1.0)
-                .thenReturn(1.0)
-                .thenReturn(1.0)
+                .thenReturn(1.0) // enter view user details
+                .thenReturn(1.0) // enter user settings
+                .thenReturn(1.0) // enter change username
                 .thenReturn(0.0);
 
         when(scannerMock.yesOrNoInput())
-                .thenReturn(false);
+                .thenReturn(false); // abort change.
 
         menuHandler.runMenu();
 
@@ -85,31 +123,35 @@ public class MenuHandlerTest {
     }
 
     @Test
-    public void deleteSessionQueryTest() {
+    void deleteSessionQueryTest() {
         // Test expectations : enter session view (ev. details) from runMenu()
 
         when(scannerMock.numberInput())
-                .thenReturn(2.0) // TODO ADD EXPLANATIONS FOR EACH MENU INPUT
-                .thenReturn(3.0)
-                .thenReturn(1.0)
-                .thenReturn(2.0)
+                .thenReturn(2.0) // enter session menu
+                .thenReturn(3.0) // view sessions
+                .thenReturn(1.0 ) // choose 1st session
+                .thenReturn(2.0) // choose delete
                 .thenReturn(0.0);
-        when(scannerMock.yesOrNoInput()).thenReturn(true);
+
+        when(scannerMock.yesOrNoInput()).thenReturn(true); // confirms deletion
 
         menuHandler.runMenu();
 
         assertTrue(user.getSessionCollection().getSessionIDs().size() == 2);
     }
+    //endregion
 
+    // TODO Filter related searches is under this region.
+    //region Search Tests
     @Test
     void resolveSessionSearch_ByString_ValidSearch() {
         user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
         user.getSessionCollection().createSession("Bloop3", 8,3600, LocalDate.of(2024, 12, 30));
 
         when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(2.0)
-                .thenReturn(1.0)
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(1.0) // search by string
                 .thenReturn(0.0);
 
         when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
@@ -131,13 +173,14 @@ public class MenuHandlerTest {
         assertEquals(expected, actual, "Session search result does not match.");
     }
 
+    // TODO Error message prints out when user looks for a session that does not exist/non-existent string ID.
     @Test
     void resolveSessionSearch_ByString_InvalidSearch() {
 
         when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(2.0)
-                .thenReturn(1.0)
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(1.0)  // search by string
                 .thenReturn(0.0);
 
         when(scannerMock.textInput(InputLimit.USERNAME.getLimit())).thenReturn("YOOO THAT ONE EXTREME DAY");
@@ -228,44 +271,9 @@ public class MenuHandlerTest {
 
         assertEquals(expected, actual, "Session search result does not match.");
     }
+    //endregion
 
-
-    @Test
-    void addSessionToCollectionTest() {
-
-        when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(1.0)
-                .thenReturn(5.1) // distance in km
-                .thenReturn(30.2) // duration in min (convert behind the scenes)
-                .thenReturn(0.0);
-
-        when(scannerMock.textInput(InputLimit.SESSION_NAME.getLimit()))
-                .thenReturn("One cold run");
-
-        when(scannerMock.dateInput())
-                .thenReturn(LocalDate.of(2025, 1, 13));
-
-        menuHandler.runMenu();
-
-        // finds the start point of our check, since stream keeps *all* text printed.
-        // Finds the end string-line starting the search from the start index pos.
-        String actual = outputStream.toString().replace("\r\n", "\n");
-        int startIndex = actual.indexOf("Please enter the corresponding info for this session:");
-        int endIndex = actual.indexOf("Session created successfully!", startIndex);
-        actual = actual.substring(startIndex, endIndex).trim();
-
-        String expected = "Please enter the corresponding info for this session:\n" +
-                          "\nName of the session: " +
-                          "\nDistance in km: " +
-                          "\nDuration in minutes: " +
-                          "\nDate (YYYY-MM-DD):";
-        assertEquals(expected, actual, "Print for session creation does not match.");
-
-        List<String> sessions = user.getSessionCollection().getSessionIDs();
-        assertTrue(sessions.contains("One cold run"), "Created session was not found.");
-    }
-
+    //region Print Tests
     @Test
     void printMainMenuTest() {
 
@@ -327,11 +335,11 @@ public class MenuHandlerTest {
         // tests both the menu system to change sort-order. time-asc specifically.
 
         when(scannerMock.numberInput())
-                .thenReturn(2.0)
-                .thenReturn(3.0)
-                .thenReturn(4.0)
-                .thenReturn(3.0)
-                .thenReturn(0.0)
+                .thenReturn(2.0) // view session menu
+                .thenReturn(3.0) // view session list
+                .thenReturn(4.0) // change sort order
+                .thenReturn(3.0) // sort by time ascending
+                .thenReturn(0.0) // exit list view
                 .thenReturn(0.0);
 
         menuHandler.runMenu();
@@ -359,6 +367,6 @@ public class MenuHandlerTest {
         String actual = outputStream.toString().replace("\r\n", "\n");
         assertEquals(expected, actual, "Expected print does not match the actual output.");
     }
-
+    //endregion
 
 }

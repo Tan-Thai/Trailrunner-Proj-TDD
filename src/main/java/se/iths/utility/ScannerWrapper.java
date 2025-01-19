@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class ScannerWrapper {
     private final Scanner scanner;
 
-    //region Public Methods
+    //region Public Methods - Entry points into private methods.
     public ScannerWrapper() {
         this.scanner = new Scanner(System.in);
     }
