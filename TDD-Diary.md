@@ -478,6 +478,10 @@ Sort out the *filter* to make sure I'm covering the expected type of filter the 
 the larger refactor of `MenuHandler` due to the fact that it's technically out of scope and would clutter more.
 It would also cause more of a hassle to read through the methods due to the constant jumping back and forth with `prints`.
 
+### Fleeting-Notes
+I'm intentionally omitting some tests due to an overlap of tests. I'm **fully** aware that it goes against the principle
+of singular task tests, but testing a menu will inherently test the function it calls upon as well.
+
 ### MenuHandler
 Added yet another branch to enable the user to search for specific values such as time and distance. Date will be
 added towards next commit since the test is yet to be made. They should all follow the same structure with the 
@@ -489,3 +493,5 @@ no longer have the energy to scope creep all my methods across the entire file (
 After I'm done with creating the search function for date then I'll consider myself entirely done with implementing code.
 There might be some extra tests to be made for extra coverage of branches/use-cases. Except that then it's only refactoring
 and code-clean up!
+
+

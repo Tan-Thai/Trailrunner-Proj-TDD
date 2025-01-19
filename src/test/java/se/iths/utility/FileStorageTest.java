@@ -115,7 +115,7 @@ public class FileStorageTest {
         when(fileStorageMock.getRecordIDs())
                 .thenReturn(new ArrayList<>());
 
-        sessionHandler.searchSessionsByID("The Maximus Hike");
+        sessionHandler.searchSessions_ByID("The Maximus Hike");
 
         verify(fileStorageMock, times(1)).getRecordIDs();
     }

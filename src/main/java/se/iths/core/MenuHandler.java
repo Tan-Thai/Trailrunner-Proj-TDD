@@ -84,7 +84,7 @@ public class MenuHandler {
                 resolveSessionSearch_ByDistance_or_ByTime(Session::getTime, InputLimit.TIME);
                 break;
             case 4:
-               //resolveSessionSearch_ByDate();
+                resolveSessionSearch_ByDate();
                 break;
             case 0:
                 return;
@@ -92,6 +92,27 @@ public class MenuHandler {
                     printFailedMenuChoice();
                     break;
         }
+    }
+
+    private void resolveSessionSearch_ByDate() {
+        CmdUtility.clearConsole();
+        System.out.print("Enter the search term: ");
+        printInputPrompt();
+
+        LocalDate searchQuery = scannerWrapper.dateInput();
+
+        SessionHandler foundSessions = user.getSessionCollection()
+                .searchSessions_ByDate(searchQuery);
+        viewSearchResults(foundSessions);
+
+    }
+
+    private void viewSearchResults(SessionHandler foundSessions) {
+        if (foundSessions.getSessionIDs().isEmpty()) {
+            System.out.println("No sessions found, returning to main menu.");
+            scannerWrapper.promptEnterKey();
+        } else
+            viewSessionList(foundSessions);
     }
 
     private void printSessionSearchMenu() {
@@ -104,18 +125,19 @@ public class MenuHandler {
 
     private void resolveSessionSearch_ByDistance_or_ByTime(Function<Session, Double> function, InputLimit inputLimit) {
         CmdUtility.clearConsole();
-        System.out.print("Enter the search term: ");
-        printInputPrompt();
+        if (inputLimit == InputLimit.DISTANCE)
+            System.out.print("Enter the distance in km: ");
+        else
+            System.out.print("Enter the time in minutes: ");
 
+        printInputPrompt();
         double searchQuery = scannerWrapper.numberInput();
+        if (inputLimit == InputLimit.TIME)
+            searchQuery = calc.calcMinToSec(searchQuery);
+
         SessionHandler foundSessions = user.getSessionCollection()
                 .searchSessions_ByDistance_or_ByTime(searchQuery, function, inputLimit);
-
-        if (foundSessions.getSessionIDs().isEmpty()) {
-            System.out.println("No sessions found, returning to main menu.");
-            scannerWrapper.promptEnterKey();
-        } else
-            viewSessionList(foundSessions);
+        viewSearchResults(foundSessions);
     }
 
     private void runUserSettingsMenu() {
@@ -320,12 +342,8 @@ public class MenuHandler {
         System.out.print("Enter the search term: "); // not sure how to ask this in a less formal way 🙃
         String searchQuery = scannerWrapper.textInput(InputLimit.SESSION_NAME.getLimit());
 
-        SessionHandler foundSessions = user.getSessionCollection().searchSessionsByID(searchQuery);
-        if (foundSessions.getSessionIDs().isEmpty()) {
-            System.out.println("No sessions found, returning to main menu.");
-            scannerWrapper.promptEnterKey();
-        } else
-            viewSessionList(foundSessions);
+        SessionHandler foundSessions = user.getSessionCollection().searchSessions_ByID(searchQuery);
+        viewSearchResults(foundSessions);
     }
 
     // TODO add search based on date and time - both before/after.

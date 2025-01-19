@@ -18,6 +18,7 @@ public class SessionHandler {
     private final Map<String, Session> sessionCollection = new HashMap<>();
     private int totalFitnessScore = 0;
 
+    //region CRUD
     public SessionHandler(FileStorage fileStorage) {
         this.fileStorage = fileStorage;
     }
@@ -48,7 +49,24 @@ public class SessionHandler {
 
     }
 
-    //region Getters-Setters
+    public Session readSession(String id){
+        Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
+
+        try {
+            // not normalising the ID here since it would happen within the load-Record method.
+            // similar to how this method does it in row 82.
+            fileStorage.loadRecord(id);
+        } catch (IOException e) {
+            System.out.println("Error loading session from external file.\n" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        if (session == null)
+            throw new IllegalArgumentException("No recorded session with this ID exists.");
+
+        return session;
+    }
+
     public int getTotalFitnessScore() {
         return totalFitnessScore;
     }
@@ -85,26 +103,6 @@ public class SessionHandler {
             this.totalFitnessScore = 0;
         }
     }
-    //endregion
-
-
-    public Session readSession(String id){
-        Session session = sessionCollection.get(id.toLowerCase()); // adding to lower so I don't forget.
-
-        try {
-            // not normalising the ID here since it would happen within the load-Record method.
-            // similar to how this method does it in row 82.
-            fileStorage.loadRecord(id);
-        } catch (IOException e) {
-            System.out.println("Error loading session from external file.\n" + e.getMessage());
-            e.printStackTrace();
-        }
-
-        if (session == null)
-            throw new IllegalArgumentException("No recorded session with this ID exists.");
-
-        return session;
-    }
 
     public void deleteSession(String id) {
         if (!sessionCollection.containsKey(id.toLowerCase())) {
@@ -122,8 +120,10 @@ public class SessionHandler {
 
         sessionCollection.remove(id.toLowerCase());
     }
+    //endregion
 
-    public SessionHandler searchSessionsByID(String query) {
+    //region Search functions
+    public SessionHandler searchSessions_ByID(String query) {
         if (query == null || query.isEmpty()) {
             return new SessionHandler(fileStorage);
         }
@@ -137,19 +137,6 @@ public class SessionHandler {
                 .collect(Collectors.toList());
 
         return createSubset(foundSessions);
-    }
-
-    // created this to unify the output for searched/non searched sessions so that they can be re-sorted multiple times
-    // without dropping its context. The issue was in me passing the list with no data to compare.
-    private SessionHandler createSubset(List<String> sessionIDs) {
-        SessionHandler curatedCollection = new SessionHandler(fileStorage);
-        for (String id : sessionIDs) {
-            if (sessionCollection.containsKey(id.toLowerCase())) { //to lower to search for case-insensitive id's
-                Session session = sessionCollection.get(id);
-                curatedCollection.sessionCollection.put(id, session);
-            }
-        }
-        return curatedCollection;
     }
 
     /* Experimenting with Function<t, R>
@@ -171,4 +158,32 @@ public class SessionHandler {
         return createSubset(foundSessions);
     }
 
+    public SessionHandler searchSessions_ByDate(LocalDate query) {
+        if (query.isAfter(LocalDate.now()) ) {
+            return new SessionHandler(fileStorage);
+        }
+
+        List<String> foundSessions = sessionCollection
+                .entrySet()
+                .stream()
+                .filter(entry -> query.equals(entry.getValue().getDate()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return createSubset(foundSessions);
+    }
+
+    // created this to unify the output for searched/non searched sessions so that they can be re-sorted multiple times
+    // without dropping its context. The issue was in me passing the list with no data to compare.
+    private SessionHandler createSubset(List<String> sessionIDs) {
+        SessionHandler curatedCollection = new SessionHandler(fileStorage);
+        for (String id : sessionIDs) {
+            if (sessionCollection.containsKey(id.toLowerCase())) { //to lower to search for case-insensitive id's
+                Session session = sessionCollection.get(id);
+                curatedCollection.sessionCollection.put(id, session);
+            }
+        }
+        return curatedCollection;
+    }
+    //endregion
 }

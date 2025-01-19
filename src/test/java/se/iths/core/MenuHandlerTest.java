@@ -132,32 +132,6 @@ public class MenuHandlerTest {
     }
 
     @Test
-    void resolveSessionSearch_ByDistance_ValidSearch() {
-        user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
-
-        when(scannerMock.numberInput())
-                .thenReturn(2.0) // session menu
-                .thenReturn(2.0) // search menu
-                .thenReturn(2.0) // choose to search by distance
-                .thenReturn(8.0) // query value
-                .thenReturn(0.0);
-
-        menuHandler.runMenu();
-
-        String actual = outputStream.toString().replace("\r\n", "\n");
-        int startIndex = actual.indexOf("1. Bloop");
-        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
-        actual = actual.substring(startIndex, endIndex).trim();
-
-        String expected = "1. Bloop\n" +
-                          "2. Bloop2\n" +
-                          "3. To change sort method\n" +
-                          "0. Exit";
-
-        assertEquals(expected, actual, "Session search result does not match.");
-    }
-
-    @Test
     void resolveSessionSearch_ByString_InvalidSearch() {
 
         when(scannerMock.numberInput())
@@ -179,6 +153,82 @@ public class MenuHandlerTest {
 
         assertEquals(expected, actual, "0 query results print does not match.");
     }
+
+    @Test
+    void resolveSessionSearch_ByDistance_ValidSearch() {
+        user.getSessionCollection().createSession("Bloop2", 8,3600, LocalDate.of(2024, 12, 30));
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(2.0) // choose to search by distance
+                .thenReturn(8.0) // enter distance in km.
+                .thenReturn(0.0);
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Bloop");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Bloop\n" +
+                          "2. Bloop2\n" +
+                          "3. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+
+    @Test
+    void resolveSessionSearch_ByTime_ValidSearch() {
+
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(3.0) // choose to search by time
+                .thenReturn(60.0) // enter time in min
+                .thenReturn(0.0);
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Bloop");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Bloop\n" +
+                          "2. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+
+    @Test
+    void resolveSessionSearch_ByDate_ValidSearch() {
+        when(scannerMock.numberInput())
+                .thenReturn(2.0) // session menu
+                .thenReturn(2.0) // search menu
+                .thenReturn(4.0) // choose to search by date
+                .thenReturn(0.0);
+
+        when(scannerMock.dateInput())
+                .thenReturn(LocalDate.of(2025, 1, 2)); // enter date
+
+        menuHandler.runMenu();
+
+        String actual = outputStream.toString().replace("\r\n", "\n");
+        int startIndex = actual.indexOf("1. Morning walk");
+        int endIndex = actual.indexOf("Please enter your choice:", startIndex);
+        actual = actual.substring(startIndex, endIndex).trim();
+
+        String expected = "1. Morning walk\n" +
+                          "2. To change sort method\n" +
+                          "0. Exit";
+
+        assertEquals(expected, actual, "Session search result does not match.");
+    }
+
 
     @Test
     void addSessionToCollectionTest() {

@@ -85,21 +85,10 @@ class SessionHandlerTest {
 
     @Test
     void searchSessionsByIdTest() {
+        sessionHandler.createSession("Bloop2", 3, 2030, LocalDate.of(1990, 1, 4));
+        sessionHandler.createSession("EXTRA", 33, 5032, LocalDate.of(1990, 1, 4));
 
-        sessionHandler.createSession(
-                "Bloop2",
-                3,
-                2030,
-                LocalDate.of(1990, 1, 4));
-
-        sessionHandler.createSession(
-                "EXTRA",
-                33,
-                5032,
-                LocalDate.of(1990, 1, 4));
-
-
-        SessionHandler foundSessions = sessionHandler.searchSessionsByID("Bloop");
+        SessionHandler foundSessions = sessionHandler.searchSessions_ByID("Bloop");
         List<String> sessionList = foundSessions.getSessionIDs();
 
         assertFalse(sessionList.isEmpty(), "Expected to find at least one session.");
