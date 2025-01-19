@@ -66,6 +66,8 @@ Automatic date will be set if it finds an empty whitespace, if *nothing* is ente
 hit the error handler for string-input. This is the case for most of the "empty" inputs.
 The reason is due to my scanner not allowing a fully empty input and will **force** the user to re-enter a new input.
 
+Needed "functions" have marked TODO comments above them to help the teacher find the exact tests easier!
+
 Program can be run from main and will create a temporary user to simulate it being read from the external file. This
 is mostly for demo purposes and imitating a user opening upp their app again after a couple of sessions.
 ---
