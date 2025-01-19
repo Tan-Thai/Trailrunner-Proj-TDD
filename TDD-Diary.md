@@ -1,21 +1,73 @@
 # TDD-Diary
 
+## Table of Contents
+
+<!-- TOC -->
+* [TDD-Diary](#tdd-diary)
+  * [Table of Contents](#table-of-contents)
+  * [Summary](#summary)
+  * [Introduction](#introduction)
+    * [Few Important notes](#few-important-notes)
+  * [Day 1 - 08/01-25](#day-1---0801-25)
+    * [RecordTests](#recordtests)
+    * [FileStorage](#filestorage)
+    * [RecordHandler](#recordhandler)
+  * [Day 2 - 'First Sign of Insanity' - 09/01-25 to 10/01-25](#day-2---first-sign-of-insanity---0901-25-to-1001-25)
+    * [Calculator](#calculator)
+    * [User](#user)
+    * [Main](#main)
+  * [Day 3 - 'Wave of Despair' - 11/01-25 - 12/01-25](#day-3---wave-of-despair---1101-25---1201-25)
+    * [ScannerWrapper](#scannerwrapper)
+  * ["Day 4" - 'A Mad Scientist and His Google' - 13/01-25](#day-4---a-mad-scientist-and-his-google---1301-25)
+    * [Agenda](#agenda-3)
+    * [MenuHandler](#menuhandler)
+    * [Integration of classes](#integration-of-classes)
+  * [Day "4" - 'Here Lies Madness' (In a Good Way!) - 13/01-25](#day-4---here-lies-madness-in-a-good-way---1301-25-)
+    * [MenuHandler (again)](#menuhandler-again)
+  * [Day 5 - 'The Productivity of a Night Owl' - 14/01-25](#day-5---the-productivity-of-a-night-owl---1401-25)
+    * [Fleeting-Notes](#fleeting-notes-4)
+    * [ScannerWrapper](#scannerwrapper-1)
+    * [MenuHandler](#menuhandler-1)
+    * [InputLimit](#inputlimit)
+  * [Day "most likely 5.5" - 'Sanity Restored' - 17/01-25](#day-most-likely-55---sanity-restored---1701-25)
+    * [FileStorage](#filestorage-1)
+  * [Day "6" - 'The Light at the End of the Tunnel' - 19/01-25](#day-6---the-light-at-the-end-of-the-tunnel---1901-25)
+    * [MenuHandler](#menuhandler-2)
+<!-- TOC -->
+
 ## Summary
+This is a TDD-Diary made for a project that lasted around 1.5 weeks for IT-Högskolan in Gothenburg, Sweden.
+The diary itself is very informal and leans way more into the actual definition of a diary over documentation.
+I have also taken the liberty of just having fun with this diary over being overtly formal/static! So for those that do
+decide to read through this, take everything with a grain of salt and just enjoy the rolle-coaster I had during the
+projects' lifespan!
 
-Important notes: automatic date will be set if it finds an empty whitespace, if *nothing* is entered then you will
-hit the error handler for string-input.
-
+---
 ## Introduction
-
 The general structure of the diary will follow a daily chapter including the goals and solutions to said goals.
 Reflections and comments will be added as deemed necessary for clarity. Each day will in most cases start with a checklist
-to assure that no side-quests are made. 
+to *attempt* to avoid side-quests. The diary itself will be written directly with very little filter, so there will be 
+times when the text devolves into ramblings and bouncing thoughts. I thought it would be for the best to give a better
+insight over what is going on in my head. My main reason is due to my very unstructured way of working and tendency
+to fall into big coding sprees without realising it.
+
+With that said, feel free to jump to certain sections from the ToC or skim. Most of the details over what I'm currently
+working with lies within the titles. With `Fleeting-Notes` being my place for random notes that isn't related to anything
+specific.
 
 The entire project is set up as a repository on GitHub for version control and ease of access.
 Maven and Jacoco is used within the project as of writing. If VG assignments are made then Mockito was used as well.
 
 Preface: I did work with **FileStorage** right away and then reformated it to suit my needs. I'll add it again
 if I do work on the VG part of the assignment.
+
+### Few Important notes
+Automatic date will be set if it finds an empty whitespace, if *nothing* is entered then you will
+hit the error handler for string-input. This is the case for most of the "empty" inputs.
+The reason is due to my scanner not allowing a fully empty input and will **force** the user to re-enter a new input.
+
+Program can be run from main and will create a temporary user to simulate it being read from the external file. This
+is mostly for demo purposes and imitating a user opening upp their app again after a couple of sessions.
 ---
 
 ---
@@ -52,7 +104,7 @@ Example of issues were:
 - Somehow forgetting the () when calling to methods. (I'm honestly baffled that it just slipped my mind)
 - I missed that id was a string initially. (I blame it on new year)
 
-<img style="float: right; margin: 5px;" src="https://media1.tenor.com/m/oWSUU3x-wL0AAAAd/cat-cat-meme.gif" width=180></img>
+<img style="float: right; margin: 5px;" src="assets/cat-research.gif" width=180></img>
 ### FileStorage
 Will rename this file to **RecordHandler** to simplify the naming-scheme. Also, easier to identify what it's connected to
 in my opinion.
@@ -69,7 +121,7 @@ I'm still not feeling 100% confident regarding this so it will have to be someth
 ---
 
 ---
-## Day 2 - 09/01-25 to 10/01-25
+## Day 2 - 'First Sign of Insanity' - 09/01-25 to 10/01-25
 
 - [x] Rename **Record** to something more relatable and self-explanatory. (Now **Session**) 
 - [x] Create a **CalculatorTest** for all formulas and math needed for the project.
@@ -146,12 +198,11 @@ I'm proceeding with creating a **MenuHandler** file. It feels logical to push me
 I'll also try to add **Mockito**. Mockup of Mockito tests are done, I'm afraid to say that I think a Singleton has come
 to bite my ass once again. I need to figure out how to replace the singleton with my mock without causing issues.
 I'll most likely find some solutions from StackOverflow and patchwork it somehow.
-<img style="float: right; margin: 5px; " src="https://media1.tenor.com/m/X9pghVUlMvEAAAAd/sad-cat.gif" width="190" alt="A very sad and depressed cat."></img>
 
+<img style="float: right; margin: 5px; " src="assets/Sad-Cat.gif" width="190" alt="A very sad and depressed cat."></img>
 _rant_: I **hate** singletons, christ. ok I'm taking a break from the entire project due to frustrations.
 
 #### Reflection
-
 After a longer than expected nap, I've decided to redo the entire scanner and all it's tests. I'll try to make as many
 commits as possibles to show the changes, but I'm fully expecting myself to just forget to do it in the midsts of refactoring.
 
@@ -161,7 +212,7 @@ This and all leftover code/plans will be pushed to day 3.
 
 ---
 
-## Day 3 - 11/01-25 - 12/01-25
+## Day 3 - 'Wave of Despair' - 11/01-25 - 12/01-25
 
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
@@ -171,7 +222,6 @@ This and all leftover code/plans will be pushed to day 3.
 - [x] Develop **MenuHandler** based on tests.
 
 ### Agenda
-
 Today's biggest goal is to get **MenuHandlerTest** fully functional with tests based on **Mockito**. To do that
 I need to refactor **ScannerSingleton** and its tests since I believe that it's the biggest cause based on the error
 messages. 
@@ -188,12 +238,10 @@ to the singleton issue down the line. Whichever comes first to be honest. (I'm q
 
 ---
 ###  Fleeting Notes
-
 The amount of extra research and frustration I get with scanner is baffling. I get why it is the way it is but my god
 does it feel _extra_ to handle. Both in how sensitive it is and how different the tests are made for it.
 
 ### ScannerWrapper
-
 I'll be renaming **ScannerSingleton** to **ScannerWrapper** due to the removal of singleton, but also clarity. Since 
 this class will encompass all the scanner related functions. This is a bit of an odd situation since I do work with
 the mental image of how I've created the previous Scanner files in past projects. So the test might now be totally free
@@ -204,14 +252,13 @@ I'll be splitting tests into invalid/valid or yes/no to create a more clear labe
 Methods will be similar to my previous projects, setup with validations and forced loops to ensure correct returns.
 
 #### Reflections
-
 the fact that I had to capture a whole string and convert it because it contained a single "\n" is crazy. I sat and tried
 to find the issue for so long and the issue was that ".contains" method couldn't differentiate and read a \n the same way.
 The entire process was quite a trial and error on top of searching for answers.
 
 I did forget to commit between creating code and writing tests. It is mostly due to me jumping back and forth developing
-<img style="float: right; margin: 5px" src="https://media1.tenor.com/m/rNCdBEqBKjoAAAAd/sad-cat.gif" width="200px"></img>
 1 singular method after each test. Especially due to how finicky scanners are.
+<img style="float: right; margin: 5px" src="assets/Despair-Cat.gif" width="200px"></img>
 
 I did solve the issue with the assertTrue to a printing of an error message not passing. It had to do with me not creating
 a stream for **err** prints specifically. Which I did not expect to be 2 whole separate channels/streams. It has now 
@@ -232,7 +279,7 @@ want to say that I **do not** like scanner now after this roller-coaster.
 
 ---
 ***
-## "Day 4" - 01/14-25
+## "Day 4" - 'A Mad Scientist and His Google' - 13/01-25
 
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
@@ -243,8 +290,9 @@ want to say that I **do not** like scanner now after this roller-coaster.
 ### Agenda
 
 Ideally get done with all the G related assignments today if I have missed any. 
-## MenuHandler
 
+---
+### MenuHandler
 I'll be looking into mocking up the other classes to make the tests independent from `Session` and `SessionHandler`.
 Though I will _start_ with writing test in a way I know works to get the project to move forward.
 
@@ -254,8 +302,7 @@ a menu and then be prompted to input text to search for. From here it will branc
 sessions are printed and the user can then proceed to pick one to show details of, or no matches are found, and you will be notified
 regarding it.
 
-### Reflection
-
+#### Reflection
 I ended up essentially making identical tests and methods as `sessionHandler`. Creating a new commit to start from a clean
 slate with empty tests.
 
@@ -263,7 +310,8 @@ Trying to break down the tests into smaller bits, in this case _only_ checking f
 Reasoning behind that is due to us already having tests for the manipulation of sessions within `SessionHandlerTest`.
 I'll add more tests/code to `SessionHandlerTest` now when I have more functions I want to implement.
 
-## Misc - Ramble Text
+### Misc - Ramble Text
+<img style="float: right; margin: 5px" src="assets/cat-halloween.gif" width="200px"></img>
 Sorting sessions method done, `getSortedSessions`. I stumbled upon a few good explanations across google and will do a 
 quick deep dive to *attempt* at making this sorting flexible based on what the user picked. Not going to implement it
 fully to the actual project, but I want to see if it's possible with `.sorted()` call. Initial idea is to make an
@@ -279,14 +327,13 @@ I'm diving back into singletons, I can't believe that I'm doing that...
 Update: jokes on me, it's still horrid.🙃 I'll temporarily pass the scanner for now, refactoring it later should not
 be too difficult this time around due to the smaller project scale.
 
-## Integration of classes
-
+### Integration of classes
 Whilst testing for singletons and scanner shenanigans I also started refactoring `User`. The user now includes a collection
 of sessions (`SessionHandler`). This is both because of simplicity of parameters, and it being quite logical to have
 the collection tied to a user. I've now started working on `MenuHandler` again for the 10000th time. I'll be honest and say
 that I'm somewhat lost over how to write the tests. 
 
-### Reflection
+#### Reflection
 I do think my excessive googling has backfired due to the sheer amount
 of different opinions, styles, versions both testing and mockito have. I went through so many versions of mockito to try
 figure out the issue to no avail. I'm not getting any compilation errors anymore which I'm glad for, but at the cost of
@@ -295,7 +342,7 @@ a super messy project. This can be seen by my mixture of variable naming, code s
 ---
 
 ---
-## Day "4" - 13/01-25 (Will most likely just put the dates as titles due to days not fitting) 
+## Day "4" - 'Here Lies Madness' (In a Good Way!) - 13/01-25 
 
 - [ ] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
@@ -304,14 +351,12 @@ a super messy project. This can be seen by my mixture of variable naming, code s
 - [x] Hate on Scanner a bit more
 - [x] Look into mocking further and refactor accordingly.
 
-### Agenda 
-
+### Agenda
 Goal for this part would be to finish up the `menuHanlder` so that the project will be an actually functional program.
 The methods in question will be mostly menu systems to redirect to appropriate method calling, such as add session, that
 will have its own followup of prompted inputs to fill in the details of a session.
 
-## Fleeting-Notes
-
+### Fleeting-Notes
 I feel like I've worked somewhat backwards with this, or at least I should've looked more into mockito properly since 
 I had some gigantic troubles with **Scanner** and mocking. Which caused me to go down a rabbit hole of cursed stuff.
 The idea of mocking for `menuHandlerTest` is to avoid essentially testing whatever scanner already have. We should not
@@ -320,8 +365,7 @@ care about the logic and if the return is correct, but rather the outcome of the
 Totally forgot to check off the lil checklist. Most of the documentation are within the text and my rants!
 
 ---
-## MenuHandler (again)
-
+### MenuHandler (again)
 Refactored the entire `MenuHandlerTest` and it now incorporates mocking, specifically scannerWrapper. Tests works properly
 now and I can proceed to make more tests for the branching menu. I won't cover all the branching paths if they call for a similar
 method/ same method with another argument. 
@@ -330,6 +374,7 @@ Deep diving into the furthest branch to develop first due to me technically bran
 to reach that endpoint. So I will test "some" branches more due to me passing through menus. In this case deleting
 a session whilst viewing the details
 
+<img style="float: right; margin: 5px" src="assets/cat-yawn.gif" width="200px"></img>
 **Order of menus:**
 Main Menu > session menu > view all sessions > detailed session view > delete method. 
 
@@ -360,11 +405,13 @@ view.
 try to solve both `byteArrayInput` and `Mockito` whilst trying to further progress your tests/code. Especially if
 2 of the issues turned out to be standard warnings that are quuuuite *recent*...
 
-I might work more today, but odds are not. Got an early hospital visit the next day (01/14), so I'll not push myself to
+I might work more today, but odds are not. Got an early hospital visit the next day (14/01), so I'll not push myself to
 work anymore unless a 💡 hits.
+
 ---
 ***
-## "Day 4" - 01/14-25
+
+## Day 5 - 'The Productivity of a Night Owl' - 14/01-25
 
 - [x] Advanced G assignments. (Kept as a single point for now)
 - [ ] Start on VG assignments.
@@ -373,17 +420,16 @@ work anymore unless a 💡 hits.
 - [x] Create new function in `ScannerWrapper` for `MenuHandler` methods. (tests too)
 
 ### Agenda
-
 Ideally get done with all the G related assignments today if I have missed any. Most of the heavy work is sorted
 and passed their respective tests. When G is done, look into VG assignments and determine if it's easier to implement
 *before* or *after* code clean-up. Before that is definitely adding tests and code for `ScannerWrapper` to preserve
 the class logic of single responsibility.
 
 ### Fleeting-Notes
-
 Once again, I'm struck with narcolepsy and now started working at 23:27 on the 14th... I feel like the "Day x" for me does not 
 work at all due to this.🙃
-
+---
+<img style="float: right; margin: 5px" src="assets/FuzzyLostCat.gif" width="200px"></img>
 Added a few `minutes > seconds` methods and the inverse to avoid faffing with writing 10023 seconds. It feels more
 normal to input how many minutes you have been exercising.
 
@@ -399,7 +445,6 @@ Noticed some small spots I've missed due to only seeing green tests. It was more
 to the assignment.
 
 ### ScannerWrapper
-
 Added tests for valid date input `checkIfValidDate`. Might change the rest of input validations to reflect a specific
 assignment if the need is specific it enough, such as date, double/int instead of casting (int) etc.
 
@@ -413,7 +458,6 @@ take in a `LocalDate` which sends `LocalDate.now()` to the date. Tests was also 
 Another test added is `dateInputTest_BlankInput()` in `ScannerWrapper`.
 
 ### MenuHandler
-
 I'll have to restructure the menu slightly to accommodate `showUserInfo()` within the main menu. Multiple tests
 will most likely fail due to mocking of menu choices changing.
 
@@ -438,7 +482,7 @@ Int would most likely rely on me changing a few things with how int works, and t
 on the whole system. Ofc tests help minimise the time spent, but we also have to consider the fact that it's out of 
 scope of our assignment.
 
-## Day "most likely 5.5" - 17/01-25
+## Day "most likely 5.5" - 'Sanity Restored' - 17/01-25
 
 - [ ] G/VG - Create test to *filter* based on time/distance/date (Dunno what's expected here, like before or after x?)
 - [ ] ~~Refactor `MenuHandler` *again*, it's way too fat and the method names is set up in such a way that I most likely can 
@@ -452,12 +496,15 @@ Finish off everything I might have missed and sort `FileStorage`. My current ide
 hopefully won´t cause any issues, especially now when all tests are green and fully functional. Some adjustments might be
 needed.
 
+---
+
 ### FileStorage
+<img style="margin: 10px; float:right" alt="Mock input for File Storage in create session method." src="assets/CallToMock_FileStorage.png" width="800" title="Mock input for File Storage" />
+
 Added a few tests that the rest will follow in terms of structure, the way I'm implementing the external `FileStorage`
 mock is by calling for it with no actual return. These calls will be put into methods that performs the exact same functions,
 but towards the local memory instead of external. Example in the image where I create a session to both the local and
 external "memory".
-<img style="margin: 10px; float:right" alt="Mock input for File Storage in create session method." src="assets/CallToMock_FileStorage.png" width="800" title="Mock input for File Storage" />
 
 Creating a commit here to give a view of the start of RED. Next commit will be greens + refactors most likely since these
 methods only need to be called.
@@ -465,10 +512,12 @@ methods only need to be called.
 I've now created tests and added a simple call to each method responsible for the same function within my actual project
 to mock our `FileStorage`'s function. I also just discovered and made use of `anyString()`. That and the related
 methods like int and more are amazing!!
+---
 
-## Day "6" - Finishing Touches and Return of MenuHandler - 19/01-25
+---
+## Day "6" - 'The Light at the End of the Tunnel' - 19/01-25
 
-- [ ] Add some structure and clarity to the diary for ease of navigation.
+- [x] Add some structure and clarity to the diary for ease of navigation.
 - [x] Add comments to point out what test covers what part of assignment.
 - [x] G/VG - Create test to *filter* based on time/distance/date (Dunno what's expected here, like before or after x?)
 - [x] *Actually* take a break for once.
@@ -482,7 +531,9 @@ It would also cause more of a hassle to read through the methods due to the cons
 I'm intentionally omitting some tests due to an overlap of tests. I'm **fully** aware that it goes against the principle
 of singular task tests, but testing a menu will inherently test the function it calls upon as well.
 
+---
 ### MenuHandler
+<img style="float: right; margin: 5px" src="assets/freedom-chains.gif" width="200px"></img>
 Added yet another branch to enable the user to search for specific values such as time and distance. Date will be
 added towards next commit since the test is yet to be made. They should all follow the same structure with the 
 difference being `LocalDate`. The method for distance and time use the same method and makes use of a `Function` parameter. 
