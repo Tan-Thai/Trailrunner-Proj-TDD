@@ -67,10 +67,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                   <!-- This arg line removes warnings regarding dynamic loading.
-                   But if its kept then it hinders jacoco from generating an exec.
-                   <argLine>-Djdk.attach.allowAttachSelf=true -XX:+EnableDynamicAgentLoading</argLine>
-                   -->
+                    <!-- TODO If compile/test errors occur, comment away these arg-lines -->
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/5.15.2/mockito-core-5.15.2.jar
+                        -XX:+EnableDynamicAgentLoading
+                        -Djdk.instrument.traceUsage=false
+                    </argLine>
                 </configuration>
             </plugin>
             <plugin>
